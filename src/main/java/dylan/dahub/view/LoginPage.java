@@ -1,4 +1,4 @@
-package dylan.dahub.views;
+package dylan.dahub.view;
 
 
 import javafx.scene.Scene;

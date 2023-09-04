@@ -5,6 +5,6 @@ module dylan.dahub {
 
     opens dylan.dahub to javafx.fxml;
     exports dylan.dahub;
-    exports dylan.dahub.controllers;
-    opens dylan.dahub.controllers to javafx.fxml;
+    exports dylan.dahub.controller;
+    opens dylan.dahub.controller to javafx.fxml;
 }

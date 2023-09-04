@@ -1,7 +1,10 @@
 package dylan.dahub;
 
+import dylan.dahub.controller.StartupController;
+import dylan.dahub.view.StageManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -10,11 +13,17 @@ import java.io.IOException;
 public class DataAnalyticsHub extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource("startup.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource("fxml/startup.fxml"));
+        Parent root = fxmlLoader.load();
+
+        Scene scene = new Scene(root);
         stage.setTitle("Data Analytics Hub");
         stage.setScene(scene);
         stage.show();
+    }
+
+    protected void setInitialScene() {
+
     }
 
     public static void main(String[] args) {
