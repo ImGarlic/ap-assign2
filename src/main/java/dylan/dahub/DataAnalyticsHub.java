@@ -1,29 +1,22 @@
 package dylan.dahub;
 
-import dylan.dahub.controller.StartupController;
+import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class DataAnalyticsHub extends Application {
+    private StageManager stageManager;
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource("fxml/startup.fxml"));
-        Parent root = fxmlLoader.load();
-
-        Scene scene = new Scene(root);
-        stage.setTitle("Data Analytics Hub");
-        stage.setScene(scene);
-        stage.show();
+        stageManager = StageManager.createInstance(stage);
+        setInitialScene();
     }
 
-    protected void setInitialScene() {
-
+    protected void setInitialScene() throws IOException {
+        stageManager.switchScene(FxmlView.STARTUP);
     }
 
     public static void main(String[] args) {

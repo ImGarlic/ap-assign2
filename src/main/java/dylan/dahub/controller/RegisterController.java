@@ -6,16 +6,16 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
-public class LoginController {
+public class RegisterController {
     private final StageManager stageManager = StageManager.getInstance();
 
     @FXML
     protected void onBackButtonClick() throws IOException {
         stageManager.switchScene(FxmlView.STARTUP);
     }
-
     @FXML
-    protected void onLoginButtonClick() throws IOException {
+    protected void onRegisterButtonClick() throws IOException {
         stageManager.switchScene(FxmlView.STARTUP);
     }
+
 }

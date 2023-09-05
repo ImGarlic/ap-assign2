@@ -12,7 +12,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="227.0" layoutY="238.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="146.0" text="Signup">
+      <Button layoutX="227.0" layoutY="238.0" mnemonicParsing="false" onAction="#onRegisterButtonClick" prefHeight="44.0" prefWidth="146.0" text="Register">
          <font>
             <Font size="20.0" />
          </font>

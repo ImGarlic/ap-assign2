@@ -1,6 +1,5 @@
 package dylan.dahub.view;
 
-import java.util.ResourceBundle;
 
 public enum FxmlView {
 
@@ -12,18 +11,28 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "fxml/startup.fxml";
+            return "fxml/startup/startup.fxml";
         }
 
     }, LOGIN {
         @Override
         String getTitle() {
-            return "Data Analytics Hub";
+            return "Login";
         }
 
         @Override
         String getFxmlFile() {
-            return "fxml/login.fxml";
+            return "fxml/startup/login.fxml";
+        }
+    }, REGISTER {
+        @Override
+        String getTitle() {
+            return "Register";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/startup/register.fxml";
         }
     };
 

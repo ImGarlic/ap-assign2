@@ -2,23 +2,20 @@ package dylan.dahub.controller;
 
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 
 import java.io.IOException;
 
 public class StartupController {
-    @FXML
-    private Label welcomeText;
+    private final StageManager stageManager = StageManager.getInstance();
 
     @FXML
-    protected void onLoginButtonClick(ActionEvent event) throws IOException {
-        StageManager.switchScene(event, FxmlView.LOGIN);
+    protected void onLoginButtonClick() throws IOException {
+        stageManager.switchScene(FxmlView.LOGIN);
     }
     @FXML
-    protected void onRegisterButtonClick() {
-        welcomeText.setText("Registered!");
+    protected void onRegisterButtonClick() throws IOException {
+        stageManager.switchScene(FxmlView.REGISTER);
     }
 
 }
