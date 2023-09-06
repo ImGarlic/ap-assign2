@@ -13,9 +13,12 @@ public class ActiveUser extends User {
         return INSTANCE;
     }
 
-    public static ActiveUser createInstance(String username) {
-        User user = UserManagementService.getUser(username);
+    public static ActiveUser createInstance(User user) {
         INSTANCE = new ActiveUser(user.getID(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getPassword());
         return INSTANCE;
+    }
+
+    public static void clearInstance() {
+        INSTANCE = null;
     }
 }

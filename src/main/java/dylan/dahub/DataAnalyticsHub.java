@@ -17,7 +17,6 @@ public class DataAnalyticsHub extends Application {
     public void start(Stage stage) throws IOException, SQLException {
         printDB();
         stageManager = StageManager.createInstance(stage);
-        ActiveUser activeUser = ActiveUser.createInstance("garlic");
         setInitialScene();
     }
 
