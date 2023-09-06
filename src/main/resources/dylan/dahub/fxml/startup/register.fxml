@@ -44,5 +44,9 @@
             <Font size="32.0" />
          </font>
       </Label>
+      <Label fx:id="userNameError" layoutX="392.0" layoutY="121.0" prefHeight="16.0" prefWidth="204.0" text="userNameError" textFill="RED" visible="false" />
+      <Label fx:id="firstNameError" layoutX="392.0" layoutY="171.0" prefHeight="16.0" prefWidth="204.0" text="firstNameError" textFill="RED" visible="false" />
+      <Label fx:id="lastNameError" layoutX="392.0" layoutY="221.0" prefHeight="16.0" prefWidth="204.0" text="lastNameError" textFill="RED" visible="false" />
+      <Label fx:id="passwordError" layoutX="392.0" layoutY="271.0" prefHeight="16.0" prefWidth="204.0" text="passwordError" textFill="RED" visible="false" />
    </children>
 </AnchorPane>

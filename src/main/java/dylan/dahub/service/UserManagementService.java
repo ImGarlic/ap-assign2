@@ -16,7 +16,8 @@ public class UserManagementService {
 
             ResultSet resultSet = stmt.executeQuery(query);
             while(resultSet.next()) {
-                user = new User(resultSet.getInt("ID"), resultSet.getString("user_name"), resultSet.getString("first_name"),
+                user = new User(resultSet.getInt("ID"),
+                        resultSet.getString("user_name"), resultSet.getString("first_name"),
                         resultSet.getString("last_name"), resultSet.getString("password"));
             }
         } catch (SQLException e) {
