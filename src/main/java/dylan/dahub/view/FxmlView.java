@@ -34,6 +34,18 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/startup/register.fxml";
         }
+    }, MENU {
+        @Override
+        String getTitle() {
+            return "Menu";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/main/menu.fxml";
+        }
+
+        ;
     };
 
 

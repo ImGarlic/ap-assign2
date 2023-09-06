@@ -1,6 +1,7 @@
 module dylan.dahub {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens dylan.dahub to javafx.fxml;
