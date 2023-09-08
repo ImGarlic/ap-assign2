@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.MenuController">
+<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.main.MenuController">
     <children>
         <Label layoutX="132.0" layoutY="14.0" text="Data Analytics Hub">
             <font>
@@ -22,7 +22,7 @@
             <Font name="Candara" size="16.0" />
          </font>
       </Button>
-      <Button id="profile" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
+      <Button fx:id="profile" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="40.0" prefWidth="40.0" />
       <Button layoutX="220.0" layoutY="188.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Add Post" textFill="#575757">
          <font>
             <Font name="Candara Bold Italic" size="16.0" />

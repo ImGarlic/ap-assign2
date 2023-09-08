@@ -1,4 +1,4 @@
-package dylan.dahub.controller;
+package dylan.dahub.controller.startup;
 
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.ActiveUser;

@@ -39,4 +39,8 @@ public class UserManagementService {
         con.close();
         return getUser(user.getUserName());
     }
+
+    public static User updateUser(User user) throws SQLException {
+        return getUser(user.getUserName());
+    }
 }

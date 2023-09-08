@@ -27,6 +27,10 @@ public class User {
         }
     }
 
+    public boolean isVIP() {
+        return this.VIP > 0;
+    }
+
     public int getID() {
         return ID;
     }

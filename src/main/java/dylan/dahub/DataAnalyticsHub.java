@@ -2,6 +2,7 @@ package dylan.dahub;
 
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.service.DatabaseConnection;
+import dylan.dahub.service.UserManagementService;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.application.Application;
@@ -20,8 +21,9 @@ public class DataAnalyticsHub extends Application {
         setInitialScene();
     }
 
-    protected void setInitialScene() throws IOException {
-        stageManager.switchScene(FxmlView.STARTUP);
+    protected void setInitialScene() throws IOException, SQLException {
+        ActiveUser.createInstance(UserManagementService.getUser("garlic"));
+        stageManager.switchScene(FxmlView.PROFILE);
     }
 
     private void printDB() throws SQLException {

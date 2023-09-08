@@ -1,4 +1,4 @@
-package dylan.dahub.controller;
+package dylan.dahub.controller.startup;
 
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;

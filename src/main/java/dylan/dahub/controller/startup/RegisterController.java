@@ -1,4 +1,4 @@
-package dylan.dahub.controller;
+package dylan.dahub.controller.startup;
 
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;

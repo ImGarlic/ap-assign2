@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.StartupController" stylesheets="@../styles.css">
+<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.startup.StartupController" stylesheets="@../styles.css">
    <children>
       <Button layoutX="227.0" layoutY="178.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="44.0" prefWidth="146.0" text="Login">
          <font>
