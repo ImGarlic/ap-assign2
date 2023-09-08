@@ -1,12 +1,10 @@
 package dylan.dahub.model;
 
-import dylan.dahub.service.UserManagementService;
-
 public class ActiveUser extends User {
     private static ActiveUser INSTANCE;
 
-    private ActiveUser(int ID, String userName, String firstName, String lastName, String password) {
-        super(ID, userName, firstName, lastName, password);
+    private ActiveUser(int ID, String userName, String firstName, String lastName, String password, int VIP) {
+        super(ID, userName, firstName, lastName, password, VIP);
     }
 
     public static ActiveUser getInstance() {
@@ -14,7 +12,8 @@ public class ActiveUser extends User {
     }
 
     public static ActiveUser createInstance(User user) {
-        INSTANCE = new ActiveUser(user.getID(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getPassword());
+        INSTANCE = new ActiveUser(user.getID(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getPassword(), user.getVIP());
+        User.printUser(INSTANCE);
         return INSTANCE;
     }
 

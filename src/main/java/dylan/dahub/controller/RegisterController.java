@@ -1,5 +1,6 @@
 package dylan.dahub.controller;
 
+import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
 import dylan.dahub.service.UserManagementService;
 import dylan.dahub.view.FxmlView;
@@ -11,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class RegisterController {
     private final StageManager stageManager = StageManager.getInstance();
@@ -28,16 +30,30 @@ public class RegisterController {
     protected void onBackButtonClick() throws IOException {
         stageManager.switchScene(FxmlView.STARTUP);
     }
+
     @FXML
     protected void onRegisterButtonClick() throws IOException {
+        attemptRegister();
+    }
+
+    @FXML
+    protected void onEnter() throws IOException {
+        attemptRegister();
+    }
+
+    private void attemptRegister() throws IOException {
         hideErrors();
         User user = new User(0, userNameInput.getText(), firstNameInput.getText(),
-                lastNameInput.getText(), passwordInput.getText());
+                lastNameInput.getText(), passwordInput.getText(), 0);
 
         if(validateInput(user)) {
-            UserManagementService.putUser(user);
-            alertSuccess();
-            stageManager.switchScene(FxmlView.STARTUP);
+            try {
+                ActiveUser.createInstance(UserManagementService.putUser(user));
+                stageManager.switchScene(FxmlView.MENU);
+            } catch (SQLException e) {
+                String message = String.format("Failed to create user: %s", e.getMessage());
+                alertError("Something went wrong", message);
+            }
         }
     }
 
@@ -54,11 +70,17 @@ public class RegisterController {
             userNameError.setVisible(true);
             valid = false;
         }
-        if(UserManagementService.getUser(user.getUserName()) != null) {
-            userNameError.setText("Username already exists");
-            userNameError.setVisible(true);
-            valid = false;
+        try {
+            if(UserManagementService.checkUserExists(user.getUserName())) {
+                userNameError.setText("Username already exists");
+                userNameError.setVisible(true);
+                valid = false;
+            }
+        } catch (SQLException e) {
+            String message = String.format("Failed to find user: %s", e.getMessage());
+            alertError("Something went wrong", message);
         }
+
         if(user.getFirstName().equals("")) {
             firstNameError.setText("First name cannot be empty");
             firstNameError.setVisible(true);
@@ -77,10 +99,10 @@ public class RegisterController {
         return valid;
     }
 
-    private void alertSuccess() {
-        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-        successAlert.setTitle("Account Created");
-        successAlert.setHeaderText("Account successfully created. Please login to use the app.");
+    private void alertError(String title, String message) {
+        Alert successAlert = new Alert(Alert.AlertType.ERROR);
+        successAlert.setTitle(title);
+        successAlert.setHeaderText(message);
         successAlert.show();
     }
 

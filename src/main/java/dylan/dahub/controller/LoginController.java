@@ -33,6 +33,15 @@ public class LoginController {
 
     @FXML
     protected void onLoginButtonClick() throws IOException {
+        attemptLogin();
+    }
+
+    @FXML
+    protected void onEnter() throws IOException {
+        attemptLogin();
+    }
+
+    private void attemptLogin() throws IOException {
         hideErrors();
 
         if(validateInput()) {

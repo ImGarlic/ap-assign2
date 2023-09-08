@@ -6,20 +6,23 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
+    private int VIP;
 
-    public User(int ID, String userName, String firstName, String lastName, String password) {
+    public User(int ID, String userName, String firstName, String lastName, String password, int VIP) {
         this.ID = ID;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.VIP = VIP;
+
     }
 
     // DEBUG
     public static void printUser(User user) {
         if (user != null) {
             String printString = "ID: " + user.ID + " | Username: " + user.userName + " | First name: " + user.firstName +
-                    " | Last name: " + user.lastName + " | Password: " + user.password;
+                    " | Last name: " + user.lastName + " | Password: " + user.password + " | VIP: " + (user.VIP != 0);
             System.out.println(printString);
         }
     }
@@ -62,5 +65,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getVIP() {
+        return VIP;
+    }
+
+    public void setVIP(int VIP) {
+        this.VIP = VIP;
     }
 }
