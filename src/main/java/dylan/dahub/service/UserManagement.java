@@ -8,13 +8,23 @@ public class UserManagement {
     private static final String TABLE_NAME = "User";
 
     public static boolean checkUserExists(String username) throws SQLException {
-        return getUser(username).getUserName() != null;
+        return getUserFromUsername(username).getUserName() != null;
     }
 
-    public static User getUser(String username) throws SQLException {
-        User user;
+    public static User getUserFromUsername(String username) throws SQLException {
         String query = String.format("SELECT * FROM %s WHERE user_name='%s' COLLATE NOCASE LIMIT 1", TABLE_NAME, username);
 
+        return getUser(query);
+    }
+
+    public static User getUserFromID(int ID) throws SQLException {
+        String query = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
+
+        return getUser(query);
+    }
+
+    private static User getUser(String query) throws SQLException {
+        User user;
         Connection con = DatabaseConnection.getConnection();
         Statement stmt = con.createStatement();
 
@@ -36,7 +46,7 @@ public class UserManagement {
 
         System.out.println("Added user");
         con.close();
-        return getUser(user.getUserName());
+        return getUserFromID(user.getID());
     }
 
     public static User updateUser(User user) throws SQLException {
@@ -45,9 +55,9 @@ public class UserManagement {
                         "last_name = '%s', " +
                         "password = '%s', " +
                         "VIP = %d " +
-                        "WHERE user_name = '%s'",
+                        "WHERE id = '%d'",
                 TABLE_NAME, user.getUserName(), user.getFirstName(), user.getLastName(),
-                user.getPassword(), user.getVIP(), user.getUserName());
+                user.getPassword(), user.getVIP(), user.getID());
 
         Connection con = DatabaseConnection.getConnection();
         Statement stmt = con.createStatement();
@@ -55,6 +65,6 @@ public class UserManagement {
 
         System.out.println("Updated user");
         con.close();
-        return getUser(user.getUserName());
+        return getUserFromID(user.getID());
     }
 }

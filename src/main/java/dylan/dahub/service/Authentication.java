@@ -8,9 +8,9 @@ import java.sql.SQLException;
 
 public class Authentication {
 
-    public static User authenticateLogin(String username, String password) throws UserAuthenticationException {
+    public static User authenticateUser(String username, String password) throws UserAuthenticationException {
         try {
-            User user = UserManagement.getUser(username);
+            User user = UserManagement.getUserFromUsername(username);
             if (user.getUserName() == null) {
                 throw new UserAuthenticationException("Username does not exist");
             }

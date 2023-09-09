@@ -44,7 +44,8 @@ public class ProfileController {
     }
 
     @FXML
-    protected void onUpdateProfileButtonClick() {
+    protected void onUpdateProfileButtonClick() throws IOException {
+        stageManager.switchScene(FxmlView.PROFILE_UPDATE);
     }
 
     private void checkVIPStatus() {

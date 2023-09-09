@@ -21,7 +21,7 @@ public class DataAnalyticsHub extends Application {
     }
 
     protected void setInitialScene() throws IOException, SQLException {
-        ActiveUser.createInstance(UserManagement.getUser("garlic"));
+        ActiveUser.createInstance(UserManagement.getUserFromUsername("garlic"));
         stageManager.switchScene(FxmlView.PROFILE);
     }
 
