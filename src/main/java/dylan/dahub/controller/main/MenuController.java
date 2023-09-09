@@ -7,11 +7,11 @@ import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MenuController {
 
@@ -19,13 +19,17 @@ public class MenuController {
     private final ActiveUser activeUser = ActiveUser.getInstance();
 
     @FXML
-    private Label welcomeText;
+    private Label welcomeText, tooltip1, tooltip2;
     @FXML
-    private Button profile;
+    private Button profile, graphDataButton, bulkImportButton;
+    @FXML
+    private Tooltip tt1, tt2;
 
     @FXML
     private void initialize() {
         welcomeText.setText("Welcome, " + activeUser.getFirstName() + " " + activeUser.getLastName());
+        tt1.setShowDelay(Duration.seconds(0));
+        tt2.setShowDelay(Duration.seconds(0));
         checkVIPStatus();
     }
 
@@ -46,9 +50,24 @@ public class MenuController {
     }
 
     private void checkVIPStatus() {
+        String VIP_PROFILE_IMAGE = "image/VIP_profile.png";
         if (activeUser.isVIP()) {
-            String image = DataAnalyticsHub.class.getResource("image/VIP_profile.png").toExternalForm();
-            profile.setStyle("-fx-background-image: url('" + image + "'); ");
+            enableVIPButtons();
+            try {
+                String image = Objects.requireNonNull(DataAnalyticsHub.class.getResource(VIP_PROFILE_IMAGE)).toExternalForm();
+                profile.setStyle("-fx-background-image: url('" + image + "'); ");
+
+            } catch (NullPointerException e) {
+                System.out.println("Failed to update profile image");
+            }
         }
     }
+
+    private void enableVIPButtons() {
+        graphDataButton.setDisable(false);
+        bulkImportButton.setDisable(false);
+        tooltip1.setDisable(true);
+        tooltip2.setDisable(true);
+    }
+
 }

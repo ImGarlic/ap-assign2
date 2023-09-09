@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -12,36 +13,57 @@
                 <Font size="40.0" />
             </font>
         </Label>
-      <Label fx:id="welcomeText" layoutX="32.0" layoutY="80.0" prefHeight="25.0" prefWidth="352.0" text="Welcome, ">
+      <Label fx:id="welcomeText" layoutX="32.0" layoutY="76.0" prefHeight="25.0" prefWidth="352.0" text="Welcome, ">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button layoutX="220.0" layoutY="146.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="View Post" textFill="#575757">
+      <Button layoutX="220.0" layoutY="130.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="View Post" textFill="#575757">
          <font>
             <Font name="Candara" size="16.0" />
          </font>
       </Button>
       <Button fx:id="profile" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="40.0" prefWidth="40.0" />
-      <Button layoutX="220.0" layoutY="188.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Add Post" textFill="#575757">
+      <Button layoutX="220.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Add Post" textFill="#575757">
          <font>
             <Font name="Candara Bold Italic" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="220.0" layoutY="230.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Remove Post" textFill="#575757">
+      <Button layoutX="220.0" layoutY="198.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Remove Post" textFill="#575757">
          <font>
             <Font name="Candara Bold Italic" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="220.0" layoutY="272.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="List Posts" textFill="#575757">
+      <Button layoutX="220.0" layoutY="232.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="List Posts" textFill="#575757">
          <font>
             <Font name="Candara Bold Italic" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="220.0" layoutY="314.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="40.0" prefWidth="160.0" text="Logout" textFill="#575757">
+        <Button fx:id="graphDataButton" disable="true" layoutX="220.0" layoutY="266.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" styleClass="VIP" text="Graph Data" textFill="#575757">
+            <font>
+                <Font name="Candara" size="16.0" />
+            </font>
+        </Button>
+        <Button fx:id="bulkImportButton" disable="true" layoutX="220.0" layoutY="300.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" styleClass="VIP" text="Bulk Import" textFill="#575757">
+            <font>
+                <Font name="Candara" size="16.0" />
+            </font>
+        </Button>
+      <Button layoutX="220.0" layoutY="334.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="160.0" text="Logout" textFill="#575757">
          <font>
             <Font name="Candara Bold Italic" size="16.0" />
          </font>
       </Button>
+      <Label fx:id="tooltip1" layoutX="220.0" layoutY="266.0" prefHeight="32.0" prefWidth="160.0">
+         <tooltip>
+            <Tooltip fx:id="tt1" text="Upgrade to VIP to use" />
+         </tooltip>
+      </Label>
+      <Label fx:id="tooltip2" layoutX="220.0" layoutY="300.0" prefHeight="32.0" prefWidth="160.0">
+         <tooltip>
+            <Tooltip fx:id="tt2" text="Upgrade to VIP to use" />
+         </tooltip>
+      </Label>
+
     </children>
 </AnchorPane>

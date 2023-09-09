@@ -11,10 +11,9 @@ public class ActiveUser extends User {
         return INSTANCE;
     }
 
-    public static ActiveUser createInstance(User user) {
+    public static void createInstance(User user) {
         INSTANCE = new ActiveUser(user.getID(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getPassword(), user.getVIP());
         User.printUser(INSTANCE);
-        return INSTANCE;
     }
 
     public static void clearInstance() {

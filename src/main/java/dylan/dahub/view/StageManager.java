@@ -33,24 +33,36 @@ public class StageManager {
     }
 
    public void switchScene(FxmlView view) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
-        rootStage.setTitle(view.getTitle());
-        rootStage.setScene(new Scene(root));
-        rootStage.show();
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
+            rootStage.setTitle(view.getTitle());
+            rootStage.setScene(new Scene(root));
+            rootStage.show();
+        } catch (NullPointerException e) {
+            String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
+            System.out.printf(errMsg);
+            ErrorDisplay.alertError(errMsg);
+        }
    }
 
    public void displayModal(FxmlView view, boolean wait) throws IOException {
-       modalStage = new Stage();
-       Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
-       modalStage.setTitle(view.getTitle());
-       modalStage.setScene(new Scene(root));
-       modalStage.initModality(Modality.WINDOW_MODAL);
-       modalStage.initOwner(rootStage);
-       if(wait) {
-           modalStage.showAndWait();
-       } else {
-           modalStage.show();
-       }
+        try {
+            modalStage = new Stage();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
+            modalStage.setTitle(view.getTitle());
+            modalStage.setScene(new Scene(root));
+            modalStage.initModality(Modality.WINDOW_MODAL);
+            modalStage.initOwner(rootStage);
+            if (wait) {
+                modalStage.showAndWait();
+            } else {
+                modalStage.show();
+            }
+        } catch (NullPointerException e) {
+            String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
+            System.out.printf(errMsg);
+            ErrorDisplay.alertError(errMsg);
+        }
    }
 
    public void closeModal() {

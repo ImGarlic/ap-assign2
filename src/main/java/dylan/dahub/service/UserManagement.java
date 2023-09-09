@@ -4,7 +4,8 @@ import dylan.dahub.model.User;
 
 import java.sql.*;
 
-public class UserManagementService {
+public class UserManagement {
+    private static final String TABLE_NAME = "User";
 
     public static boolean checkUserExists(String username) throws SQLException {
         return getUser(username).getUserName() != null;
@@ -12,7 +13,6 @@ public class UserManagementService {
 
     public static User getUser(String username) throws SQLException {
         User user;
-        String TABLE_NAME = "User";
         String query = String.format("SELECT * FROM %s WHERE user_name='%s' COLLATE NOCASE LIMIT 1", TABLE_NAME, username);
 
         Connection con = DatabaseConnection.getConnection();
@@ -27,7 +27,6 @@ public class UserManagementService {
     }
 
     public static User putUser(User user) throws SQLException {
-        String TABLE_NAME = "User";
         String query = String.format("INSERT INTO %s VALUES (null, '%s', '%s', '%s', '%s', 0)",
                 TABLE_NAME, user.getUserName(), user.getFirstName(), user.getLastName(), user.getPassword());
 
@@ -41,6 +40,21 @@ public class UserManagementService {
     }
 
     public static User updateUser(User user) throws SQLException {
+        String query = String.format("UPDATE %s SET user_name = '%s', " +
+                        "first_name = '%s', " +
+                        "last_name = '%s', " +
+                        "password = '%s', " +
+                        "VIP = %d " +
+                        "WHERE user_name = '%s'",
+                TABLE_NAME, user.getUserName(), user.getFirstName(), user.getLastName(),
+                user.getPassword(), user.getVIP(), user.getUserName());
+
+        Connection con = DatabaseConnection.getConnection();
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate(query);
+
+        System.out.println("Updated user");
+        con.close();
         return getUser(user.getUserName());
     }
 }

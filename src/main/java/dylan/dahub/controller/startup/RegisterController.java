@@ -2,11 +2,11 @@ package dylan.dahub.controller.startup;
 
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
-import dylan.dahub.service.UserManagementService;
+import dylan.dahub.service.UserManagement;
+import dylan.dahub.view.ErrorDisplay;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -48,11 +48,11 @@ public class RegisterController {
 
         if(validateInput(user)) {
             try {
-                ActiveUser.createInstance(UserManagementService.putUser(user));
+                ActiveUser.createInstance(UserManagement.putUser(user));
                 stageManager.switchScene(FxmlView.MENU);
             } catch (SQLException e) {
                 String message = String.format("Failed to create user: %s", e.getMessage());
-                alertError("Something went wrong", message);
+                ErrorDisplay.alertError(message);
             }
         }
     }
@@ -71,14 +71,14 @@ public class RegisterController {
             valid = false;
         }
         try {
-            if(UserManagementService.checkUserExists(user.getUserName())) {
+            if(UserManagement.checkUserExists(user.getUserName())) {
                 userNameError.setText("Username already exists");
                 userNameError.setVisible(true);
                 valid = false;
             }
         } catch (SQLException e) {
             String message = String.format("Failed to find user: %s", e.getMessage());
-            alertError("Something went wrong", message);
+            ErrorDisplay.alertError(message);
         }
 
         if(user.getFirstName().equals("")) {
@@ -98,12 +98,4 @@ public class RegisterController {
         }
         return valid;
     }
-
-    private void alertError(String title, String message) {
-        Alert successAlert = new Alert(Alert.AlertType.ERROR);
-        successAlert.setTitle(title);
-        successAlert.setHeaderText(message);
-        successAlert.show();
-    }
-
 }

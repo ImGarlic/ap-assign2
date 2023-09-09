@@ -11,6 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
+import java.util.Objects;
+
 public class ProfileController {
 
     private final StageManager stageManager = StageManager.getInstance();
@@ -46,18 +48,25 @@ public class ProfileController {
     }
 
     private void checkVIPStatus() {
+        String VIP_PROFILE_IMAGE = "image/VIP_profile_upscaled.png";
+        String DEFAULT_PROFILE_IMAGE = "image/default_profile_upscaled.png";
+
         if (activeUser.isVIP()) {
             VIPButton.setText("Cancel VIP");
-            changeProfilePic("image/VIP_profile_upscaled.png");
+            changeProfilePic(VIP_PROFILE_IMAGE);
         } else {
             VIPButton.setText("Upgrade to VIP");
-            changeProfilePic("image/default_profile_upscaled.png");
+            changeProfilePic(DEFAULT_PROFILE_IMAGE);
         }
     }
 
     private void changeProfilePic(String imageURL) {
-        String VIPProfilePicURL = DataAnalyticsHub.class.getResource(imageURL).toString();
-        Image image = new Image(VIPProfilePicURL);
-        profilePic.setImage(image);
+        try {
+            String VIPProfilePicURL = Objects.requireNonNull(DataAnalyticsHub.class.getResource(imageURL)).toString();
+            Image image = new Image(VIPProfilePicURL);
+            profilePic.setImage(image);
+        } catch (NullPointerException e) {
+            System.out.println("Failed to update profile image");
+        }
     }
 }
