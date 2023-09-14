@@ -1,30 +1,23 @@
 package dylan.dahub.service;
 
+import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.User;
-import dylan.dahub.view.ErrorDisplay;
-
-import java.sql.SQLException;
 
 public class Authentication {
 
     public static User authenticateUser(String username, String password) throws UserAuthenticationException {
         try {
             User user = UserManagement.getUserFromUsername(username);
-            if (user.getUserName() == null) {
-                throw new UserAuthenticationException("Username does not exist");
-            }
             if (!user.getPassword().equals(password)) {
                 throw new UserAuthenticationException("Incorrect password");
             }
 
-            System.out.printf("User %s logged in.\n", user.getUserName());
+            System.out.printf("User %s authenticated.\n", user.getUserName());
             return user;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            ErrorDisplay.alertError("Failed to authenticate user: " + e.getMessage());
+        } catch (InvalidUserException e) {
+            throw new UserAuthenticationException(e.getMessage());
         }
-        throw new UserAuthenticationException("Failed to authenticate user");
     }
 }
 

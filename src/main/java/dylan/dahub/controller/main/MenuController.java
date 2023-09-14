@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class MenuController {
@@ -21,31 +20,31 @@ public class MenuController {
     @FXML
     private Label welcomeText, tooltip1, tooltip2;
     @FXML
-    private Button profile, graphDataButton, bulkImportButton;
+    private Button profileButton, graphDataButton, bulkImportButton;
     @FXML
     private Tooltip tt1, tt2;
 
     @FXML
     private void initialize() {
         welcomeText.setText("Welcome, " + activeUser.getFirstName() + " " + activeUser.getLastName());
-        tt1.setShowDelay(Duration.seconds(0));
-        tt2.setShowDelay(Duration.seconds(0));
+        tt1.setShowDelay(Duration.millis(200));
+        tt2.setShowDelay(Duration.millis(200));
         checkVIPStatus();
     }
 
     @FXML
-    protected void onLogoutButtonClick() throws IOException {
+    protected void onLogoutButtonClick() {
         ActiveUser.clearInstance();
         stageManager.switchScene(FxmlView.STARTUP);
     }
 
     @FXML
-    protected void onViewButtonClick() throws IOException {
+    protected void onViewButtonClick() {
 
     }
 
     @FXML
-    protected void onProfileButtonClick() throws IOException {
+    protected void onProfileButtonClick() {
         stageManager.switchScene(FxmlView.PROFILE);
     }
 
@@ -55,10 +54,10 @@ public class MenuController {
             enableVIPButtons();
             try {
                 String image = Objects.requireNonNull(DataAnalyticsHub.class.getResource(VIP_PROFILE_IMAGE)).toExternalForm();
-                profile.setStyle("-fx-background-image: url('" + image + "'); ");
+                profileButton.setStyle("/*noinspection CssUnknownTarget*/-fx-background-image: url('" + image + "');");
 
             } catch (NullPointerException e) {
-                System.out.println("Failed to update profile image");
+                System.out.println("VIP profile image not found in resources");
             }
         }
     }

@@ -15,7 +15,19 @@ public class User {
         this.lastName = lastName;
         this.password = password;
         this.VIP = VIP;
+    }
 
+    public User() {
+        // Empty constructor
+    }
+
+    public User(User user) {
+        this.ID = user.getID();
+        this.userName = user.getUserName();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.password = user.getPassword();
+        this.VIP = user.getVIP();
     }
 
     // DEBUG

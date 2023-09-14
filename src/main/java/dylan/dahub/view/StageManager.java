@@ -2,7 +2,6 @@ package dylan.dahub.view;
 
 import dylan.dahub.DataAnalyticsHub;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -32,20 +31,20 @@ public class StageManager {
         return INSTANCE;
     }
 
-   public void switchScene(FxmlView view) throws IOException {
+   public void switchScene(FxmlView view) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
             rootStage.setTitle(view.getTitle());
             rootStage.setScene(new Scene(root));
             rootStage.show();
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
             System.out.printf(errMsg);
             ErrorDisplay.alertError(errMsg);
         }
    }
 
-   public void displayModal(FxmlView view, boolean wait) throws IOException {
+   public void displayModal(FxmlView view, boolean wait) {
         try {
             modalStage = new Stage();
             Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
@@ -58,7 +57,7 @@ public class StageManager {
             } else {
                 modalStage.show();
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
             System.out.printf(errMsg);
             ErrorDisplay.alertError(errMsg);

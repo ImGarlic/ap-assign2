@@ -10,13 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class ProfileController {
 
     private final StageManager stageManager = StageManager.getInstance();
-    private final ActiveUser activeUser = ActiveUser.getInstance();
+    private ActiveUser activeUser = ActiveUser.getInstance();
     @FXML
     private Label username, fullname;
     @FXML
@@ -33,22 +32,28 @@ public class ProfileController {
     }
 
     @FXML
-    protected void onBackButtonClick() throws IOException {
+    protected void onBackButtonClick() {
         stageManager.switchScene(FxmlView.MENU);
     }
 
     @FXML
-    protected void onVIPButtonClick() throws IOException {
+    protected void onVIPButtonClick() {
         stageManager.displayModal(FxmlView.VIP_SET, true);
         checkVIPStatus();
     }
 
     @FXML
-    protected void onUpdateProfileButtonClick() throws IOException {
+    protected void onUpdateProfileButtonClick() {
         stageManager.switchScene(FxmlView.PROFILE_UPDATE);
     }
 
+    @FXML
+    protected void onChangePasswordButtonClick() {
+        stageManager.switchScene(FxmlView.CHANGE_PASSWORD);
+    }
+
     private void checkVIPStatus() {
+        activeUser = ActiveUser.getInstance();
         String VIP_PROFILE_IMAGE = "image/VIP_profile_upscaled.png";
         String DEFAULT_PROFILE_IMAGE = "image/default_profile_upscaled.png";
 

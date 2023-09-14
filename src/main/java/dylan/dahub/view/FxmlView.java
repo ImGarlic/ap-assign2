@@ -44,8 +44,6 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/main/menu.fxml";
         }
-
-        ;
     }, PROFILE {
         @Override
         String getTitle() {
@@ -65,6 +63,26 @@ public enum FxmlView {
         @Override
         String getFxmlFile() {
             return "fxml/profile/profile_update.fxml";
+        }
+    }, CHANGE_PASSWORD {
+        @Override
+        String getTitle() {
+            return "Change Password";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/profile/change_password.fxml";
+        }
+    }, PROFILE_UPDATE_CONFIRM {
+        @Override
+        String getTitle() {
+            return "Details updated";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/profile/profile_update_confirm.fxml";
         }
     }, VIP_SET {
         @Override

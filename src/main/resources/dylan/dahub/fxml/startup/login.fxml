@@ -7,34 +7,42 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.startup.LoginController">
-   <children>
-      <Label layoutX="146.0" layoutY="36.0" text="Login to Your Account">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
-      <Label layoutX="212.0" layoutY="126.0" text="Username">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <TextField fx:id="userNameInput" layoutX="212.0" layoutY="146.0" onAction="#onEnter" prefHeight="24.0" prefWidth="170.0" />
-      <Label layoutX="212.0" layoutY="177.0" text="Password">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <PasswordField fx:id="passwordInput" layoutX="212.0" layoutY="197.0" onAction="#onEnter" prefHeight="24.0" prefWidth="170.0" />
-      <Button layoutX="297.0" layoutY="250.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="30.0" prefWidth="95.0" text="Back">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="201.0" layoutY="250.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="30.0" prefWidth="95.0" text="Login">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Label fx:id="userNameError" layoutX="400.0" layoutY="150.0" prefHeight="16.0" prefWidth="185.0" text="userNameError" textFill="RED" visible="false" />
-      <Label fx:id="passwordError" layoutX="400.0" layoutY="201.0" prefHeight="16.0" prefWidth="185.0" text="passwordError" textFill="RED" visible="false" />
-   </children>
+<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.startup.LoginController">
+   <Label layoutX="146.0" layoutY="36.0" text="Login to Your Account">
+      <font>
+         <Font size="32.0"/>
+      </font>
+   </Label>
+   <Label layoutX="212.0" layoutY="126.0" text="Username">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="userNameInput" layoutX="212.0" layoutY="146.0" onAction="#onEnter" prefHeight="24.0"
+              prefWidth="170.0"/>
+   <Label layoutX="212.0" layoutY="177.0" text="Password">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <PasswordField fx:id="passwordInput" layoutX="212.0" layoutY="197.0" onAction="#onEnter" prefHeight="24.0"
+                  prefWidth="170.0"/>
+   <Button layoutX="297.0" layoutY="250.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="30.0"
+           prefWidth="95.0" text="Back">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Button>
+   <Button layoutX="201.0" layoutY="250.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="30.0"
+           prefWidth="95.0" text="Login">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Button>
+   <Label fx:id="userNameError" layoutX="400.0" layoutY="150.0" prefHeight="16.0" prefWidth="185.0" text="userNameError"
+          textFill="RED" visible="false"/>
+   <Label fx:id="passwordError" layoutX="400.0" layoutY="201.0" prefHeight="16.0" prefWidth="185.0" text="passwordError"
+          textFill="RED" visible="false"/>
 </AnchorPane>

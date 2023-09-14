@@ -7,16 +7,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
             prefWidth="300.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.profile.VIPConfirmController">
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dylan.dahub.controller.profile.ProfileUpdateConfirmController">
    <Button layoutX="121.0" layoutY="99.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#onCloseButtonClick"
            text="Close"/>
-   <Label fx:id="label1" alignment="CENTER" layoutY="25.0" prefHeight="25.0" prefWidth="300.0"
-          text="Successfully cancelled your">
-      <font>
-         <Font size="20.0"/>
-      </font>
-   </Label>
-   <Label fx:id="label2" alignment="CENTER" layoutY="50.0" prefHeight="25.0" prefWidth="300.0" text="VIP subscription!">
+   <Label alignment="CENTER" layoutY="44.0" prefHeight="25.0" prefWidth="300.0" text="Profile details updated.">
       <font>
          <Font size="20.0"/>
       </font>

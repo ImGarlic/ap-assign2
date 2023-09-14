@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 
 public class LoginController {
     private final StageManager stageManager = StageManager.getInstance();
@@ -27,21 +26,21 @@ public class LoginController {
     }
 
     @FXML
-    protected void onBackButtonClick() throws IOException {
+    protected void onBackButtonClick() {
         stageManager.switchScene(FxmlView.STARTUP);
     }
 
     @FXML
-    protected void onLoginButtonClick() throws IOException {
+    protected void onLoginButtonClick() {
         attemptLogin();
     }
 
     @FXML
-    protected void onEnter() throws IOException {
+    protected void onEnter() {
         attemptLogin();
     }
 
-    private void attemptLogin() throws IOException {
+    private void attemptLogin() {
         hideErrors();
 
         if(validateInput()) {

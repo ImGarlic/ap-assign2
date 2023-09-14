@@ -1,21 +1,17 @@
 package dylan.dahub.controller.profile;
 
+import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
-import dylan.dahub.service.Authentication;
 import dylan.dahub.service.UserManagement;
-import dylan.dahub.view.ErrorDisplay;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-import java.sql.SQLException;
 
-public class UpdateProfileController {
+public class ProfileUpdateController {
 
     private final StageManager stageManager = StageManager.getInstance();
     private ActiveUser activeUser = ActiveUser.getInstance();
@@ -38,7 +34,7 @@ public class UpdateProfileController {
         updateProfile();
     }
     @FXML
-    protected void onBackButtonClick() throws IOException {
+    protected void onBackButtonClick() {
         stageManager.switchScene(FxmlView.PROFILE);
     }
     @FXML
@@ -51,15 +47,11 @@ public class UpdateProfileController {
         User updatedUser = getNewUserValues();
 
         try {
-            if (UserManagement.checkUserExists(userNameInput.getText()) && !userNameInput.getText().equals(activeUser.getUserName())) {
-                userNameError.setText("Username already exists");
-                userNameError.setVisible(true);
-            } else {
-                ActiveUser.updateInstance(UserManagement.updateUser(updatedUser));
-            }
-        } catch (SQLException e) {
-            String message = String.format("Failed to update user: %s", e.getMessage());
-            ErrorDisplay.alertError(message);
+            ActiveUser.updateInstance(UserManagement.updateUser(updatedUser));
+            stageManager.displayModal(FxmlView.PROFILE_UPDATE_CONFIRM, true);
+        } catch (InvalidUserException e) {
+            userNameError.setText(e.getMessage());
+            userNameError.setVisible(true);
         }
     }
 

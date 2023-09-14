@@ -1,9 +1,9 @@
 package dylan.dahub.model;
 
+import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.service.UserManagement;
 import dylan.dahub.view.ErrorDisplay;
 
-import java.sql.SQLException;
 
 public class ActiveUser extends User {
     private static ActiveUser INSTANCE;
@@ -30,7 +30,7 @@ public class ActiveUser extends User {
             User userFromDatabase = UserManagement.getUserFromID(INSTANCE.getID());
             clearInstance();
             createInstance(userFromDatabase);
-        } catch (SQLException e) {
+        } catch (InvalidUserException e) {
             String message = "Failed to reset current user. Exiting. Error: " + e.getMessage();
             System.out.println(message);
             ErrorDisplay.alertError(message);

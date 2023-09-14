@@ -12,4 +12,5 @@ module dylan.dahub {
     opens dylan.dahub.controller.startup to javafx.fxml;
     exports dylan.dahub.controller.main;
     opens dylan.dahub.controller.main to javafx.fxml;
+    exports dylan.dahub.exception;
 }

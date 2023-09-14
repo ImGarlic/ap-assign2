@@ -6,38 +6,47 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.profile.UpdateProfileController">
-   <children>
-      <Label layoutX="215.0" layoutY="105.0" prefHeight="18.0" prefWidth="72.0" text="Username">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <TextField fx:id="userNameInput" layoutX="215.0" layoutY="125.0" onAction="#onEnter" prefHeight="24.0" prefWidth="170.0" promptText="Enter new username" />
-      <Label layoutX="215.0" layoutY="165.0" prefHeight="18.0" prefWidth="72.0" text="First Name ">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <TextField fx:id="firstNameInput" layoutX="215.0" layoutY="185.0" onAction="#onEnter" prefHeight="24.0" prefWidth="170.0" promptText="Enter new first name" />
-      <Label layoutX="215.0" layoutY="225.0" prefHeight="18.0" prefWidth="72.0" text="Last Name">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <TextField fx:id="lastNameInput" layoutX="215.0" layoutY="245.0" onAction="#onEnter" prefHeight="24.0" prefWidth="170.0" promptText="Enter new last name" />
-      <Label layoutX="166.0" layoutY="29.0" text="Update Your Profile">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
-      <Button layoutX="204.0" layoutY="312.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="30.0" prefWidth="95.0" text="Update">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="300.0" layoutY="312.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="30.0" prefWidth="95.0" text="Back">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Label fx:id="userNameError" layoutX="390.0" layoutY="128.0" prefHeight="16.0" prefWidth="204.0" text="userNameError" textFill="RED" visible="false" />
-   </children>
+<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.profile.ProfileUpdateController">
+   <Label layoutX="215.0" layoutY="105.0" prefHeight="18.0" prefWidth="72.0" text="Username">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="userNameInput" layoutX="215.0" layoutY="125.0" onAction="#onEnter" prefHeight="24.0"
+              prefWidth="170.0" promptText="Enter new username"/>
+   <Label layoutX="215.0" layoutY="165.0" prefHeight="18.0" prefWidth="72.0" text="First Name ">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="firstNameInput" layoutX="215.0" layoutY="185.0" onAction="#onEnter" prefHeight="24.0"
+              prefWidth="170.0" promptText="Enter new first name"/>
+   <Label layoutX="215.0" layoutY="225.0" prefHeight="18.0" prefWidth="72.0" text="Last Name">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="lastNameInput" layoutX="215.0" layoutY="245.0" onAction="#onEnter" prefHeight="24.0"
+              prefWidth="170.0" promptText="Enter new last name"/>
+   <Label layoutX="166.0" layoutY="29.0" text="Update Your Profile">
+      <font>
+         <Font size="32.0"/>
+      </font>
+   </Label>
+   <Button layoutX="204.0" layoutY="312.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="30.0"
+           prefWidth="95.0" text="Update">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Button>
+   <Button layoutX="300.0" layoutY="312.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#onBackButtonClick"
+           prefHeight="30.0" prefWidth="95.0" text="Back">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Button>
+   <Label fx:id="userNameError" layoutX="390.0" layoutY="128.0" prefHeight="16.0" prefWidth="204.0" text="userNameError"
+          textFill="RED" visible="false"/>
 </AnchorPane>
