@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="postGraphic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.post.PostController">
+   <children>
+      <Label fx:id="author" layoutX="14.0" layoutY="6.0" prefHeight="17.0" prefWidth="199.0" text="Author" textFill="#4d4d4d">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label fx:id="content" layoutX="13.0" layoutY="28.0" prefHeight="50.0" prefWidth="387.0" text="Content!">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label fx:id="likes" layoutX="270.0" layoutY="76.0" prefHeight="21.0" prefWidth="50.0" text="Likes:" textFill="#4d4d4d">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label fx:id="shares" layoutX="346.0" layoutY="76.0" prefHeight="21.0" prefWidth="50.0" text="Shares:" textFill="#4d4d4d">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label fx:id="dateTime" alignment="CENTER_RIGHT" layoutX="199.0" layoutY="6.0" prefHeight="17.0" prefWidth="199.0" text="DateTime" textFill="#4d4d4d">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Separator layoutY="26.0" prefHeight="1.0" prefWidth="412.0" />
+      <ImageView fitHeight="21.0" fitWidth="20.0" layoutX="246.0" layoutY="76.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../image/likes_icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="322.0" layoutY="79.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../image/shares_icon.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

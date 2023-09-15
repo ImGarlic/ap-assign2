@@ -22,14 +22,18 @@
 
 #profileButton {
     -fx-background-radius: 150;
-    /*-fx-background-image: url("../image/default_profile.png");*/
+    -fx-background-image: url("../image/default_profile.png");
     -fx-background-size: 100% 100%;
     -fx-background-color: transparent;
 }
 
-/*button.VIP:hover {*/
+#postGraphic {
+    -fx-border-color: lightblue;
+    -fx-border-radius: 5;
+    -fx-font-size: 15;
+}
 
-/*}*/
+#likesIcon {
 
-/*button.VIP .tooltip*/
+}
 

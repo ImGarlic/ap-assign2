@@ -3,7 +3,7 @@ package dylan.dahub.controller.profile;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
-import dylan.dahub.service.UserManagement;
+import dylan.dahub.service.UserManager;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
@@ -45,7 +45,7 @@ public class VIPSetController {
         }
 
         try {
-            ActiveUser.updateInstance(UserManagement.updateUser(updatedUser));
+            ActiveUser.updateInstance(UserManager.update(updatedUser));
             stageManager.closeModal();
             stageManager.displayModal(FxmlView.VIP_CONFIRM, false);
         } catch (InvalidUserException e) {

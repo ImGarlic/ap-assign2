@@ -1,77 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.main.MenuController">
+<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.main.MenuController">
     <Label layoutX="132.0" layoutY="14.0" text="Data Analytics Hub">
         <font>
-            <Font size="40.0"/>
+            <Font size="40.0" />
         </font>
     </Label>
     <Label fx:id="welcomeText" layoutX="32.0" layoutY="76.0" prefHeight="25.0" prefWidth="352.0" text="Welcome, ">
         <font>
-          <Font size="20.0"/>
+          <Font size="20.0" />
         </font>
     </Label>
-    <Button layoutX="220.0" layoutY="130.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="View Post"
-            textFill="#575757">
+    <Button layoutX="440.0" layoutY="163.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Search Posts" textFill="#575757">
         <font>
-          <Font name="Candara" size="16.0"/>
+          <Font name="Candara" size="16.0" />
         </font>
     </Button>
-    <Button fx:id="profileButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false"
-            onAction="#onProfileButtonClick" prefHeight="40.0" prefWidth="40.0"/>
-    <Button layoutX="220.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Add Post"
-            textFill="#575757">
+    <Button fx:id="profileButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="40.0" prefWidth="40.0" />
+    <Button layoutX="440.0" layoutY="197.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="32.0" prefWidth="160.0" text="Add Post" textFill="#575757">
         <font>
-          <Font name="Candara Bold Italic" size="16.0"/>
+          <Font name="Candara Bold Italic" size="16.0" />
         </font>
     </Button>
-    <Button layoutX="220.0" layoutY="198.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0"
-            text="Remove Post" textFill="#575757">
+    <Button fx:id="removeButton" layoutX="440.0" layoutY="231.0" mnemonicParsing="false" onAction="#onRemoveButtonClick" prefHeight="32.0" prefWidth="160.0" text="Remove Post" textFill="#575757">
         <font>
-          <Font name="Candara Bold Italic" size="16.0"/>
+          <Font name="Candara Bold Italic" size="16.0" />
         </font>
     </Button>
-    <Button layoutX="220.0" layoutY="232.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0"
-            text="List Posts" textFill="#575757">
+    <Button layoutX="440.0" layoutY="265.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="List Posts" textFill="#575757">
         <font>
-          <Font name="Candara Bold Italic" size="16.0"/>
+          <Font name="Candara Bold Italic" size="16.0" />
         </font>
     </Button>
-    <Button fx:id="graphDataButton" disable="true" layoutX="220.0" layoutY="266.0" mnemonicParsing="false"
-            prefHeight="32.0" prefWidth="160.0" text="Graph Data" textFill="#575757">
+    <Button fx:id="graphDataButton" disable="true" layoutX="440.0" layoutY="299.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Graph Data" textFill="#575757">
         <font>
-            <Font name="Candara" size="16.0"/>
+            <Font name="Candara" size="16.0" />
         </font>
     </Button>
-    <Button fx:id="bulkImportButton" disable="true" layoutX="220.0" layoutY="300.0" mnemonicParsing="false"
-            prefHeight="32.0" prefWidth="160.0" text="Bulk Import" textFill="#575757">
+    <Button fx:id="bulkImportButton" disable="true" layoutX="440.0" layoutY="333.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Bulk Import" textFill="#575757">
         <font>
-            <Font name="Candara" size="16.0"/>
+            <Font name="Candara" size="16.0" />
         </font>
     </Button>
-    <Button layoutX="220.0" layoutY="334.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0"
-            prefWidth="160.0" text="Logout" textFill="#575757">
+    <Button layoutX="440.0" layoutY="367.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="160.0" text="Logout" textFill="#575757">
         <font>
-          <Font name="Candara Bold Italic" size="16.0"/>
+          <Font name="Candara Bold Italic" size="16.0" />
         </font>
     </Button>
-    <Label fx:id="tooltip1" layoutX="220.0" layoutY="266.0" prefHeight="32.0" prefWidth="160.0">
+    <Label fx:id="tooltip1" layoutX="440.0" layoutY="298.0" prefHeight="32.0" prefWidth="160.0">
         <tooltip>
-          <Tooltip fx:id="tt1" text="Upgrade to VIP to use"/>
+          <Tooltip fx:id="tt1" text="Upgrade to VIP to use" />
         </tooltip>
     </Label>
-    <Label fx:id="tooltip2" layoutX="220.0" layoutY="300.0" prefHeight="32.0" prefWidth="160.0">
+    <Label fx:id="tooltip2" layoutX="440.0" layoutY="332.0" prefHeight="32.0" prefWidth="160.0">
         <tooltip>
-          <Tooltip fx:id="tt2" text="Upgrade to VIP to use"/>
+          <Tooltip fx:id="tt2" text="Upgrade to VIP to use" />
         </tooltip>
     </Label>
+   <ListView fx:id="mainPostView" layoutX="-7.0" layoutY="106.0" prefHeight="269.0" prefWidth="446.0" style="-fx-border-bottom: 0;" />
+   <Button layoutX="352.0" layoutY="377.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="19.0" prefWidth="87.0" style="-fx-font-size: 12; -fx-padding: 0;" text="Load More" textFill="#575757">
+      <font>
+         <Font name="Candara Bold Italic" size="1.0" />
+      </font>
+   </Button>
+   <RadioButton layoutX="162.0" layoutY="380.0" mnemonicParsing="false" text="Shares">
+      <toggleGroup>
+         <ToggleGroup fx:id="sortOptions" />
+      </toggleGroup>
+   </RadioButton>
+   <RadioButton layoutX="106.0" layoutY="380.0" mnemonicParsing="false" text="Likes" toggleGroup="$sortOptions" />
+   <RadioButton layoutX="54.0" layoutY="380.0" mnemonicParsing="false" selected="true" text="Date" toggleGroup="$sortOptions" />
+   <Label layoutX="5.0" layoutY="380.0" text="Sort by:" />
+   <CheckBox fx:id="onlyUserPostsCheck" layoutX="251.0" layoutY="380.0" mnemonicParsing="false" text="Only my posts" />
 
 </AnchorPane>

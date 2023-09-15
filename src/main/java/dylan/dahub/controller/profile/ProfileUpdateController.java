@@ -3,7 +3,7 @@ package dylan.dahub.controller.profile;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
-import dylan.dahub.service.UserManagement;
+import dylan.dahub.service.UserManager;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 public class ProfileUpdateController {
 
     private final StageManager stageManager = StageManager.getInstance();
-    private ActiveUser activeUser = ActiveUser.getInstance();
+    private final ActiveUser activeUser = ActiveUser.getInstance();
 
     @FXML
     private TextField userNameInput, firstNameInput, lastNameInput;
@@ -43,11 +43,10 @@ public class ProfileUpdateController {
     }
 
     private void updateProfile() {
-        activeUser = ActiveUser.getInstance();
         User updatedUser = getNewUserValues();
 
         try {
-            ActiveUser.updateInstance(UserManagement.updateUser(updatedUser));
+            ActiveUser.updateInstance(UserManager.update(updatedUser));
             stageManager.displayModal(FxmlView.PROFILE_UPDATE_CONFIRM, true);
         } catch (InvalidUserException e) {
             userNameError.setText(e.getMessage());

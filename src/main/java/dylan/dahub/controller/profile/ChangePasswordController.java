@@ -5,7 +5,7 @@ import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
 import dylan.dahub.service.Authentication;
-import dylan.dahub.service.UserManagement;
+import dylan.dahub.service.UserManager;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
@@ -43,7 +43,7 @@ public class ChangePasswordController {
                 updatedUser.setPassword(newPasswordField.getText());
 
                 Authentication.authenticateUser(activeUser.getUserName(), oldPasswordField.getText());
-                ActiveUser.updateInstance(UserManagement.updateUser(updatedUser));
+                ActiveUser.updateInstance(UserManager.update(updatedUser));
 
                 stageManager.displayModal(FxmlView.PROFILE_UPDATE_CONFIRM, true);
             } catch (UserAuthenticationException | InvalidUserException e) {

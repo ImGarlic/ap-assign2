@@ -3,7 +3,7 @@ package dylan.dahub.controller.startup;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
-import dylan.dahub.service.UserManagement;
+import dylan.dahub.service.UserManager;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
@@ -45,7 +45,7 @@ public class RegisterController {
 
         if(validateInput(user)) {
             try {
-                ActiveUser.createInstance(UserManagement.putUser(user));
+                ActiveUser.createInstance(UserManager.put(user));
                 stageManager.switchScene(FxmlView.MENU);
             } catch (InvalidUserException e) {
                 userNameError.setText(e.getMessage());

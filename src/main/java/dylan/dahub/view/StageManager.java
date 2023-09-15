@@ -18,6 +18,7 @@ public class StageManager {
 
     private StageManager(Stage stage) {
         rootStage = stage;
+        rootStage.setResizable(false);
     }
 
     public static StageManager getInstance() {
@@ -39,8 +40,7 @@ public class StageManager {
             rootStage.show();
         } catch (NullPointerException | IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
-            System.out.printf(errMsg);
-            ErrorDisplay.alertError(errMsg);
+            Logger.alertError(errMsg);
         }
    }
 
@@ -59,8 +59,7 @@ public class StageManager {
             }
         } catch (NullPointerException | IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
-            System.out.printf(errMsg);
-            ErrorDisplay.alertError(errMsg);
+            Logger.alertError(errMsg);
         }
    }
 

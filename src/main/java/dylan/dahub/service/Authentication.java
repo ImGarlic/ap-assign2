@@ -8,7 +8,7 @@ public class Authentication {
 
     public static User authenticateUser(String username, String password) throws UserAuthenticationException {
         try {
-            User user = UserManagement.getUserFromUsername(username);
+            User user = UserManager.getFromUsername(username);
             if (!user.getPassword().equals(password)) {
                 throw new UserAuthenticationException("Incorrect password");
             }

@@ -1,8 +1,8 @@
 package dylan.dahub.model;
 
 import dylan.dahub.exception.InvalidUserException;
-import dylan.dahub.service.UserManagement;
-import dylan.dahub.view.ErrorDisplay;
+import dylan.dahub.service.UserManager;
+import dylan.dahub.view.Logger;
 
 
 public class ActiveUser extends User {
@@ -27,13 +27,12 @@ public class ActiveUser extends User {
 
     public static void resetInstance() {
         try {
-            User userFromDatabase = UserManagement.getUserFromID(INSTANCE.getID());
+            User userFromDatabase = UserManager.getFromID(INSTANCE.getID());
             clearInstance();
             createInstance(userFromDatabase);
         } catch (InvalidUserException e) {
             String message = "Failed to reset current user. Exiting. Error: " + e.getMessage();
-            System.out.println(message);
-            ErrorDisplay.alertError(message);
+            Logger.alertError(message);
             System.exit(1);
         }
     }
