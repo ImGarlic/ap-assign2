@@ -5,11 +5,11 @@ import dylan.dahub.model.Post;
 import dylan.dahub.model.User;
 import dylan.dahub.view.Logger;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class PostManager {
 
             ResultSet resultSet = stmt.executeQuery(query);
             if(resultSet.next()) {
-                LocalDateTime dateTime = createDateTime(resultSet.getString("date_time"));
+                LocalDateTime dateTime = createDateTime(resultSet.getLong("timestamp"));
                 post = new Post(resultSet.getInt("id"), resultSet.getString("author"),
                         resultSet.getString("content"), resultSet.getInt("likes"),
                         resultSet.getInt("shares"), dateTime);
@@ -46,10 +46,10 @@ public class PostManager {
     }
 
     public static Post put(User user, Post post) throws InvalidPostException {
-        String dateTimeString = createDateTimeString(post.getDateTime());
+        long timeStamp = createTimeStamp(post.getDateTime());
 
-        String query = String.format("INSERT INTO %s VALUES (null, '%s', '%s', '%d', '%d', '%s', '%d')",
-                TABLE_NAME, post.getAuthor(), post.getContent(), post.getLikes(), post.getShares(), dateTimeString, user.getID());
+        String query = String.format("INSERT INTO %s VALUES (null, '%s', '%s', '%d', '%d', '%d', '%d')",
+                TABLE_NAME, post.getAuthor(), post.getContent(), post.getLikes(), post.getShares(), timeStamp, user.getID());
 
         try {
             Connection con = DatabaseUtil.getConnection();
@@ -85,7 +85,7 @@ public class PostManager {
 
             ResultSet resultSet = stmt.executeQuery(query);
             while(resultSet.next()) {
-                LocalDateTime dateTime = createDateTime(resultSet.getString("date_time"));
+                LocalDateTime dateTime = createDateTime(resultSet.getLong("timestamp"));
                 Post post = new Post(resultSet.getInt("id"), resultSet.getString("author"),
                         resultSet.getString("content"), resultSet.getInt("likes"),
                         resultSet.getInt("shares"), dateTime);
@@ -107,11 +107,11 @@ public class PostManager {
     }
 
 
-    private static String createDateTimeString(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"));
+    private static long createTimeStamp(LocalDateTime dateTime) {
+        return dateTime.toEpochSecond(ZoneOffset.of("Z"));
     }
 
-    private static LocalDateTime createDateTime(String dateTimeString) {
-        return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"));
+    private static LocalDateTime createDateTime(long timeStamp) {
+        return LocalDateTime.ofInstant(Instant.ofEpochSecond(timeStamp), ZoneId.systemDefault());
     }
 }

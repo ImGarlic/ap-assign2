@@ -68,19 +68,20 @@
         </tooltip>
     </Label>
    <ListView fx:id="mainPostView" layoutX="-7.0" layoutY="106.0" prefHeight="269.0" prefWidth="446.0" style="-fx-border-bottom: 0;" />
-   <Button layoutX="352.0" layoutY="377.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="19.0" prefWidth="87.0" style="-fx-font-size: 12; -fx-padding: 0;" text="Load More" textFill="#575757">
+   <Button fx:id="loadMoreButton" layoutX="352.0" layoutY="378.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLoadMoreButtonClick" prefHeight="19.0" prefWidth="87.0" style="-fx-font-size: 12; -fx-padding: 0;" text="Load More" textFill="#575757">
       <font>
          <Font name="Candara Bold Italic" size="1.0" />
       </font>
    </Button>
-   <RadioButton layoutX="162.0" layoutY="380.0" mnemonicParsing="false" text="Shares">
+   <RadioButton layoutX="162.0" layoutY="380.0" mnemonicParsing="false" text="Shares" userData="shares">
       <toggleGroup>
          <ToggleGroup fx:id="sortOptions" />
       </toggleGroup>
    </RadioButton>
-   <RadioButton layoutX="106.0" layoutY="380.0" mnemonicParsing="false" text="Likes" toggleGroup="$sortOptions" />
-   <RadioButton layoutX="54.0" layoutY="380.0" mnemonicParsing="false" selected="true" text="Date" toggleGroup="$sortOptions" />
+   <RadioButton layoutX="106.0" layoutY="380.0" mnemonicParsing="false" text="Likes" toggleGroup="$sortOptions" userData="likes" />
+   <RadioButton layoutX="54.0" layoutY="380.0" mnemonicParsing="false" selected="true" text="Date" toggleGroup="$sortOptions" userData="timestamp" />
    <Label layoutX="5.0" layoutY="380.0" text="Sort by:" />
    <CheckBox fx:id="onlyUserPostsCheck" layoutX="251.0" layoutY="380.0" mnemonicParsing="false" text="Only my posts" />
+   <Label fx:id="allLoaded" layoutX="355.0" layoutY="358.0" text="All posts loaded" textFill="#ff2929" visible="false" />
 
 </AnchorPane>

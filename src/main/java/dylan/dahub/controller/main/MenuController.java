@@ -5,10 +5,12 @@ import dylan.dahub.controller.post.PostController;
 import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
+import dylan.dahub.model.User;
 import dylan.dahub.service.PostManager;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.Logger;
 import dylan.dahub.view.StageManager;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +21,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,18 +31,20 @@ public class MenuController {
 
     private final StageManager stageManager = StageManager.getInstance();
     private final ActiveUser activeUser = ActiveUser.getInstance();
-    private boolean showOnlyUserPosts = true;
+    private boolean showOnlyUserPosts = false;
 
     @FXML
     private Label welcomeText, tooltip1, tooltip2;
     @FXML
-    private Button profileButton, graphDataButton, bulkImportButton, removeButton;
+    private Button profileButton, graphDataButton, bulkImportButton, removeButton, loadMoreButton;
     @FXML
     private Tooltip tt1, tt2;
     @FXML
     private ListView<Post> mainPostView;
     @FXML
     private ToggleGroup sortOptions;
+    @FXML
+    private CheckBox onlyUserPostsCheck;
 
     @FXML
     private void initialize() throws InvalidPostException {
@@ -49,6 +54,7 @@ public class MenuController {
         checkVIPStatus();
         generatePostList();
         startToggleListener();
+        startCheckBoxListener();
     }
 
     @FXML
@@ -64,11 +70,14 @@ public class MenuController {
 
     @FXML
     protected void onAddButtonClick() throws InvalidPostException {
+        User diffUser = new User(4, "b", "b", "b", "b", 0);
 
-        PostManager.put(activeUser, new Post(10,  "A567VF", "Check out this epic film.",1000, 1587,  LocalDateTime.parse("01/06/2023 02:20", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
+        PostManager.put(activeUser, new Post(1,  "garlic", "This is a pointless message about nothing purely designed to waste our time. Your*",123456789, 19876976,  LocalDateTime.now()));
+        PostManager.put(diffUser, new Post(10,  "A567VF", "Check out this epic film.",1000, 1587,  LocalDateTime.parse("01/06/2023 02:20", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
         PostManager.put(activeUser, new Post(37221,  "3827F2","Are we into Christmas month already?!", 526, 25, LocalDateTime.parse("15/11/2022 11:30", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
-        PostManager.put(activeUser, new Post(382, "What a miracle!", "38726I", 2775, 13589, LocalDateTime.parse("12/02/2023 06:18", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
-        PostManager.put(activeUser, new Post(36778,  "1258XE", "Fantastic day today. Congratulations to all winners.",230, 1214, LocalDateTime.parse("06/06/2023 09:00", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
+        PostManager.put(activeUser, new Post(382, "38726I", "What a miracle!",2775, 13589, LocalDateTime.parse("12/02/2023 06:18", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
+        PostManager.put(diffUser, new Post(36778,  "1258XE", "Fantastic day today. Congratulations to all winners.",230, 1214, LocalDateTime.parse("06/06/2023 09:00", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
+        refreshMainPostList("timestamp", showOnlyUserPosts);
     }
 
 
@@ -86,7 +95,7 @@ public class MenuController {
 
     @FXML
     protected void onLoadMoreButtonClick() {
-        mainPostView.getItems();
+        loadMoreIntoPostList();
     }
 
     private void checkVIPStatus() {
@@ -129,7 +138,7 @@ public class MenuController {
             }
         });
 
-        refreshMainPostList("date_time", showOnlyUserPosts);
+        refreshMainPostList("timestamp", showOnlyUserPosts);
     }
 
     private AnchorPane createPostGraphic(Post post) {
@@ -147,27 +156,50 @@ public class MenuController {
 
     private void startToggleListener() {
         sortOptions.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            RadioButton rb = (RadioButton) sortOptions.getSelectedToggle();
-
-            if (rb.getText().equals("Date")) {
-                refreshMainPostList("date_time", showOnlyUserPosts);
-            } else if (rb.getText().equals("Likes")) {
-                refreshMainPostList("likes", showOnlyUserPosts);
-            } else if (rb.getText().equals("Shares")) {
-                refreshMainPostList("shares", showOnlyUserPosts);
-            }
+            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
         });
     }
 
     private void refreshMainPostList(String sort, boolean allUsers) {
         try {
             ArrayList<Post> collection = PostManager.getMulti(5, sort, activeUser.getID(), allUsers, 0);
-            ObservableList<Post> sample = FXCollections.observableArrayList();
-            sample.addAll(collection);
-            mainPostView.setItems(sample);
+            ObservableList<Post> newList = FXCollections.observableArrayList();
+            newList.addAll(collection);
+            mainPostView.setItems(newList);
         } catch (InvalidPostException e) {
             Logger.alertError("Failed to generate post list: " + e.getMessage());
         }
+        loadMoreButton.setText("Load More");
+        loadMoreButton.setDisable(false);
+    }
+
+    private void startCheckBoxListener(){
+        onlyUserPostsCheck.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            showOnlyUserPosts = onlyUserPostsCheck.isSelected();
+            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
+        });
+    }
+
+    private void loadMoreIntoPostList() {
+        ObservableList<Post> currentList = mainPostView.getItems();
+        String sort = (String) sortOptions.getSelectedToggle().getUserData();
+        int offset = currentList.size();
+        try {
+            ArrayList<Post> collection = PostManager.getMulti(5, sort, activeUser.getID(), showOnlyUserPosts, offset);
+            if (collection.size() == 0) {
+                showAllLoadedText();
+                return;
+            }
+            currentList.addAll(collection);
+            mainPostView.setItems(currentList);
+        } catch (InvalidPostException e) {
+            Logger.alertError("Failed to generate post list: " + e.getMessage());
+        }
+    }
+
+    private void showAllLoadedText() {
+        loadMoreButton.setText("All loaded");
+        loadMoreButton.setDisable(true);
     }
 
 }
