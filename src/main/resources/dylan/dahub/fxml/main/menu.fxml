@@ -21,12 +21,12 @@
           <Font size="20.0" />
         </font>
     </Label>
-    <Button layoutX="440.0" layoutY="163.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Search Posts" textFill="#575757">
+    <Button fx:id="profileButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="40.0" prefWidth="40.0" />
+    <Button layoutX="440.0" layoutY="163.0" mnemonicParsing="false" onAction="#onViewButtonClick" prefHeight="32.0" prefWidth="160.0" text="Search Posts" textFill="#575757">
         <font>
           <Font name="Candara" size="16.0" />
         </font>
     </Button>
-    <Button fx:id="profileButton" layoutX="515.0" layoutY="22.0" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="40.0" prefWidth="40.0" />
     <Button layoutX="440.0" layoutY="197.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="32.0" prefWidth="160.0" text="Add Post" textFill="#575757">
         <font>
           <Font name="Candara Bold Italic" size="16.0" />
@@ -47,41 +47,40 @@
             <Font name="Candara" size="16.0" />
         </font>
     </Button>
-    <Button fx:id="bulkImportButton" disable="true" layoutX="440.0" layoutY="333.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Bulk Import" textFill="#575757">
-        <font>
-            <Font name="Candara" size="16.0" />
-        </font>
-    </Button>
-    <Button layoutX="440.0" layoutY="367.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="160.0" text="Logout" textFill="#575757">
-        <font>
-          <Font name="Candara Bold Italic" size="16.0" />
-        </font>
-    </Button>
     <Label fx:id="tooltip1" layoutX="440.0" layoutY="298.0" prefHeight="32.0" prefWidth="160.0">
         <tooltip>
           <Tooltip fx:id="tt1" text="Upgrade to VIP to use" />
         </tooltip>
     </Label>
+    <Button fx:id="bulkImportButton" disable="true" layoutX="440.0" layoutY="333.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Bulk Import" textFill="#575757">
+        <font>
+            <Font name="Candara" size="16.0" />
+        </font>
+    </Button>
     <Label fx:id="tooltip2" layoutX="440.0" layoutY="332.0" prefHeight="32.0" prefWidth="160.0">
         <tooltip>
           <Tooltip fx:id="tt2" text="Upgrade to VIP to use" />
         </tooltip>
     </Label>
+    <Button layoutX="440.0" layoutY="367.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="160.0" text="Logout" textFill="#575757">
+        <font>
+          <Font name="Candara Bold Italic" size="16.0" />
+        </font>
+    </Button>
    <ListView fx:id="mainPostView" layoutX="-7.0" layoutY="106.0" prefHeight="269.0" prefWidth="446.0" style="-fx-border-bottom: 0;" />
+   <RadioButton layoutX="54.0" layoutY="380.0" mnemonicParsing="false" selected="true" text="Date" userData="timestamp">
+      <toggleGroup>
+         <ToggleGroup fx:id="sortOptions" />
+      </toggleGroup></RadioButton>
+   <RadioButton layoutX="106.0" layoutY="380.0" mnemonicParsing="false" text="Likes" toggleGroup="$sortOptions" userData="likes" />
+   <RadioButton layoutX="162.0" layoutY="380.0" mnemonicParsing="false" text="Shares" toggleGroup="$sortOptions" userData="shares" />
+   <CheckBox fx:id="onlyUserPostsCheck" layoutX="251.0" layoutY="380.0" mnemonicParsing="false" text="Only my posts" />
    <Button fx:id="loadMoreButton" layoutX="352.0" layoutY="378.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLoadMoreButtonClick" prefHeight="19.0" prefWidth="87.0" style="-fx-font-size: 12; -fx-padding: 0;" text="Load More" textFill="#575757">
       <font>
          <Font name="Candara Bold Italic" size="1.0" />
       </font>
    </Button>
-   <RadioButton layoutX="162.0" layoutY="380.0" mnemonicParsing="false" text="Shares" userData="shares">
-      <toggleGroup>
-         <ToggleGroup fx:id="sortOptions" />
-      </toggleGroup>
-   </RadioButton>
-   <RadioButton layoutX="106.0" layoutY="380.0" mnemonicParsing="false" text="Likes" toggleGroup="$sortOptions" userData="likes" />
-   <RadioButton layoutX="54.0" layoutY="380.0" mnemonicParsing="false" selected="true" text="Date" toggleGroup="$sortOptions" userData="timestamp" />
    <Label layoutX="5.0" layoutY="380.0" text="Sort by:" />
-   <CheckBox fx:id="onlyUserPostsCheck" layoutX="251.0" layoutY="380.0" mnemonicParsing="false" text="Only my posts" />
    <Label fx:id="allLoaded" layoutX="355.0" layoutY="358.0" text="All posts loaded" textFill="#ff2929" visible="false" />
 
 </AnchorPane>

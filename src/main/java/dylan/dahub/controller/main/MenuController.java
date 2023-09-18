@@ -7,9 +7,7 @@ import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
 import dylan.dahub.model.User;
 import dylan.dahub.service.PostManager;
-import dylan.dahub.view.FxmlView;
-import dylan.dahub.view.Logger;
-import dylan.dahub.view.StageManager;
+import dylan.dahub.view.*;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,7 +45,7 @@ public class MenuController {
     private CheckBox onlyUserPostsCheck;
 
     @FXML
-    private void initialize() throws InvalidPostException {
+    private void initialize() {
         welcomeText.setText("Welcome, " + activeUser.getFirstName() + " " + activeUser.getLastName());
         tt1.setShowDelay(Duration.millis(200));
         tt2.setShowDelay(Duration.millis(200));
@@ -70,14 +68,7 @@ public class MenuController {
 
     @FXML
     protected void onAddButtonClick() throws InvalidPostException {
-        User diffUser = new User(4, "b", "b", "b", "b", 0);
-
-        PostManager.put(activeUser, new Post(1,  "garlic", "This is a pointless message about nothing purely designed to waste our time. Your*",123456789, 19876976,  LocalDateTime.now()));
-        PostManager.put(diffUser, new Post(10,  "A567VF", "Check out this epic film.",1000, 1587,  LocalDateTime.parse("01/06/2023 02:20", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
-        PostManager.put(activeUser, new Post(37221,  "3827F2","Are we into Christmas month already?!", 526, 25, LocalDateTime.parse("15/11/2022 11:30", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
-        PostManager.put(activeUser, new Post(382, "38726I", "What a miracle!",2775, 13589, LocalDateTime.parse("12/02/2023 06:18", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
-        PostManager.put(diffUser, new Post(36778,  "1258XE", "Fantastic day today. Congratulations to all winners.",230, 1214, LocalDateTime.parse("06/06/2023 09:00", DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"))));
-        refreshMainPostList("timestamp", showOnlyUserPosts);
+        stageManager.switchScene(FxmlView.ADD_POST);
     }
 
 
@@ -98,6 +89,7 @@ public class MenuController {
         loadMoreIntoPostList();
     }
 
+    // Checks if the user is a VIP and displays the extra functions if they are.
     private void checkVIPStatus() {
         String VIP_PROFILE_IMAGE = "image/VIP_profile.png";
         if (activeUser.isVIP()) {
@@ -119,6 +111,7 @@ public class MenuController {
         tooltip2.setDisable(true);
     }
 
+    // Generate the initial list of posts to view. Set to 5 posts.
     private void generatePostList() {
         mainPostView.setCellFactory(new Callback<>() {
             @Override
@@ -141,6 +134,7 @@ public class MenuController {
         refreshMainPostList("timestamp", showOnlyUserPosts);
     }
 
+    // Creates the nicely-formatted graphic to display each post in the main post list.
     private AnchorPane createPostGraphic(Post post) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource("fxml/post/post.fxml"));
@@ -154,12 +148,8 @@ public class MenuController {
         return null;
     }
 
-    private void startToggleListener() {
-        sortOptions.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
-        });
-    }
 
+    // Refreshes the main post list. Makes a call to the database based on the specific search queries.
     private void refreshMainPostList(String sort, boolean allUsers) {
         try {
             ArrayList<Post> collection = PostManager.getMulti(5, sort, activeUser.getID(), allUsers, 0);
@@ -173,13 +163,7 @@ public class MenuController {
         loadMoreButton.setDisable(false);
     }
 
-    private void startCheckBoxListener(){
-        onlyUserPostsCheck.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            showOnlyUserPosts = onlyUserPostsCheck.isSelected();
-            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
-        });
-    }
-
+    // Loads 5 more posts onto the main post list. If there's less than 5, loads them all and disables the button.
     private void loadMoreIntoPostList() {
         ObservableList<Post> currentList = mainPostView.getItems();
         String sort = (String) sortOptions.getSelectedToggle().getUserData();
@@ -200,6 +184,19 @@ public class MenuController {
     private void showAllLoadedText() {
         loadMoreButton.setText("All loaded");
         loadMoreButton.setDisable(true);
+    }
+
+    private void startToggleListener() {
+        sortOptions.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
+        });
+    }
+
+    private void startCheckBoxListener(){
+        onlyUserPostsCheck.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            showOnlyUserPosts = onlyUserPostsCheck.isSelected();
+            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
+        });
     }
 
 }

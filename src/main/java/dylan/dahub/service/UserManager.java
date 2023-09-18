@@ -9,6 +9,7 @@ import java.sql.*;
 public class UserManager {
     private static final String TABLE_NAME = "User";
 
+    // Checks to see if a user exists with the given username
     public static boolean userExists(String username) {
         try {
             getFromUsername(username);
@@ -18,12 +19,14 @@ public class UserManager {
         return true;
     }
 
+    // Gets a single user from the database from the given username
     public static User getFromUsername(String username) throws InvalidUserException {
         String query = String.format("SELECT * FROM %s WHERE user_name='%s' COLLATE NOCASE LIMIT 1", TABLE_NAME, username);
 
         return getUser(query);
     }
 
+    // Gets a single user from the database from the given ID
     public static User getFromID(int ID) throws InvalidUserException {
         String query = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
 
@@ -31,10 +34,10 @@ public class UserManager {
     }
 
     private static User getUser(String query) throws InvalidUserException {
-        User user = new User();
+        User user;
 
         try {
-            Connection con = DatabaseUtil.getConnection();
+            Connection con = DatabaseUtils.getConnection();
             Statement stmt = con.createStatement();
 
             ResultSet resultSet = stmt.executeQuery(query);
@@ -51,17 +54,17 @@ public class UserManager {
         } catch (SQLException e) {
             String message = "Failed to get user from database: " + e.getMessage();
             Logger.alertError(message);
+            throw new InvalidUserException(message);
         }
-
-        throw new InvalidUserException("Something went wrong.");
     }
 
+    // Puts 1 single user into the database. Post ID is auto-generated so the local ID makes no difference.
     public static User put(User user) throws InvalidUserException {
         String query = String.format("INSERT INTO %s VALUES (null, '%s', '%s', '%s', '%s', 0)",
                 TABLE_NAME, user.getUserName(), user.getFirstName(), user.getLastName(), user.getPassword());
 
         try {
-            Connection con = DatabaseUtil.getConnection();
+            Connection con = DatabaseUtils.getConnection();
 
             if (userExists(user.getUserName())) {
                 throw new InvalidUserException("Username already exists");
@@ -70,15 +73,15 @@ public class UserManager {
             stmt.executeUpdate(query);
 
             System.out.println("Added user");
-            int generatedID = DatabaseUtil.getLastID(con);
+            int generatedID = DatabaseUtils.getLastID(con);
             con.close();
 
             return getFromID(generatedID);
         } catch (SQLException e) {
             String message = String.format("Failed to create user: %s", e.getMessage());
             Logger.alertError(message);
+            throw new InvalidUserException(message);
         }
-        throw new InvalidUserException("Something went wrong.");
     }
 
     public static User update(User user) throws InvalidUserException {
@@ -92,7 +95,7 @@ public class UserManager {
                 user.getPassword(), user.getVIP(), user.getID());
 
         try {
-            Connection con = DatabaseUtil.getConnection();
+            Connection con = DatabaseUtils.getConnection();
 
             if (userExists(user.getUserName()) &&
                     getFromUsername(user.getUserName()).getID() != user.getID()) {
@@ -107,8 +110,8 @@ public class UserManager {
         } catch (SQLException e) {
             String message = String.format("Failed to update user: %s", e.getMessage());
             Logger.alertError(message);
+            throw new InvalidUserException(message);
         }
-        throw new InvalidUserException("Something went wrong.");
     }
 
 }

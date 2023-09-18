@@ -1,10 +1,8 @@
 package dylan.dahub.model;
 
-import dylan.dahub.exception.InvalidUserException;
-import dylan.dahub.service.UserManager;
-import dylan.dahub.view.Logger;
 
-
+// ActiveUser is the singleton instance of the current user logged in. The instance should only be created
+// on login/register and cleared on logout.
 public class ActiveUser extends User {
     private static ActiveUser INSTANCE;
 
@@ -23,18 +21,6 @@ public class ActiveUser extends User {
 
     public static void clearInstance() {
         INSTANCE = null;
-    }
-
-    public static void resetInstance() {
-        try {
-            User userFromDatabase = UserManager.getFromID(INSTANCE.getID());
-            clearInstance();
-            createInstance(userFromDatabase);
-        } catch (InvalidUserException e) {
-            String message = "Failed to reset current user. Exiting. Error: " + e.getMessage();
-            Logger.alertError(message);
-            System.exit(1);
-        }
     }
 
     public static void updateInstance(User user) {

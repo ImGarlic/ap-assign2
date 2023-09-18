@@ -1,7 +1,5 @@
 package dylan.dahub.model;
 
-import dylan.dahub.service.PostManager;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -37,37 +35,21 @@ public class Post {
         return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"));
     }
 
-    public static String formatContent(String content) {
-        StringBuilder formattedContent = new StringBuilder();
-        int maxLength = 60;
-
-        while(content.length() > 0){
-            if(content.length() < maxLength){
-                formattedContent.append(content);
-                content = "";
-            }
-            else if(content.charAt(maxLength) == ' '){
-                formattedContent.append(content.substring(0, maxLength + 1)).append("\n");
-                content = content.substring(maxLength+1);
-            }
-            else{
-
-                formattedContent.append(content.substring(0, content.lastIndexOf(' ', maxLength))).append("\n");
-                content = content.substring(content.lastIndexOf(' ', maxLength) + 1);
-            }
-        }
-        return formattedContent.toString();
-    }
-
+    // Formats the number given to show the rounded representation. Used for likes and shares to be displayed
+    // more cleanly. e.g. 14,765 likes would be shown as 14.8K likes.
     public static String formatNumber(int number) {
-        if (number > 9999 && number < 999999) {
-            return String.format("%.1fK", number / 1000.0);
-        } else if (number > 999999 && number < 999999999) {
-            return String.format("%.1fM", number / 1000000.0);
-        } else if (number > 999999999) {
-            return String.format("%.1fB", number / 1000000000.0);
+        try {
+            if (number > 9999 && number < 999950) {
+                return String.format("%.1fK", number / 1000.0);
+            } else if (number >= 999950 && number < 999950000) {
+                return String.format("%.1fM", number / 1000000.0);
+            } else if (number >= 999950000) {
+                return "1B+";
+            }
+            return String.valueOf(number);
+        } catch (NumberFormatException e) {
+            return "1B+";
         }
-        return String.valueOf(number);
     }
     public int getID() {
         return ID;

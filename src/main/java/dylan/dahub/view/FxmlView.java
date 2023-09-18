@@ -104,6 +104,16 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/profile/VIP_confirm.fxml";
         }
+    }, ADD_POST {
+        @Override
+        String getTitle() {
+            return "Add a post";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/main/add_post.fxml";
+        }
     };
 
 

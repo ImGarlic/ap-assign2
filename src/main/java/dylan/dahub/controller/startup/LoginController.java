@@ -1,5 +1,6 @@
 package dylan.dahub.controller.startup;
 
+import dylan.dahub.controller.ControllerUtils;
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.service.Authentication;
@@ -9,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class LoginController {
@@ -41,34 +45,27 @@ public class LoginController {
     }
 
     private void attemptLogin() {
-        hideErrors();
+        ControllerUtils.hideErrorLabels(new ArrayList<>(Arrays.asList(userNameError, passwordError)));
 
         if(validateInput()) {
             try {
                 ActiveUser.createInstance(Authentication.authenticateUser(userNameInput.getText(), passwordInput.getText()));
                 stageManager.switchScene(FxmlView.MENU);
             } catch (UserAuthenticationException e) {
-                userNameError.setText(e.getMessage());
-                userNameError.setVisible(true);
+                ControllerUtils.showErrorLabel(e.getMessage(), userNameError);
             }
         }
     }
 
-    private void hideErrors() {
-        userNameError.setVisible(false);
-        passwordError.setVisible(false);
-    }
-
+    // Checks textfields for any empty fields.
     private boolean validateInput() {
         boolean valid = true;
         if(userNameInput.getText().equals("")) {
-            userNameError.setText("Username cannot be empty");
-            userNameError.setVisible(true);
+            ControllerUtils.showErrorLabel("Username cannot be empty", userNameError);
             valid = false;
         }
         if(passwordInput.getText().equals("")) {
-            passwordError.setText("Password cannot be empty");
-            passwordError.setVisible(true);
+            ControllerUtils.showErrorLabel("Password cannot be empty", passwordError);
             valid = false;
         }
         return valid;

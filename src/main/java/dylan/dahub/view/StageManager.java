@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+// StageManager is the singleton instance of the javaFX stage. Use switchScene to easily switch between scenes
+// on the stage. Apart from any modals, only one stage should exist at a time.
+// Intrinsically linked to the FxmlView enum; any new scenes need to be included there to be used.
 public class StageManager {
 
     private static StageManager INSTANCE;
@@ -44,6 +47,8 @@ public class StageManager {
         }
    }
 
+   // Display a second stage to act as a custom modal. Only one modal may exist at a time, so if the previous modal
+   // is not closed, it will simply be overridden.
    public void displayModal(FxmlView view, boolean wait) {
         try {
             modalStage = new Stage();

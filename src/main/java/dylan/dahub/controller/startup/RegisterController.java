@@ -1,5 +1,6 @@
 package dylan.dahub.controller.startup;
 
+import dylan.dahub.controller.ControllerUtils;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
@@ -10,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class RegisterController {
     private final StageManager stageManager = StageManager.getInstance();
@@ -39,7 +43,7 @@ public class RegisterController {
     }
 
     private void attemptRegister() {
-        hideErrors();
+        ControllerUtils.hideErrorLabels(new ArrayList<>(Arrays.asList(userNameError, firstNameError, lastNameError, passwordError)));
         User user = new User(0, userNameInput.getText(), firstNameInput.getText(),
                 lastNameInput.getText(), passwordInput.getText(), 0);
 
@@ -48,39 +52,29 @@ public class RegisterController {
                 ActiveUser.createInstance(UserManager.put(user));
                 stageManager.switchScene(FxmlView.MENU);
             } catch (InvalidUserException e) {
-                userNameError.setText(e.getMessage());
-                userNameError.setVisible(true);
+                ControllerUtils.showErrorLabel(e.getMessage(), userNameError);
             }
         }
     }
 
-    private void hideErrors() {
-        userNameError.setVisible(false);
-        firstNameError.setVisible(false);
-        lastNameError.setVisible(false);
-        passwordError.setVisible(false);
-    }
+    // Checks textfields for any empty fields.
     private boolean validateInput(User user) {
         boolean valid = true;
         if(user.getUserName().equals("")) {
-            userNameError.setText("Username cannot be empty");
-            userNameError.setVisible(true);
+            ControllerUtils.showErrorLabel("Username cannot be empty", userNameError);
             valid = false;
         }
 
         if(user.getFirstName().equals("")) {
-            firstNameError.setText("First name cannot be empty");
-            firstNameError.setVisible(true);
+            ControllerUtils.showErrorLabel("First name cannot be empty", firstNameError);
             valid = false;
         }
         if(user.getLastName().equals("")) {
-            lastNameError.setText("Last name cannot be empty");
-            lastNameError.setVisible(true);
+            ControllerUtils.showErrorLabel("Last name cannot be empty", lastNameError);
             valid = false;
         }
         if(user.getPassword().equals("")) {
-            passwordError.setText("Password cannot be empty");
-            passwordError.setVisible(true);
+            ControllerUtils.showErrorLabel("Password cannot be empty", passwordError);
             valid = false;
         }
         return valid;
