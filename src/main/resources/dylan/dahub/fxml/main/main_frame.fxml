@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: gray;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.main.MainFrameController">
+   <children>
+      <AnchorPane fx:id="header" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: lightblue;">
+         <children>
+            <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#onSidebarClick" text="Button" />
+            <Label layoutX="241.0" layoutY="6.0" text="Data Analytics Hub">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Button layoutX="730.0" layoutY="18.0" mnemonicParsing="false" onAction="#onHomeClick" text="Home" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="mainScreen" layoutY="60.0" prefHeight="440.0" prefWidth="800.0" style="-fx-background-color: white;" />
+      <AnchorPane fx:id="sidebar" layoutY="60.0" prefHeight="440.0" prefWidth="200.0" style="-fx-background-color: white;">
+         <children>
+            <Button layoutX="20.0" layoutY="105.0" mnemonicParsing="false" onAction="#onViewButtonClick" prefHeight="32.0" prefWidth="160.0" text="Search Posts" textFill="#575757">
+               <font>
+                  <Font name="Candara" size="16.0" />
+               </font>
+            </Button>
+            <Button layoutX="20.0" layoutY="139.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="32.0" prefWidth="160.0" text="Add Post" textFill="#575757">
+               <font>
+                  <Font name="Candara Bold Italic" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="removeButton" layoutX="20.0" layoutY="173.0" mnemonicParsing="false" onAction="#onRemoveButtonClick" prefHeight="32.0" prefWidth="160.0" text="Remove Post" textFill="#575757">
+               <font>
+                  <Font name="Candara Bold Italic" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="graphDataButton" disable="true" layoutX="20.0" layoutY="207.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Graph Data" textFill="#575757">
+               <font>
+                  <Font name="Candara" size="16.0" />
+               </font>
+            </Button>
+            <Label fx:id="tooltip1" layoutX="20.0" layoutY="207.0" prefHeight="32.0" prefWidth="160.0">
+               <tooltip>
+                  <Tooltip fx:id="tt1" text="Upgrade to VIP to use" />
+               </tooltip>
+            </Label>
+            <Button fx:id="bulkImportButton" disable="true" layoutX="20.0" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Bulk Import" textFill="#575757">
+               <font>
+                  <Font name="Candara" size="16.0" />
+               </font>
+            </Button>
+            <Label fx:id="tooltip2" layoutX="20.0" layoutY="241.0" prefHeight="32.0" prefWidth="160.0">
+               <tooltip>
+                  <Tooltip fx:id="tt2" text="Upgrade to VIP to use" />
+               </tooltip>
+            </Label>
+            <Button layoutX="20.0" layoutY="275.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="160.0" text="Logout" textFill="#575757">
+               <font>
+                  <Font name="Candara Bold Italic" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="profileButton" layoutX="77.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="48.0" prefWidth="46.0">
+               <graphic>
+                  <ImageView fx:id="profileImage" fitHeight="69.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/default_profile.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

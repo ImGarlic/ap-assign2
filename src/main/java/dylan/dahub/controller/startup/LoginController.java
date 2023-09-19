@@ -50,7 +50,7 @@ public class LoginController {
         if(validateInput()) {
             try {
                 ActiveUser.createInstance(Authentication.authenticateUser(userNameInput.getText(), passwordInput.getText()));
-                stageManager.switchScene(FxmlView.MENU);
+                stageManager.switchScene(FxmlView.MAIN);
             } catch (UserAuthenticationException e) {
                 ControllerUtils.showErrorLabel(e.getMessage(), userNameError);
             }

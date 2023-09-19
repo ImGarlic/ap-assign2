@@ -50,7 +50,7 @@ public class RegisterController {
         if(validateInput(user)) {
             try {
                 ActiveUser.createInstance(UserManager.put(user));
-                stageManager.switchScene(FxmlView.MENU);
+                stageManager.switchScene(FxmlView.MAIN);
             } catch (InvalidUserException e) {
                 ControllerUtils.showErrorLabel(e.getMessage(), userNameError);
             }

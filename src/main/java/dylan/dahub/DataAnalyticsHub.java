@@ -27,7 +27,7 @@ public class DataAnalyticsHub extends Application {
     // This should be set to STARTUP for regular use.
     protected void setInitialScene() throws InvalidUserException {
         ActiveUser.createInstance(UserManager.getFromUsername("Garlic"));
-        stageManager.switchScene(FxmlView.MENU);
+        stageManager.switchScene(FxmlView.MAIN);
     }
 
     @Override

@@ -32,11 +32,9 @@ public class MenuController {
     private boolean showOnlyUserPosts = false;
 
     @FXML
-    private Label welcomeText, tooltip1, tooltip2;
+    private Label welcomeText, totalPostsCount, myPostsCount;
     @FXML
-    private Button profileButton, graphDataButton, bulkImportButton, removeButton, loadMoreButton;
-    @FXML
-    private Tooltip tt1, tt2;
+    private Button loadMoreButton;
     @FXML
     private ListView<Post> mainPostView;
     @FXML
@@ -47,69 +45,20 @@ public class MenuController {
     @FXML
     private void initialize() {
         welcomeText.setText("Welcome, " + activeUser.getFirstName() + " " + activeUser.getLastName());
-        tt1.setShowDelay(Duration.millis(200));
-        tt2.setShowDelay(Duration.millis(200));
-        checkVIPStatus();
+
+        setPostCounts();
         generatePostList();
         startToggleListener();
         startCheckBoxListener();
     }
 
-    @FXML
-    protected void onLogoutButtonClick() {
-        ActiveUser.clearInstance();
-        stageManager.switchScene(FxmlView.STARTUP);
-    }
-
-    @FXML
-    protected void onViewButtonClick() {
-
-    }
-
-    @FXML
-    protected void onAddButtonClick() throws InvalidPostException {
-        stageManager.switchScene(FxmlView.ADD_POST);
-    }
-
-
-    @FXML
-    protected void onRemoveButtonClick() {
-        mainPostView.getItems().remove(mainPostView.getSelectionModel().getSelectedItem());
-        ObservableList<Post> updatedList = mainPostView.getItems();
-        mainPostView.setItems(updatedList);
-    }
-
-    @FXML
-    protected void onProfileButtonClick() {
-        stageManager.switchScene(FxmlView.PROFILE);
-    }
 
     @FXML
     protected void onLoadMoreButtonClick() {
         loadMoreIntoPostList();
     }
 
-    // Checks if the user is a VIP and displays the extra functions if they are.
-    private void checkVIPStatus() {
-        String VIP_PROFILE_IMAGE = "image/VIP_profile.png";
-        if (activeUser.isVIP()) {
-            enableVIPButtons();
-            try {
-                String image = Objects.requireNonNull(DataAnalyticsHub.class.getResource(VIP_PROFILE_IMAGE)).toExternalForm();
-                profileButton.setStyle("/*noinspection CssUnknownTarget*/-fx-background-image: url('" + image + "');");
 
-            } catch (NullPointerException e) {
-                System.out.println("VIP profile image not found in resources");
-            }
-        }
-    }
-
-    private void enableVIPButtons() {
-        graphDataButton.setDisable(false);
-        bulkImportButton.setDisable(false);
-        tooltip1.setDisable(true);
-        tooltip2.setDisable(true);
-    }
 
     // Generate the initial list of posts to view. Set to 5 posts.
     private void generatePostList() {
@@ -179,6 +128,16 @@ public class MenuController {
         } catch (InvalidPostException e) {
             Logger.alertError("Failed to generate post list: " + e.getMessage());
         }
+    }
+
+    private void setPostCounts() {
+        try {
+            totalPostsCount.setText(String.valueOf(PostManager.getPostCount(activeUser.getID(), false)));
+            myPostsCount.setText(String.valueOf(PostManager.getPostCount(activeUser.getID(), true)));
+        } catch (InvalidPostException e) {
+            Logger.alertError("Couldn't get post count: " + e.getMessage());
+        }
+
     }
 
     private void showAllLoadedText() {

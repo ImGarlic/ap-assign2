@@ -114,6 +114,16 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/main/add_post.fxml";
         }
+    }, MAIN {
+        @Override
+        String getTitle() {
+            return "Add a post";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/main/main_frame.fxml";
+        }
     };
 
 

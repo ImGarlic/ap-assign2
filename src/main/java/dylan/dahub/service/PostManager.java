@@ -121,6 +121,34 @@ public class PostManager {
 
     }
 
+    public static int getPostCount(int userID, boolean onlyCurrentUser) throws InvalidPostException {
+        String query;
+        int count;
+        if(onlyCurrentUser) {
+            query = String.format("SELECT COUNT(*) FROM %s WHERE user='%d'", TABLE_NAME, userID);
+        } else {
+            query = String.format("SELECT COUNT(*) FROM %s", TABLE_NAME);
+        }
+
+        try {
+            Connection con = DatabaseUtils.getConnection();
+            Statement stmt = con.createStatement();
+
+            ResultSet resultSet = stmt.executeQuery(query);
+            if(resultSet.next()) {
+                count = resultSet.getInt(1);
+            } else {
+                return 0;
+            }
+            con.close();
+
+            return count;
+        } catch (SQLException e) {
+            String message = "Failed to get post from database: " + e.getMessage();
+            throw new InvalidPostException(message);
+        }
+    }
+
 
     private static long createTimeStamp(LocalDateTime dateTime) {
         return dateTime.toEpochSecond(ZoneOffset.of("Z"));

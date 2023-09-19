@@ -1,9 +1,11 @@
 package dylan.dahub.view;
 
 import dylan.dahub.DataAnalyticsHub;
+import dylan.dahub.controller.main.MainFrameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -16,8 +18,8 @@ import java.util.Objects;
 public class StageManager {
 
     private static StageManager INSTANCE;
-    private static Stage rootStage;
-    private static Stage modalStage;
+    private static Stage rootStage, modalStage;
+    private static MainFrameController mainFrameController;
 
     private StageManager(Stage stage) {
         rootStage = stage;
@@ -37,11 +39,28 @@ public class StageManager {
 
    public void switchScene(FxmlView view) {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
+            FXMLLoader loader = new FXMLLoader(DataAnalyticsHub.class.getResource(view.getFxmlFile()));
+            Parent root = loader.load();
             rootStage.setTitle(view.getTitle());
             rootStage.setScene(new Scene(root));
             rootStage.show();
+
+            if (view == FxmlView.MAIN) {
+                mainFrameController = loader.getController();
+                switchMainScreen(FxmlView.MENU);
+            }
         } catch (NullPointerException | IOException e) {
+            String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
+            Logger.alertError(errMsg);
+        }
+   }
+
+   public void switchMainScreen(FxmlView view) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource(view.getFxmlFile()));
+            AnchorPane screen = fxmlLoader.load();
+            mainFrameController.switchScreen(screen);
+        } catch (IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
             Logger.alertError(errMsg);
         }
