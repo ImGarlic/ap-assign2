@@ -25,9 +25,8 @@ import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AddPostController {
+public class PostAddController {
     private final StageManager stageManager = StageManager.getInstance();
-    private final ActiveUser activeUser = ActiveUser.getInstance();
 
     @FXML
     private AnchorPane postDisplay;
@@ -43,12 +42,12 @@ public class AddPostController {
     @FXML
     private void initialize() {
         addListeners();
-        Post post = new Post(1, "author", "Start typing...", 0, 0, LocalDateTime.now());
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource("fxml/post/post.fxml"));
             AnchorPane graphic = fxmlLoader.load();
             postController = fxmlLoader.getController();
-            postController.setPost(post);
+            setDefaultPost();
             postDisplay.getChildren().add(graphic);
         } catch (IOException e) {
             Logger.alertError("Failed to generate post graphic: " + e.getMessage());
@@ -60,17 +59,15 @@ public class AddPostController {
         addPost();
     }
 
-    @FXML
-    protected void onBackButtonClick() {
-        stageManager.switchScene(FxmlView.MENU);
-    }
-
     private void addPost() {
         ControllerUtils.hideErrorLabels(new ArrayList<>(Arrays.asList(authorError, contentError, likesError, sharesError, dateTimeError)));
         if (validateInput()) {
             try {
                 Post post = PostManager.generatePostFromTextFields(author.getText(), content.getText(), dateTime.getText(), likes.getText(), shares.getText());
-                PostManager.put(activeUser, post);
+                PostManager.put(ActiveUser.getInstance(), post);
+                stageManager.displayModal(FxmlView.MODAL_CONFIRM, false, "Post added to the collection.");
+                clearTextFields();
+                setDefaultPost();
             } catch (InvalidPostException e) {
                 Logger.alertError("Couldn't add post: " + e.getMessage());
             }
@@ -90,12 +87,12 @@ public class AddPostController {
             ControllerUtils.showErrorLabel("Content cannot be empty", contentError);
             valid = false;
         }
-        if (!isNumeric(likes.getText())) {
-            ControllerUtils.showErrorLabel("Please enter a number", likesError);
+        if (isNotNumeric(likes.getText())) {
+            ControllerUtils.showErrorLabel("Please enter a valid number", likesError);
             valid = false;
         }
-        if (!isNumeric(shares.getText())) {
-            ControllerUtils.showErrorLabel("Please enter a number", sharesError);
+        if (isNotNumeric(shares.getText())) {
+            ControllerUtils.showErrorLabel("Please enter a valid number", sharesError);
             valid = false;
         }
         if (!isValidDate(dateTime.getText())) {
@@ -123,12 +120,25 @@ public class AddPostController {
         });
     }
 
-    private boolean isNumeric(String numString) {
+    private void clearTextFields() {
+        author.setText("");
+        content.setText("");
+        dateTime.setText("");
+        likes.setText("");
+        shares.setText("");
+    }
+
+    private void setDefaultPost() {
+        Post post = new Post(1, "author", "Start typing...", 0, 0, LocalDateTime.now());
+        postController.setPost(post);
+    }
+
+    private boolean isNotNumeric(String numString) {
         try {
             Integer.parseInt(numString);
-            return true;
-        } catch (NumberFormatException e) {
             return false;
+        } catch (NumberFormatException e) {
+            return true;
         }
     }
 

@@ -5,23 +5,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="150.0" prefWidth="300.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.profile.VIPSetController">
-   <Button layoutX="71.0" layoutY="99.0" mnemonicParsing="false" onAction="#onOKButtonClick" prefHeight="30.0"
-           prefWidth="67.0" text="OK"/>
-   <Button layoutX="164.0" layoutY="99.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#onCloseButtonClick"
-           text="Cancel"/>
-   <Label fx:id="label1" alignment="CENTER" layoutX="-1.0" layoutY="14.0" prefHeight="25.0" prefWidth="300.0"
-          text="Would you like to">
+<AnchorPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.profile.VIPSetController">
+   <Button layoutX="71.0" layoutY="99.0" mnemonicParsing="false" onAction="#onOKButtonClick" prefHeight="30.0" prefWidth="67.0" text="OK" />
+   <Button layoutX="164.0" layoutY="99.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#onCloseButtonClick" text="Cancel" />
+   <Label fx:id="label1" alignment="CENTER" layoutX="-1.0" layoutY="14.0" prefHeight="72.0" prefWidth="300.0" text="Would you like to subscribe as a VIP for $0?" textAlignment="CENTER" wrapText="true">
       <font>
-         <Font size="20.0"/>
-      </font>
-   </Label>
-   <Label fx:id="label2" alignment="CENTER" layoutX="-1.0" layoutY="39.0" prefHeight="25.0" prefWidth="300.0"
-          text="subscribe as a VIP for $0?">
-      <font>
-         <Font size="20.0"/>
+         <Font size="20.0" />
       </font>
    </Label>
 </AnchorPane>

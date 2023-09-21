@@ -8,58 +8,79 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: gray;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.main.MainFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" styleClass="mainBackground" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.main.MainFrameController">
    <children>
+      <AnchorPane fx:id="outsideSpace" layoutX="200.0" layoutY="60.0" prefHeight="440.0" prefWidth="600.0" />
       <AnchorPane fx:id="header" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: lightblue;">
          <children>
-            <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#onSidebarClick" text="Button" />
+            <Button layoutX="8.0" layoutY="8.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSidebarClick" prefHeight="42.0" prefWidth="46.0" styleClass="headerButton">
+               <graphic>
+                  <ImageView fitHeight="34.0" fitWidth="36.0" opacity="0.6" pickOnBounds="true" preserveRatio="true" styleClass="headerButton">
+                     <image>
+                        <Image url="@../../image/sidebar_icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
             <Label layoutX="241.0" layoutY="6.0" text="Data Analytics Hub">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
-            <Button layoutX="730.0" layoutY="18.0" mnemonicParsing="false" onAction="#onHomeClick" text="Home" />
+            <Button layoutX="740.0" layoutY="8.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onHomeClick" prefHeight="44.0" prefWidth="46.0" styleClass="headerButton">
+               <graphic>
+                  <ImageView fitHeight="51.0" fitWidth="42.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/home_icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainScreen" layoutY="60.0" prefHeight="440.0" prefWidth="800.0" style="-fx-background-color: white;" />
-      <AnchorPane fx:id="sidebar" layoutY="60.0" prefHeight="440.0" prefWidth="200.0" style="-fx-background-color: white;">
+      <AnchorPane id="sidebar" fx:id="sidebar" layoutY="60.0" prefHeight="440.0" prefWidth="200.0" style="-fx-background-color: white;">
          <children>
-            <Button layoutX="20.0" layoutY="105.0" mnemonicParsing="false" onAction="#onViewButtonClick" prefHeight="32.0" prefWidth="160.0" text="Search Posts" textFill="#575757">
+            <Button layoutY="105.0" mnemonicParsing="false" onAction="#onDashboardButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Dashboard" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>
             </Button>
-            <Button layoutX="20.0" layoutY="139.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="32.0" prefWidth="160.0" text="Add Post" textFill="#575757">
-               <font>
-                  <Font name="Candara Bold Italic" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="removeButton" layoutX="20.0" layoutY="173.0" mnemonicParsing="false" onAction="#onRemoveButtonClick" prefHeight="32.0" prefWidth="160.0" text="Remove Post" textFill="#575757">
-               <font>
-                  <Font name="Candara Bold Italic" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="graphDataButton" disable="true" layoutX="20.0" layoutY="207.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Graph Data" textFill="#575757">
+            <Button layoutY="139.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Search Posts" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>
             </Button>
-            <Label fx:id="tooltip1" layoutX="20.0" layoutY="207.0" prefHeight="32.0" prefWidth="160.0">
+            <Button layoutY="173.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Add Post" textFill="#575757">
+               <font>
+                  <Font name="Candara Bold Italic" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="removeButton" layoutY="207.0" mnemonicParsing="false" onAction="#onRemoveButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Remove Post" textFill="#575757">
+               <font>
+                  <Font name="Candara Bold Italic" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="graphDataButton" disable="true" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Graph Data" textFill="#575757">
+               <font>
+                  <Font name="Candara" size="16.0" />
+               </font>
+            </Button>
+            <Label fx:id="tooltip1" layoutY="241.0" prefHeight="32.0" prefWidth="200.0">
                <tooltip>
                   <Tooltip fx:id="tt1" text="Upgrade to VIP to use" />
                </tooltip>
             </Label>
-            <Button fx:id="bulkImportButton" disable="true" layoutX="20.0" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" text="Bulk Import" textFill="#575757">
+            <Button fx:id="bulkImportButton" disable="true" layoutY="275.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Bulk Import" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>
             </Button>
-            <Label fx:id="tooltip2" layoutX="20.0" layoutY="241.0" prefHeight="32.0" prefWidth="160.0">
+            <Label fx:id="tooltip2" layoutY="275.0" prefHeight="32.0" prefWidth="200.0">
                <tooltip>
                   <Tooltip fx:id="tt2" text="Upgrade to VIP to use" />
                </tooltip>
             </Label>
-            <Button layoutX="20.0" layoutY="275.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="160.0" text="Logout" textFill="#575757">
+            <Button layoutY="408.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Logout" textFill="#575757">
                <font>
                   <Font name="Candara Bold Italic" size="16.0" />
                </font>
@@ -73,6 +94,8 @@
                   </ImageView>
                </graphic>
             </Button>
-         </children></AnchorPane>
+            <Label fx:id="usernameText" alignment="CENTER" contentDisplay="CENTER" layoutY="62.0" prefHeight="16.0" prefWidth="200.0" text="Username" textAlignment="CENTER" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

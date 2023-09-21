@@ -15,7 +15,6 @@ import java.util.Objects;
 public class ProfileController {
 
     private final StageManager stageManager = StageManager.getInstance();
-    private ActiveUser activeUser = ActiveUser.getInstance();
     @FXML
     private Label username, fullname;
     @FXML
@@ -26,38 +25,34 @@ public class ProfileController {
 
     @FXML
     protected void initialize() {
+        ActiveUser activeUser = ActiveUser.getInstance();
         username.setText(activeUser.getUserName());
         fullname.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
         checkVIPStatus();
     }
 
     @FXML
-    protected void onBackButtonClick() {
-        stageManager.switchScene(FxmlView.MENU);
-    }
-
-    @FXML
     protected void onVIPButtonClick() {
-        stageManager.displayModal(FxmlView.VIP_SET, true);
+        stageManager.displayModal(FxmlView.VIP_SET, true, "");
         checkVIPStatus();
+        stageManager.checkVipStatus();
     }
 
     @FXML
     protected void onUpdateProfileButtonClick() {
-        stageManager.switchScene(FxmlView.PROFILE_UPDATE);
+        stageManager.switchMainScreen(FxmlView.PROFILE_UPDATE);
     }
 
     @FXML
     protected void onChangePasswordButtonClick() {
-        stageManager.switchScene(FxmlView.CHANGE_PASSWORD);
+        stageManager.switchMainScreen(FxmlView.CHANGE_PASSWORD);
     }
 
     private void checkVIPStatus() {
-        activeUser = ActiveUser.getInstance();
         String VIP_PROFILE_IMAGE = "image/VIP_profile_upscaled.png";
         String DEFAULT_PROFILE_IMAGE = "image/default_profile_upscaled.png";
 
-        if (activeUser.isVIP()) {
+        if (ActiveUser.getInstance().isVIP()) {
             VIPButton.setText("Cancel VIP");
             changeProfilePic(VIP_PROFILE_IMAGE);
         } else {

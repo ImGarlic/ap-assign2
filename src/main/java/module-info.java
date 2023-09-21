@@ -16,4 +16,6 @@ module dylan.dahub {
     opens dylan.dahub.controller.post to javafx.fxml;
     exports dylan.dahub.controller.post;
     exports dylan.dahub.model;
+    exports dylan.dahub.controller;
+    opens dylan.dahub.controller to javafx.fxml;
 }

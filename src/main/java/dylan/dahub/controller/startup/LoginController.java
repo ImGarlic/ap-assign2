@@ -44,6 +44,11 @@ public class LoginController {
         attemptLogin();
     }
 
+    @FXML
+    private void onRegisterClick() {
+        stageManager.switchScene(FxmlView.REGISTER);
+    }
+
     private void attemptLogin() {
         ControllerUtils.hideErrorLabels(new ArrayList<>(Arrays.asList(userNameError, passwordError)));
 

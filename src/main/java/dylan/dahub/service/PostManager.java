@@ -1,6 +1,7 @@
 package dylan.dahub.service;
 
 import dylan.dahub.exception.InvalidPostException;
+import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.Post;
 import dylan.dahub.model.User;
 
@@ -85,13 +86,13 @@ public class PostManager {
     }
 
     // Gets multiple posts from the database based on SQL select queries.
-    public static ArrayList<Post> getMulti(int count, String sort, int userID, boolean onlyCurrentUser, int offset) throws InvalidPostException {
+    public static ArrayList<Post> getMulti(int count, String sortType, String sortOrder, int userID, boolean onlyCurrentUser, int offset) throws InvalidPostException {
         ArrayList<Post> collection = new ArrayList<>();
         String query;
         if(!onlyCurrentUser) {
-            query = String.format("SELECT * FROM %s ORDER BY %s DESC LIMIT '%d' OFFSET '%d' COLLATE NOCASE ", TABLE_NAME, sort, count, offset);
+            query = String.format("SELECT * FROM %s ORDER BY %s %s LIMIT '%d' OFFSET '%d' COLLATE NOCASE ", TABLE_NAME, sortType, sortOrder, count, offset);
         } else {
-            query = String.format("SELECT * FROM %s WHERE user='%d' ORDER BY %s DESC LIMIT '%d' OFFSET '%d' COLLATE NOCASE", TABLE_NAME, userID, sort, count, offset);
+            query = String.format("SELECT * FROM %s WHERE user='%d' ORDER BY %s %s LIMIT '%d' OFFSET '%d' COLLATE NOCASE", TABLE_NAME, userID, sortType, sortOrder, count, offset);
         }
 
 
@@ -119,6 +120,31 @@ public class PostManager {
             throw new InvalidPostException(message);
         }
 
+    }
+
+    public static void putMulti(User user, ArrayList<Post> postList) throws InvalidPostException {
+
+        StringBuilder query = new StringBuilder(String.format("INSERT INTO %s VALUES ", TABLE_NAME));
+        for (Post post : postList) {
+            long timeStamp = createTimeStamp(post.getDateTime());
+            query.append(String.format("(null, '%s', '%s', '%d', '%d', '%d', '%d'),",
+                    post.getAuthor(), post.getContent(), post.getLikes(), post.getShares(), timeStamp, user.getID()));
+        }
+        query.deleteCharAt(query.lastIndexOf(","));
+        System.out.println(query);
+
+        try {
+            Connection con = DatabaseUtils.getConnection();
+
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(query.toString());
+
+            System.out.println("Added post");
+            con.close();
+        } catch (SQLException e) {
+            String message = String.format("Failed to create post: %s", e.getMessage());
+            throw new InvalidPostException(message);
+        }
     }
 
     public static int getPostCount(int userID, boolean onlyCurrentUser) throws InvalidPostException {
@@ -155,6 +181,6 @@ public class PostManager {
     }
 
     private static LocalDateTime createDateTime(long timeStamp) {
-        return LocalDateTime.ofInstant(Instant.ofEpochSecond(timeStamp), ZoneId.systemDefault());
+        return LocalDateTime.ofInstant(Instant.ofEpochSecond(timeStamp), ZoneId.of("Z"));
     }
 }

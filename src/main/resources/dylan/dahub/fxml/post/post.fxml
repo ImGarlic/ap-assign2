@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="postGraphic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.post.PostController">
+<AnchorPane id="postGraphic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="412.0" style="-fx-background-color: white; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.post.PostController">
    <children>
       <Label fx:id="author" layoutX="14.0" layoutY="6.0" prefHeight="17.0" prefWidth="199.0" text="Author" textFill="#4d4d4d">
          <font>

@@ -34,7 +34,17 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/startup/register.fxml";
         }
-    }, MENU {
+    }, MAIN {
+        @Override
+        String getTitle() {
+            return "Add a post";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/main/main_frame.fxml";
+        }
+    },DASHBOARD {
         @Override
         String getTitle() {
             return "Menu";
@@ -42,7 +52,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "fxml/main/menu.fxml";
+            return "fxml/main/dashboard.fxml";
         }
     }, PROFILE {
         @Override
@@ -74,16 +84,6 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/profile/change_password.fxml";
         }
-    }, PROFILE_UPDATE_CONFIRM {
-        @Override
-        String getTitle() {
-            return "Details updated";
-        }
-
-        @Override
-        String getFxmlFile() {
-            return "fxml/profile/profile_update_confirm.fxml";
-        }
     }, VIP_SET {
         @Override
         String getTitle() {
@@ -94,17 +94,7 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/profile/VIP_set.fxml";
         }
-    }, VIP_CONFIRM {
-        @Override
-        String getTitle() {
-            return "VIP membership";
-        }
-
-        @Override
-        String getFxmlFile() {
-            return "fxml/profile/VIP_confirm.fxml";
-        }
-    }, ADD_POST {
+    }, POST_ADD {
         @Override
         String getTitle() {
             return "Add a post";
@@ -112,17 +102,27 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "fxml/main/add_post.fxml";
+            return "fxml/main/post_add.fxml";
         }
-    }, MAIN {
+    },  POST_SEARCH {
         @Override
         String getTitle() {
-            return "Add a post";
+            return "Find a post";
         }
 
         @Override
         String getFxmlFile() {
-            return "fxml/main/main_frame.fxml";
+            return "fxml/main/post_search.fxml";
+        }
+    },MODAL_CONFIRM {
+        @Override
+        String getTitle() {
+            return "Confirmed";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/modal_confirm.fxml";
         }
     };
 

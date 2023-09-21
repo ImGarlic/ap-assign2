@@ -1,6 +1,7 @@
 package dylan.dahub.view;
 
 import dylan.dahub.DataAnalyticsHub;
+import dylan.dahub.controller.ConfirmationModalController;
 import dylan.dahub.controller.main.MainFrameController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,8 +48,10 @@ public class StageManager {
 
             if (view == FxmlView.MAIN) {
                 mainFrameController = loader.getController();
-                switchMainScreen(FxmlView.MENU);
+                switchMainScreen(FxmlView.DASHBOARD);
             }
+
+
         } catch (NullPointerException | IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
             Logger.alertError(errMsg);
@@ -60,6 +63,7 @@ public class StageManager {
             FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource(view.getFxmlFile()));
             AnchorPane screen = fxmlLoader.load();
             mainFrameController.switchScreen(screen);
+            rootStage.setTitle(view.getTitle());
         } catch (IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
             Logger.alertError(errMsg);
@@ -68,10 +72,17 @@ public class StageManager {
 
    // Display a second stage to act as a custom modal. Only one modal may exist at a time, so if the previous modal
    // is not closed, it will simply be overridden.
-   public void displayModal(FxmlView view, boolean wait) {
+   public void displayModal(FxmlView view, boolean wait, String text) {
         try {
             modalStage = new Stage();
-            Parent root = FXMLLoader.load(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
+            FXMLLoader fxmLloader = new FXMLLoader(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
+            Parent root = fxmLloader.load();
+
+            if(view == FxmlView.MODAL_CONFIRM) {
+                ConfirmationModalController confirmationModalController = fxmLloader.getController();
+                confirmationModalController.setText(text);
+            }
+
             modalStage.setTitle(view.getTitle());
             modalStage.setScene(new Scene(root));
             modalStage.initModality(Modality.WINDOW_MODAL);
@@ -89,6 +100,10 @@ public class StageManager {
 
    public void closeModal() {
         modalStage.close();
+   }
+
+   public void checkVipStatus() {
+        mainFrameController.updateProfileDetails();
    }
 
 }

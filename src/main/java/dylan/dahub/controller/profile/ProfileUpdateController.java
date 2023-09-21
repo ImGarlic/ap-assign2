@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 public class ProfileUpdateController {
 
     private final StageManager stageManager = StageManager.getInstance();
-    private final ActiveUser activeUser = ActiveUser.getInstance();
 
     @FXML
     private TextField userNameInput, firstNameInput, lastNameInput;
@@ -23,6 +22,7 @@ public class ProfileUpdateController {
 
     @FXML
     protected void initialize() {
+        ActiveUser activeUser = ActiveUser.getInstance();
         userNameInput.setPromptText(activeUser.getUserName());
         firstNameInput.setPromptText(activeUser.getFirstName());
         lastNameInput.setPromptText(activeUser.getLastName());
@@ -35,7 +35,7 @@ public class ProfileUpdateController {
     }
     @FXML
     protected void onBackButtonClick() {
-        stageManager.switchScene(FxmlView.PROFILE);
+        stageManager.switchMainScreen(FxmlView.PROFILE);
     }
     @FXML
     protected void onUpdateButtonClick() {
@@ -47,7 +47,7 @@ public class ProfileUpdateController {
 
         try {
             ActiveUser.updateInstance(UserManager.update(updatedUser));
-            stageManager.displayModal(FxmlView.PROFILE_UPDATE_CONFIRM, true);
+            stageManager.displayModal(FxmlView.MODAL_CONFIRM, true, "Profile details updated.");
         } catch (InvalidUserException e) {
             userNameError.setText(e.getMessage());
             userNameError.setVisible(true);
@@ -55,6 +55,7 @@ public class ProfileUpdateController {
     }
 
     private User getNewUserValues() {
+        ActiveUser activeUser = ActiveUser.getInstance();
         String newUserName = activeUser.getUserName();
         String newFirstName = activeUser.getFirstName();
         String newLastName = activeUser.getLastName();

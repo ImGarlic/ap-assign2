@@ -2,18 +2,18 @@
     -fx-font-family: Candara;
 }
 
-#background {
-    -fx-background-color: #ffffff;
-}
 
 .button {
-    -fx-background-radius: 0;
+    -fx-background-radius: 2;
     -fx-background-color: #78bbe5;
     -fx-font-size: 16;
 }
 
+.sidebarButton {
+    -fx-background-color: linear-gradient(to right, #efefef, transparent);
+}
+
 .button:hover {
-    -fx-background-color: #a7caee;
     -fx-cursor: hand;
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
@@ -21,8 +21,12 @@
 }
 
 #profileButton {
+    -fx-background-size: 100% 100%;
     -fx-background-radius: 150;
-    /*-fx-background-image: url("../image/default_profile.png");*/
+    -fx-background-color: transparent;
+}
+
+.headerButton {
     -fx-background-size: 100% 100%;
     -fx-background-color: transparent;
 }
@@ -33,21 +37,58 @@
     -fx-font-size: 15;
 }
 
-#subHeading {
+.heading {
+    -fx-font-size: 40;
+}
+
+
+.subHeading {
     -fx-font-size: 25;
 }
 
-#subHeading2 {
+.subHeading2 {
     -fx-font-size: 18;
 }
 
-#bigNumber {
+.subHeading3 {
+    -fx-font-size: 15;
+}
+
+.bigNumber {
     -fx-font-size: 50;
 }
 
+.background {
+    -fx-background-color: #ffffff;
+}
+
+.startupBackground {
+    -fx-background-color: linear-gradient(to right, lightblue, transparent);
+}
+
+.mainBackground {
+    -fx-background-color: #f1f1f1;
+}
+
+.groupBubble {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: lightgray;
+    -fx-border-radius: 8;
+}
 
 .list-view {
     -fx-focus-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d1ff;
+    -fx-border-radius: 8;
+}
+
+.list-view .list-cell {
+    -fx-alignment: center;
+    -fx-focus-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .list-view .list-cell:selected {
@@ -60,55 +101,91 @@
     -fx-text-fill: black;
 }
 
+.list-view .placeholder .label {
+    -fx-font-size: 20;
+    -fx-text-fill: #afafaf;
+}
+
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
     -fx-background-color :transparent;
     -fx-border-color :transparent;
-    -fx-background-radius : 0.0em;
-    -fx-border-radius :2.0em;
+    -fx-background-radius : 0.0;
+    -fx-border-radius :2.0;
 }
 
 
 .scroll-bar:horizontal .increment-button ,
 .scroll-bar:horizontal .decrement-button {
     -fx-background-color :transparent;
-    -fx-background-radius : 0.0em;
-    -fx-padding :0.0 0.0 10.0 0.0;
+    -fx-background-radius : 0;
+    -fx-padding :0 0 10 0;
 
 }
 
 .scroll-bar:vertical .increment-button ,
 .scroll-bar:vertical .decrement-button {
     -fx-background-color :transparent;
-    -fx-background-radius : 0.0em;
-    -fx-padding :0.0 10.0 0.0 0.0;
+    -fx-background-radius : 0.0;
+    -fx-padding :0 10 0 0;
 
 }
 
 .scroll-bar .increment-arrow,
 .scroll-bar .decrement-arrow{
     -fx-shape : " ";
-    -fx-padding :0.15em 0.0;
+    -fx-padding :0.15 0;
 }
 
 .scroll-bar:vertical .increment-arrow,
 .scroll-bar:vertical .decrement-arrow{
     -fx-shape : " ";
-    -fx-padding :0.0 0.15em;
+    -fx-padding :0 0.15;
 }
 
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
     -fx-background-color : #9d9d9d;
-    -fx-background-insets : 2.0, 0.0, 0.0;
-    -fx-background-radius : 2.0em;
+    -fx-background-insets : 2, 0, 0;
+    -fx-background-radius : 2;
 }
 
 .scroll-bar:horizontal .thumb:hover,
 .scroll-bar:vertical .thumb:hover {
     -fx-background-color : gray;
-    -fx-background-insets : 2.0, 0.0, 0.0;
-    -fx-background-radius : 2.0em;
+    -fx-background-insets : 2, 0, 0;
+    -fx-background-radius : 2;
+}
+
+.radio {
+    -fx-border-color: #78bbe5;
+    -fx-border-radius: 10;
+    -fx-background-color: white;
+}
+
+.radio:hover {
+    -fx-cursor: hand;
+}
+
+.check-box .box {
+    -fx-border-color: #78bbe5;
+    -fx-border-radius: 2;
+    -fx-background-color: white;
+}
+
+.check-box:hover {
+    -fx-cursor: hand;
+}
+
+.toggle-button {
+    -fx-background-size: 100% 100%;
+    -fx-border-color: #78bbe5;
+    -fx-border-radius: 2;
+    -fx-background-color: white;
+}
+
+.toggle-button:hover {
+    -fx-cursor: hand;
 }
 
 

@@ -15,7 +15,6 @@ import javafx.scene.control.PasswordField;
 
 public class ChangePasswordController {
     private final StageManager stageManager = StageManager.getInstance();
-    private final ActiveUser activeUser = ActiveUser.getInstance();
     @FXML
     private PasswordField oldPasswordField, newPasswordField, confirmNewPasswordField;
     @FXML
@@ -27,7 +26,7 @@ public class ChangePasswordController {
     }
     @FXML
     protected void onBackButtonClick() {
-        stageManager.switchScene(FxmlView.PROFILE);
+        stageManager.switchMainScreen(FxmlView.PROFILE);
     }
     @FXML
     protected void onUpdateButtonClick() {
@@ -36,16 +35,16 @@ public class ChangePasswordController {
 
     @FXML
     private void updatePassword() {
-        User updatedUser = new User(activeUser);
+        User updatedUser = new User(ActiveUser.getInstance());
         hideErrors();
         if (validateInput() && passwordsMatch()) {
             try {
                 updatedUser.setPassword(newPasswordField.getText());
 
-                Authentication.authenticateUser(activeUser.getUserName(), oldPasswordField.getText());
+                Authentication.authenticateUser(ActiveUser.getInstance().getUserName(), oldPasswordField.getText());
                 ActiveUser.updateInstance(UserManager.update(updatedUser));
 
-                stageManager.displayModal(FxmlView.PROFILE_UPDATE_CONFIRM, true);
+                stageManager.displayModal(FxmlView.MODAL_CONFIRM, true, "Password updated.");
             } catch (UserAuthenticationException | InvalidUserException e) {
                 oldPasswordError.setText(e.getMessage());
                 oldPasswordError.setVisible(true);

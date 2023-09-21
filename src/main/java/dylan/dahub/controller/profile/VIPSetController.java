@@ -13,15 +13,13 @@ import javafx.scene.control.Label;
 public class VIPSetController {
 
     private final StageManager stageManager = StageManager.getInstance();
-    private final ActiveUser activeUser = ActiveUser.getInstance();
     @FXML
-    private Label label1, label2;
+    private Label label1;
 
     @FXML
     protected void initialize() {
-        if(activeUser.isVIP()) {
-            label1.setText("Would you like to cancel");
-            label2.setText("your VIP subscription?");
+        if(ActiveUser.getInstance().isVIP()) {
+            label1.setText("Would you like to cancel your VIP subscription?");
         }
     }
 
@@ -36,18 +34,21 @@ public class VIPSetController {
     }
 
     private void updateVIPStatus() {
-        User updatedUser = new User(activeUser);
+        User updatedUser = new User(ActiveUser.getInstance());
+        String confirmationText;
 
-        if (activeUser.isVIP()) {
+        if (ActiveUser.getInstance().isVIP()) {
             updatedUser.setVIP(0);
+            confirmationText = "Successfully cancelled your subscription!";
         } else {
             updatedUser.setVIP(1);
+            confirmationText = "Successfully upgraded to VIP!";
         }
 
         try {
             ActiveUser.updateInstance(UserManager.update(updatedUser));
             stageManager.closeModal();
-            stageManager.displayModal(FxmlView.VIP_CONFIRM, false);
+            stageManager.displayModal(FxmlView.MODAL_CONFIRM, false, confirmationText);
         } catch (InvalidUserException e) {
             // Should never reach here, since only changing VIP status
             stageManager.closeModal();

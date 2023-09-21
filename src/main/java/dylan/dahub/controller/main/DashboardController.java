@@ -1,35 +1,30 @@
 package dylan.dahub.controller.main;
 
 import dylan.dahub.DataAnalyticsHub;
+import dylan.dahub.controller.ControllerUtils;
 import dylan.dahub.controller.post.PostController;
 import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
-import dylan.dahub.model.User;
 import dylan.dahub.service.PostManager;
 import dylan.dahub.view.*;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
-import javafx.util.Duration;
 
 import java.io.IOException;
-import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class MenuController {
-
-    private final StageManager stageManager = StageManager.getInstance();
-    private final ActiveUser activeUser = ActiveUser.getInstance();
+public class DashboardController {
     private boolean showOnlyUserPosts = false;
+    private String sortOrder = "DESC";
 
     @FXML
     private Label welcomeText, totalPostsCount, myPostsCount;
@@ -41,15 +36,21 @@ public class MenuController {
     private ToggleGroup sortOptions;
     @FXML
     private CheckBox onlyUserPostsCheck;
+    @FXML
+    private ToggleButton sortOrderToggle;
+    @FXML
+    private ImageView sortOrderIcon;
 
     @FXML
     private void initialize() {
+        ActiveUser activeUser = ActiveUser.getInstance();
         welcomeText.setText("Welcome, " + activeUser.getFirstName() + " " + activeUser.getLastName());
 
         setPostCounts();
         generatePostList();
-        startToggleListener();
+        startRadioListener();
         startCheckBoxListener();
+        startToggleListener();
     }
 
 
@@ -70,7 +71,7 @@ public class MenuController {
                     protected void updateItem(Post item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item != null) {
-                            setGraphic(createPostGraphic(item));
+                            setGraphic(ControllerUtils.createPostGraphic(item));
                         } else {
                             setGraphic(null);
                             setText("");
@@ -80,28 +81,13 @@ public class MenuController {
             }
         });
 
-        refreshMainPostList("timestamp", showOnlyUserPosts);
+        refreshMainPostList("timestamp");
     }
-
-    // Creates the nicely-formatted graphic to display each post in the main post list.
-    private AnchorPane createPostGraphic(Post post) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource("fxml/post/post.fxml"));
-            AnchorPane graphic = fxmlLoader.load();
-            PostController postController = fxmlLoader.getController();
-            postController.setPost(post);
-            return graphic;
-        } catch (IOException e) {
-            Logger.alertError("Failed to generate post graphic: " + e.getMessage());
-        }
-        return null;
-    }
-
 
     // Refreshes the main post list. Makes a call to the database based on the specific search queries.
-    private void refreshMainPostList(String sort, boolean allUsers) {
+    private void refreshMainPostList(String sortType) {
         try {
-            ArrayList<Post> collection = PostManager.getMulti(5, sort, activeUser.getID(), allUsers, 0);
+            ArrayList<Post> collection = PostManager.getMulti(10, sortType, sortOrder, ActiveUser.getInstance().getID(), showOnlyUserPosts, 0);
             ObservableList<Post> newList = FXCollections.observableArrayList();
             newList.addAll(collection);
             mainPostView.setItems(newList);
@@ -115,10 +101,10 @@ public class MenuController {
     // Loads 5 more posts onto the main post list. If there's less than 5, loads them all and disables the button.
     private void loadMoreIntoPostList() {
         ObservableList<Post> currentList = mainPostView.getItems();
-        String sort = (String) sortOptions.getSelectedToggle().getUserData();
+        String sortType = (String) sortOptions.getSelectedToggle().getUserData();
         int offset = currentList.size();
         try {
-            ArrayList<Post> collection = PostManager.getMulti(5, sort, activeUser.getID(), showOnlyUserPosts, offset);
+            ArrayList<Post> collection = PostManager.getMulti(10, sortType, sortOrder, ActiveUser.getInstance().getID(), showOnlyUserPosts, offset);
             if (collection.size() == 0) {
                 showAllLoadedText();
                 return;
@@ -132,8 +118,8 @@ public class MenuController {
 
     private void setPostCounts() {
         try {
-            totalPostsCount.setText(String.valueOf(PostManager.getPostCount(activeUser.getID(), false)));
-            myPostsCount.setText(String.valueOf(PostManager.getPostCount(activeUser.getID(), true)));
+            totalPostsCount.setText(String.valueOf(PostManager.getPostCount(ActiveUser.getInstance().getID(), false)));
+            myPostsCount.setText(String.valueOf(PostManager.getPostCount(ActiveUser.getInstance().getID(), true)));
         } catch (InvalidPostException e) {
             Logger.alertError("Couldn't get post count: " + e.getMessage());
         }
@@ -145,16 +131,39 @@ public class MenuController {
         loadMoreButton.setDisable(true);
     }
 
-    private void startToggleListener() {
-        sortOptions.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
+    // Makes a call to the database every time a radio is selected. Each radio option has "user data" mapped
+    // to the sorting types: "timestamp", "likes", or "shares".
+    private void startRadioListener() {
+        sortOptions.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
+            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData());
         });
     }
 
     private void startCheckBoxListener(){
         onlyUserPostsCheck.selectedProperty().addListener((observable, oldValue, newValue) -> {
             showOnlyUserPosts = onlyUserPostsCheck.isSelected();
-            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData(), showOnlyUserPosts);
+            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData());
+        });
+    }
+
+    private void startToggleListener() {
+        String ARROW_UP_IMAGE_URL = "image/arrow_up.png";
+        String ARROW_DOWN_IMAGE_URL = "image/arrow_down.png";
+
+        Image arrowUpIcon = new Image(Objects.requireNonNull(
+                DataAnalyticsHub.class.getResourceAsStream(ARROW_UP_IMAGE_URL)));
+        Image arrowDownIcon = new Image(Objects.requireNonNull(
+                DataAnalyticsHub.class.getResourceAsStream(ARROW_DOWN_IMAGE_URL)));
+
+        sortOrderToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (sortOrderToggle.isSelected()) {
+                sortOrder = "ASC";
+                sortOrderIcon.setImage(arrowUpIcon);
+            } else {
+                sortOrder = "DESC";
+                sortOrderIcon.setImage(arrowDownIcon);
+            }
+            refreshMainPostList((String) sortOptions.getSelectedToggle().getUserData());
         });
     }
 
