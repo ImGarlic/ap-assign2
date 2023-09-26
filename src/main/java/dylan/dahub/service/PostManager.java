@@ -2,6 +2,7 @@ package dylan.dahub.service;
 
 import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.exception.InvalidUserException;
+import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.Post;
 import dylan.dahub.model.User;
 
@@ -171,6 +172,35 @@ public class PostManager {
             return count;
         } catch (SQLException e) {
             String message = "Failed to get post from database: " + e.getMessage();
+            throw new InvalidPostException(message);
+        }
+    }
+
+    public static void delete(int ID, User user) throws InvalidPostException, UserAuthenticationException {
+        String selQuery = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
+        String delQuery = String.format("DELETE FROM %s WHERE id='%d'", TABLE_NAME, ID);
+
+        try {
+            Connection con = DatabaseUtils.getConnection();
+
+            Statement stmt = con.createStatement();
+
+            ResultSet resultSet = stmt.executeQuery(selQuery);
+            if(resultSet.next()) {
+                int userIDFromPost = resultSet.getInt("user");
+                if (userIDFromPost != user.getID()) {
+                    throw new UserAuthenticationException("You can only delete your own posts");
+                }
+            } else {
+                throw new InvalidPostException("Post ID does not exist");
+            }
+
+            stmt.executeUpdate(delQuery);
+
+            System.out.println("Deleted post");
+            con.close();
+        } catch (SQLException e) {
+            String message = String.format("Failed to delete post: %s", e.getMessage());
             throw new InvalidPostException(message);
         }
     }

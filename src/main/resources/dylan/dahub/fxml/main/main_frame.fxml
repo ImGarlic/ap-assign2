@@ -45,7 +45,7 @@
                   <Font name="Candara" size="16.0" />
                </font>
             </Button>
-            <Button layoutY="139.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Search Posts" textFill="#575757">
+            <Button layoutY="139.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Find/Remove Post" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>
@@ -55,27 +55,22 @@
                   <Font name="Candara Bold Italic" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="removeButton" layoutY="207.0" mnemonicParsing="false" onAction="#onRemoveButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Remove Post" textFill="#575757">
-               <font>
-                  <Font name="Candara Bold Italic" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="graphDataButton" disable="true" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Graph Data" textFill="#575757">
+            <Button fx:id="graphDataButton" disable="true" layoutY="207.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Graph Data" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>
             </Button>
-            <Label fx:id="tooltip1" layoutY="241.0" prefHeight="32.0" prefWidth="200.0">
+            <Label fx:id="tooltip1" layoutY="207.0" prefHeight="32.0" prefWidth="200.0">
                <tooltip>
                   <Tooltip fx:id="tt1" text="Upgrade to VIP to use" />
                </tooltip>
             </Label>
-            <Button fx:id="bulkImportButton" disable="true" layoutY="275.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Bulk Import" textFill="#575757">
+            <Button fx:id="bulkImportButton" disable="true" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Bulk Import" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>
             </Button>
-            <Label fx:id="tooltip2" layoutY="275.0" prefHeight="32.0" prefWidth="200.0">
+            <Label fx:id="tooltip2" layoutY="241.0" prefHeight="32.0" prefWidth="200.0">
                <tooltip>
                   <Tooltip fx:id="tt2" text="Upgrade to VIP to use" />
                </tooltip>

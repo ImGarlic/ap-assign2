@@ -3,6 +3,7 @@ package dylan.dahub.view;
 import dylan.dahub.DataAnalyticsHub;
 import dylan.dahub.controller.ConfirmationModalController;
 import dylan.dahub.controller.main.MainFrameController;
+import dylan.dahub.controller.post.PostDeleteController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +17,9 @@ import java.util.Objects;
 // StageManager is the singleton instance of the javaFX stage. Use switchScene to easily switch between scenes
 // on the stage. Apart from any modals, only one stage should exist at a time.
 // Intrinsically linked to the FxmlView enum; any new scenes need to be included there to be used.
+
+// The mainFrameController needs to be persisted in the StageManager instance for each the functions to be
+// easily accessible globally from each scene.
 public class StageManager {
 
     private static StageManager INSTANCE;
@@ -38,6 +42,7 @@ public class StageManager {
         return INSTANCE;
     }
 
+    // Switches the whole scene for the stage
    public void switchScene(FxmlView view) {
         try {
             FXMLLoader loader = new FXMLLoader(DataAnalyticsHub.class.getResource(view.getFxmlFile()));
@@ -58,6 +63,8 @@ public class StageManager {
         }
    }
 
+   // Only switches the main screen section of the Main Frame. This persists the Main Frame instance,
+   // keeping the siderbar and header available within all pages on the app
    public void switchMainScreen(FxmlView view) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource(view.getFxmlFile()));
@@ -83,6 +90,11 @@ public class StageManager {
                 confirmationModalController.setText(text);
             }
 
+            if(view == FxmlView.POST_DELETE) {
+                PostDeleteController postDeleteController = fxmLloader.getController();
+                postDeleteController.setID(text);
+            }
+
             modalStage.setTitle(view.getTitle());
             modalStage.setScene(new Scene(root));
             modalStage.initModality(Modality.WINDOW_MODAL);
@@ -102,7 +114,7 @@ public class StageManager {
         modalStage.close();
    }
 
-   public void checkVipStatus() {
+   public void updateMainFrameProfileDetails() {
         mainFrameController.updateProfileDetails();
    }
 

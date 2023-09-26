@@ -114,10 +114,20 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/main/post_search.fxml";
         }
+    },POST_DELETE {
+        @Override
+        String getTitle() {
+            return "Delete post";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/post/post_delete.fxml";
+        }
     },MODAL_CONFIRM {
         @Override
         String getTitle() {
-            return "Confirmed";
+            return "";
         }
 
         @Override

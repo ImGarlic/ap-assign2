@@ -25,4 +25,5 @@
    </AnchorPane>
    <AnchorPane fx:id="postDisplay" layoutX="195.0" layoutY="196.0" prefHeight="100.0" prefWidth="412.0" />
    <Label fx:id="searchError" alignment="CENTER" contentDisplay="CENTER" layoutX="290.0" layoutY="157.0" prefHeight="16.0" prefWidth="222.0" text="That post doesn't exist!" textAlignment="CENTER" textFill="RED" visible="false" />
+   <Button fx:id="deleteButton" layoutX="345.0" layoutY="337.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="30.0" prefWidth="111.0" styleClass="deletButton" text="Delete Post" />
 </AnchorPane>

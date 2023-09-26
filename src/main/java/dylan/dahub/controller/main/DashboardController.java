@@ -59,8 +59,6 @@ public class DashboardController {
         loadMoreIntoPostList();
     }
 
-
-
     // Generate the initial list of posts to view. Set to 5 posts.
     private void generatePostList() {
         mainPostView.setCellFactory(new Callback<>() {

@@ -41,10 +41,11 @@ public class DataAnalyticsHub extends Application {
     private void overflowDatabase() throws InvalidPostException, InvalidUserException {
         Random rand = new Random();
         ArrayList<String> contentList = new ArrayList<>(Arrays.asList("I hate mondays",
-                "This is a pointless message about nothing purely designed to waste our time reading it. Your*", "What da hell", "Im Dylan",
+                "This is a pointless message about nothing purely designed to waste our time reading it. Your*", "What on earth", "Im Dylan",
                 "purple people eater", "For generating random numbers within a range using Math.random(), follow the steps below:",
                 "Declare the minimum value of the range", "Use the formula to generate values with the min and the max value inclusive.", "Cringe",
-                "I hate racists", "Whats your fav movie?", "Note: This method can only be used if you need an integer or float random value"));
+                "I love software engineering!", "Whats your fav movie?", "Note: This method can only be used if you need an integer or float random value", ":)",
+                "Billionaires should not exist", "bruh", "What has happened to Star Wars these days?", "I can't believe this just happened to me: my cat has thrown up on the couch >:("));
         ArrayList<String> authorList = new ArrayList<>(Arrays.asList("Dylan", "Garlic", "Andre", "Wilson", "Keegan", "Jono", "David (RIP)", "Tom", "Josh"));
         ArrayList<Post> postlist = new ArrayList<>();
 
@@ -65,10 +66,10 @@ public class DataAnalyticsHub extends Application {
     }
     @Override
     public void stop() throws SQLException {
-        String query = "DELETE FROM Post";
-        Connection con = DatabaseUtils.getConnection();
-        Statement stmt = con.createStatement();
-        stmt.executeUpdate(query);
+//        String query = "DELETE FROM Post";
+//        Connection con = DatabaseUtils.getConnection();
+//        Statement stmt = con.createStatement();
+//        stmt.executeUpdate(query);
         System.out.println("Quitting");
     }
 

@@ -35,7 +35,7 @@ public class ProfileController {
     protected void onVIPButtonClick() {
         stageManager.displayModal(FxmlView.VIP_SET, true, "");
         checkVIPStatus();
-        stageManager.checkVipStatus();
+        stageManager.updateMainFrameProfileDetails();
     }
 
     @FXML
