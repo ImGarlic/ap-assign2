@@ -40,12 +40,12 @@ public class ProfileController {
 
     @FXML
     protected void onUpdateProfileButtonClick() {
-        stageManager.switchMainScreen(FxmlView.PROFILE_UPDATE);
+        stageManager.setMainScreen(FxmlView.PROFILE_UPDATE);
     }
 
     @FXML
     protected void onChangePasswordButtonClick() {
-        stageManager.switchMainScreen(FxmlView.CHANGE_PASSWORD);
+        stageManager.setMainScreen(FxmlView.CHANGE_PASSWORD);
     }
 
     private void checkVIPStatus() {

@@ -34,7 +34,7 @@ public class PostDeleteController {
         stageManager.closeModal();
     }
 
-    public void setID(String ID) {
+    public void setPostID(String ID) {
         try {
             postID = Integer.parseInt(ID);
         } catch (NumberFormatException e) {

@@ -22,15 +22,6 @@ public class Post {
 
     }
 
-    private Post(Post post) {
-        this.ID = post.getID();
-        this.author = post.getAuthor();
-        this.content = post.getContent();
-        this.likes = post.getLikes();
-        this.shares = post.getShares();
-        this.dateTime = post.getDateTime();
-    }
-
     public String getDateTimeString() {
         return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"));
     }

@@ -94,6 +94,16 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/profile/VIP_set.fxml";
         }
+    }, POST_VIEW {
+        @Override
+        String getTitle() {
+            return "Add a post";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/main/post_view.fxml";
+        }
     }, POST_ADD {
         @Override
         String getTitle() {
@@ -104,7 +114,7 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/main/post_add.fxml";
         }
-    },  POST_SEARCH {
+    }, POST_SEARCH {
         @Override
         String getTitle() {
             return "Find a post";
@@ -123,6 +133,16 @@ public enum FxmlView {
         @Override
         String getFxmlFile() {
             return "fxml/post/post_delete.fxml";
+        }
+    },GRAPH {
+        @Override
+        String getTitle() {
+            return "Graph data";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/main/graph.fxml";
         }
     },MODAL_CONFIRM {
         @Override

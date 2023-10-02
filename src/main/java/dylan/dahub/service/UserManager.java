@@ -36,8 +36,7 @@ public class UserManager {
     private static User getUser(String query) throws InvalidUserException {
         User user;
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
             Statement stmt = con.createStatement();
 
             ResultSet resultSet = stmt.executeQuery(query);
@@ -63,8 +62,7 @@ public class UserManager {
         String query = String.format("INSERT INTO %s VALUES (null, '%s', '%s', '%s', '%s', 0)",
                 TABLE_NAME, user.getUserName(), user.getFirstName(), user.getLastName(), user.getPassword());
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
 
             if (userExists(user.getUserName())) {
                 throw new InvalidUserException("Username already exists");
@@ -94,8 +92,7 @@ public class UserManager {
                 TABLE_NAME, user.getUserName(), user.getFirstName(), user.getLastName(),
                 user.getPassword(), user.getVIP(), user.getID());
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
 
             if (userExists(user.getUserName()) &&
                     getFromUsername(user.getUserName()).getID() != user.getID()) {
@@ -118,8 +115,7 @@ public class UserManager {
         String query = String.format("SELECT * FROM %s ORDER BY RANDOM() LIMIT 1", TABLE_NAME);
         User user;
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
             Statement stmt = con.createStatement();
 
             ResultSet resultSet = stmt.executeQuery(query);

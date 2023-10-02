@@ -1,9 +1,9 @@
 package dylan.dahub.service;
 
 import dylan.dahub.exception.InvalidPostException;
-import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.Post;
+import dylan.dahub.model.Range;
 import dylan.dahub.model.User;
 
 import java.sql.*;
@@ -40,8 +40,8 @@ public class PostManager {
         Post post;
         String query = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
+
             Statement stmt = con.createStatement();
 
             ResultSet resultSet = stmt.executeQuery(query);
@@ -69,8 +69,8 @@ public class PostManager {
         String query = String.format("INSERT INTO %s VALUES (null, '%s', '%s', '%d', '%d', '%d', '%d')",
                 TABLE_NAME, post.getAuthor(), post.getContent(), post.getLikes(), post.getShares(), timeStamp, user.getID());
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
+
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate(query);
@@ -87,6 +87,7 @@ public class PostManager {
     }
 
     // Gets multiple posts from the database based on SQL select queries.
+    // sortType refers to the column to sort on, sortOrder is ascending/descending.
     public static ArrayList<Post> getMulti(int count, String sortType, String sortOrder, int userID, boolean onlyCurrentUser, int offset) throws InvalidPostException {
         ArrayList<Post> collection = new ArrayList<>();
         String query;
@@ -97,8 +98,7 @@ public class PostManager {
         }
 
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
             Statement stmt = con.createStatement();
 
             ResultSet resultSet = stmt.executeQuery(query);
@@ -110,9 +110,6 @@ public class PostManager {
                 collection.add(post);
             }
 
-//            for (Post post : collection) {
-//                System.out.println("post: " + post.getContent());
-//            }
             con.close();
 
             return collection;
@@ -122,6 +119,41 @@ public class PostManager {
         }
 
     }
+
+    public static ArrayList<Post> getMultiWithSearch(int count, String searchClause, String sortType, String sortOrder, int userID, boolean onlyCurrentUser, int offset) throws InvalidPostException {
+        ArrayList<Post> collection = new ArrayList<>();
+        String query;
+        if(!onlyCurrentUser) {
+            query = String.format("SELECT * FROM %s WHERE author LIKE '%%%s%%' OR id LIKE '%%%s%%' ORDER BY %s %s LIMIT '%d' OFFSET '%d' COLLATE NOCASE ",
+                    TABLE_NAME, searchClause, searchClause, sortType, sortOrder, count, offset);
+        } else {
+            query = String.format("SELECT * FROM %s WHERE (author LIKE '%%%s%%' OR id LIKE '%%%s%%') AND user='%d' ORDER BY %s %s LIMIT '%d' OFFSET '%d' COLLATE NOCASE ",
+                    TABLE_NAME, searchClause, searchClause, userID, sortType, sortOrder, count, offset);
+        }
+
+
+        try (Connection con = DatabaseUtils.getConnection()){
+            Statement stmt = con.createStatement();
+
+            ResultSet resultSet = stmt.executeQuery(query);
+            while(resultSet.next()) {
+                LocalDateTime dateTime = createDateTime(resultSet.getLong("timestamp"));
+                Post post = new Post(resultSet.getInt("id"), resultSet.getString("author"),
+                        resultSet.getString("content"), resultSet.getInt("likes"),
+                        resultSet.getInt("shares"), dateTime);
+                collection.add(post);
+            }
+
+            con.close();
+
+            return collection;
+        } catch (SQLException e) {
+            String message = "Failed to get post from database: " + e.getMessage();
+            throw new InvalidPostException(message);
+        }
+
+    }
+
 
     public static void putMulti(User user, ArrayList<Post> postList) throws InvalidPostException {
 
@@ -134,8 +166,7 @@ public class PostManager {
         query.deleteCharAt(query.lastIndexOf(","));
         System.out.println(query);
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate(query.toString());
@@ -148,20 +179,28 @@ public class PostManager {
         }
     }
 
-    public static int getPostCount(int userID, boolean onlyCurrentUser) throws InvalidPostException {
-        String query;
+    public static int getPostCount(int userID, boolean onlyCurrentUser, String sortType, Range range) throws InvalidPostException {
+        String query = String.format("SELECT COUNT(*) FROM %s", TABLE_NAME);
         int count;
         if(onlyCurrentUser) {
-            query = String.format("SELECT COUNT(*) FROM %s WHERE user='%d'", TABLE_NAME, userID);
+            query += String.format(" WHERE user='%d'", userID);
+            if (sortType.equals("likes")) {
+                query += String.format(" AND likes<%d AND likes>%d", range.upperBound(), range.lowerBound());
+            } else if (sortType.equals("shares")) {
+                query += String.format(" AND shares<%d AND shares>%d", range.upperBound(), range.lowerBound());
+            }
         } else {
-            query = String.format("SELECT COUNT(*) FROM %s", TABLE_NAME);
+            if (sortType.equals("likes")) {
+                query += String.format(" WHERE likes<%d AND likes>%d", range.upperBound(), range.lowerBound());
+            } else if (sortType.equals("shares")) {
+                query += String.format(" WHERE shares<%d AND shares>%d", range.upperBound(), range.lowerBound());
+            }
         }
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
+        try (Connection con = DatabaseUtils.getConnection()){
             Statement stmt = con.createStatement();
-
             ResultSet resultSet = stmt.executeQuery(query);
+
             if(resultSet.next()) {
                 count = resultSet.getInt(1);
             } else {
@@ -180,12 +219,10 @@ public class PostManager {
         String selQuery = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
         String delQuery = String.format("DELETE FROM %s WHERE id='%d'", TABLE_NAME, ID);
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
-
+        try (Connection con = DatabaseUtils.getConnection()){
             Statement stmt = con.createStatement();
-
             ResultSet resultSet = stmt.executeQuery(selQuery);
+
             if(resultSet.next()) {
                 int userIDFromPost = resultSet.getInt("user");
                 if (userIDFromPost != user.getID()) {

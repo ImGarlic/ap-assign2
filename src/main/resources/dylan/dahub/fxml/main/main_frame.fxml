@@ -45,7 +45,7 @@
                   <Font name="Candara" size="16.0" />
                </font>
             </Button>
-            <Button layoutY="139.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Find/Remove Post" textFill="#575757">
+            <Button layoutY="139.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Post Database" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>
@@ -55,7 +55,7 @@
                   <Font name="Candara Bold Italic" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="graphDataButton" disable="true" layoutY="207.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Graph Data" textFill="#575757">
+            <Button fx:id="graphDataButton" disable="true" layoutY="207.0" mnemonicParsing="false" onAction="#onGraphButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Graph Data" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>

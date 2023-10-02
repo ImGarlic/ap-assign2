@@ -194,4 +194,43 @@
     -fx-cursor: hand;
 }
 
+.data0.chart-pie { -fx-pie-color: #95c5e5
+}
+.data1.chart-pie { -fx-pie-color: #dae5b4
+}
+.data2.chart-pie { -fx-pie-color: #d8c5ec
+}
+
+.text-field {
+    -fx-padding: 3;
+}
+
+.combo-box {
+    -fx-border-color: #78bbe5;
+    -fx-border-radius: 2;
+    -fx-background-color: white;
+    -fx-padding: 0;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 1 1 1 5;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-radius: 2;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 0;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-text-fill: #78bbe5;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-border-color: transparent;
+}
+
 

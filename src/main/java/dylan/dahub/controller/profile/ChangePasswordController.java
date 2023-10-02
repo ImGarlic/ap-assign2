@@ -26,7 +26,7 @@ public class ChangePasswordController {
     }
     @FXML
     protected void onBackButtonClick() {
-        stageManager.switchMainScreen(FxmlView.PROFILE);
+        stageManager.setMainScreen(FxmlView.PROFILE);
     }
     @FXML
     protected void onUpdateButtonClick() {

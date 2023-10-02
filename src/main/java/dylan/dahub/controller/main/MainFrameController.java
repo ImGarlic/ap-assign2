@@ -4,8 +4,6 @@ import dylan.dahub.DataAnalyticsHub;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.StageManager;
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -52,33 +50,33 @@ public class MainFrameController {
 
     @FXML
     private void onHomeClick() {
-        stageManager.switchMainScreen(FxmlView.DASHBOARD);
+        stageManager.setMainScreen(FxmlView.DASHBOARD);
     }
 
     @FXML
     protected void onProfileButtonClick() {
         hideSideBar();
-        stageManager.switchMainScreen(FxmlView.PROFILE);
+        stageManager.setMainScreen(FxmlView.PROFILE);
     }
 
     @FXML
     protected void onDashboardButtonClick() {
-        stageManager.switchMainScreen(FxmlView.DASHBOARD);
+        stageManager.setMainScreen(FxmlView.DASHBOARD);
     }
 
     @FXML
     protected void onSearchButtonClick() {
-        stageManager.switchMainScreen(FxmlView.POST_SEARCH);
+        stageManager.setMainScreen(FxmlView.POST_VIEW);
     }
 
     @FXML
     protected void onAddButtonClick() {
-        stageManager.switchMainScreen(FxmlView.POST_ADD);
+        stageManager.setMainScreen(FxmlView.POST_ADD);
     }
 
     @FXML
-    protected void onRemoveButtonClick() {
-
+    protected void onGraphButtonClick() {
+        stageManager.setMainScreen(FxmlView.GRAPH);
     }
 
     @FXML

@@ -35,7 +35,7 @@ public class DataAnalyticsHub extends Application {
     // This should be set to STARTUP for regular use.
     private void setInitialScene() throws InvalidUserException {
         ActiveUser.createInstance(UserManager.getFromUsername("d"));
-        stageManager.switchScene(FxmlView.MAIN);
+        stageManager.setMainScreen(FxmlView.POST_VIEW);
     }
 
     private void overflowDatabase() throws InvalidPostException, InvalidUserException {
@@ -45,9 +45,9 @@ public class DataAnalyticsHub extends Application {
                 "purple people eater", "For generating random numbers within a range using Math.random(), follow the steps below:",
                 "Declare the minimum value of the range", "Use the formula to generate values with the min and the max value inclusive.", "Cringe",
                 "I love software engineering!", "Whats your fav movie?", "Note: This method can only be used if you need an integer or float random value", ":)",
-                "Billionaires should not exist", "bruh", "What has happened to Star Wars these days?", "I can't believe this just happened to me: my cat has thrown up on the couch >:("));
+                "Billionaires should not exist", "bruh", "What has happened to Star Wars these days?", "I cant believe this just happened to me: my cat has thrown up on the couch >:(",
+                "Come and meet us at Building 14 of RMIT.", "Check out this epic film.", "Are we into Christmas month already?!", "What a miracle!", "Fantastic day today. Congratulations to all winners."));
         ArrayList<String> authorList = new ArrayList<>(Arrays.asList("Dylan", "Garlic", "Andre", "Wilson", "Keegan", "Jono", "David (RIP)", "Tom", "Josh"));
-        ArrayList<Post> postlist = new ArrayList<>();
 
         System.out.println(contentList.size());
         System.out.println(authorList.size());
@@ -55,14 +55,12 @@ public class DataAnalyticsHub extends Application {
         for (int i = 0; i < 1000; i++) {
             String content = contentList.get(rand.nextInt(contentList.size() - 1));
             String author = authorList.get(rand.nextInt(authorList.size() - 1));
-            int likes = rand.nextInt(0, 20000000);
-            int shares = rand.nextInt(0, 20000000);
+            int likes = rand.nextInt(0, 2000);
+            int shares = rand.nextInt(0, 2000);
             Post post = new Post(1, author, content, likes, shares, LocalDateTime.now());
-//            postlist.add(post);
             PostManager.put(UserManager.getRandomUser(), post);
-            System.out.println(String.format("Post %d: Likes: %d, Shares: %d", i, likes, shares));
+            System.out.printf("Post %d: Likes: %d, Shares: %d%n", i, likes, shares);
         }
-//        PostManager.putMulti(UserManager.getRandomUser(), postlist);
     }
     @Override
     public void stop() throws SQLException {

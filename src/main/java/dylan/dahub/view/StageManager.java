@@ -18,8 +18,8 @@ import java.util.Objects;
 // on the stage. Apart from any modals, only one stage should exist at a time.
 // Intrinsically linked to the FxmlView enum; any new scenes need to be included there to be used.
 
-// The mainFrameController needs to be persisted in the StageManager instance for each the functions to be
-// easily accessible globally from each scene.
+// The mainFrameController needs to be persisted in the StageManager instance for each of the functions to be
+// easily accessible globally from each main screen.
 public class StageManager {
 
     private static StageManager INSTANCE;
@@ -51,9 +51,11 @@ public class StageManager {
             rootStage.setScene(new Scene(root));
             rootStage.show();
 
+            // When first switching the the main frame (on login/register), we need to intitalize the controller instance
+            // and set the main screen to the dashboard.
             if (view == FxmlView.MAIN) {
                 mainFrameController = loader.getController();
-                switchMainScreen(FxmlView.DASHBOARD);
+                setMainScreen(FxmlView.DASHBOARD);
             }
 
 
@@ -64,9 +66,13 @@ public class StageManager {
    }
 
    // Only switches the main screen section of the Main Frame. This persists the Main Frame instance,
-   // keeping the siderbar and header available within all pages on the app
-   public void switchMainScreen(FxmlView view) {
+   // keeping the sidebar and header available within all pages on the app
+   public void setMainScreen(FxmlView view) {
         try {
+            // This catches any usages of setMainScreen without first setting the main frame
+            if(mainFrameController == null) {
+                switchScene(FxmlView.MAIN);
+            }
             FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource(view.getFxmlFile()));
             AnchorPane screen = fxmlLoader.load();
             mainFrameController.switchScreen(screen);
@@ -92,7 +98,7 @@ public class StageManager {
 
             if(view == FxmlView.POST_DELETE) {
                 PostDeleteController postDeleteController = fxmLloader.getController();
-                postDeleteController.setID(text);
+                postDeleteController.setPostID(text);
             }
 
             modalStage.setTitle(view.getTitle());
