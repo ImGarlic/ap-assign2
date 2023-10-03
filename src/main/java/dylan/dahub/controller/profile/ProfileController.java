@@ -37,7 +37,7 @@ public class ProfileController {
     @FXML
     protected void onVIPButtonClick() {
         String requestMessage, confirmMessage;
-        User updatedUser = ActiveUser.getInstance();
+        User updatedUser = new User(ActiveUser.getInstance());
         if(ActiveUser.getInstance().isVIP()) {
             requestMessage = "Would you like to cancel you VIP subscription?";
             confirmMessage = "Successfully cancelled your subscription!";
@@ -49,6 +49,7 @@ public class ProfileController {
         }
 
         if(StageManager.getInstance().displayRequestModal(requestMessage)) {
+            System.out.println("huh");
             try {
                 ActiveUser.updateInstance(UserManager.update(updatedUser));
                 StageManager.getInstance().displayConfirmModal(confirmMessage);

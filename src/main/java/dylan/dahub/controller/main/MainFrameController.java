@@ -1,9 +1,15 @@
 package dylan.dahub.controller.main;
 
 import dylan.dahub.DataAnalyticsHub;
+import dylan.dahub.controller.ControllerUtils;
+import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.model.ActiveUser;
+import dylan.dahub.model.Post;
+import dylan.dahub.service.PostManager;
 import dylan.dahub.view.FxmlView;
+import dylan.dahub.view.Logger;
 import dylan.dahub.view.StageManager;
+import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -157,6 +163,20 @@ public class MainFrameController {
 
     public void switchScreen(AnchorPane screen) {
         hideSideBar();
+//        FadeTransition fadeIn = new FadeTransition(Duration.millis(50), mainScreen);
+//        fadeIn.setFromValue(0);
+//        fadeIn.setToValue(1);
+//
+//        FadeTransition fadeOut = new FadeTransition(Duration.millis(50), mainScreen);
+//        fadeOut.setFromValue(1);
+//        fadeOut.setToValue(0);
+//        fadeOut.setOnFinished(event -> {
+//            mainScreen.getChildren().clear();
+//            mainScreen.getChildren().add(screen);
+//            fadeIn.play();
+//        });
+//        fadeOut.play();
+
         mainScreen.getChildren().clear();
         mainScreen.getChildren().add(screen);
     }

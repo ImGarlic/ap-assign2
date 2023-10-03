@@ -1,10 +1,9 @@
 package dylan.dahub.view;
 
 import dylan.dahub.DataAnalyticsHub;
-import dylan.dahub.controller.ModalConfirmController;
-import dylan.dahub.controller.ModalRequestController;
+import dylan.dahub.controller.modal.ModalConfirmController;
+import dylan.dahub.controller.modal.ModalRequestController;
 import dylan.dahub.controller.main.MainFrameController;
-import dylan.dahub.controller.post.PostDeleteController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -52,7 +51,7 @@ public class StageManager {
             rootStage.setScene(new Scene(root));
             rootStage.show();
 
-            // When first switching the the main frame (on login/register), we need to intitalize the controller instance
+            // When first switching to the main frame (on login/register), we need to intitalize the controller instance
             // and set the main screen to the dashboard.
             if (view == FxmlView.MAIN) {
                 mainFrameController = loader.getController();

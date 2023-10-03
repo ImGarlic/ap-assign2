@@ -12,33 +12,38 @@
              <Font size="20.0" />
            </font>
        </Label>
-      <FlowPane alignment="CENTER" layoutX="34.0" layoutY="88.0" prefHeight="120.0" prefWidth="260.0" styleClass="groupBubble">
+      <FlowPane alignment="CENTER" layoutX="34.0" layoutY="82.0" prefHeight="120.0" prefWidth="260.0" styleClass="groupBubble">
          <children>
             <Label styleClass="subHeading" text="Total number of posts:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label id="bigNumber" fx:id="totalPostsCount" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="120.0" text="50" textAlignment="CENTER">
+            <Label id="bigNumber" fx:id="totalPostsCount" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="120.0" styleClass="bigNumber" text="50" textAlignment="CENTER">
                <font>
                   <Font size="50.0" />
                </font>
             </Label>
          </children>
       </FlowPane>
-      <FlowPane alignment="CENTER" layoutX="34.0" layoutY="251.0" prefHeight="120.0" prefWidth="260.0" styleClass="groupBubble">
+      <FlowPane alignment="CENTER" layoutX="34.0" layoutY="256.0" prefHeight="120.0" prefWidth="260.0" styleClass="groupBubble">
          <children>
             <Label contentDisplay="CENTER" styleClass="subHeading" text="Number of MY posts:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label id="bigNumber" fx:id="myPostsCount" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="120.0" text="50" textAlignment="CENTER">
+            <Label id="bigNumber" fx:id="myPostsCount" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="120.0" styleClass="bigNumber" text="50" textAlignment="CENTER">
                <font>
                   <Font size="50.0" />
                </font>
             </Label>
          </children>
       </FlowPane>
+      <AnchorPane layoutX="322.0" layoutY="151.0" prefHeight="138.0" prefWidth="449.0" styleClass="groupBubble">
+         <children>
+            <AnchorPane fx:id="postDisplay" layoutX="19.0" layoutY="19.0" prefHeight="100.0" prefWidth="412.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

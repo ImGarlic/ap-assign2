@@ -122,7 +122,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "fxml/modal_confirm.fxml";
+            return "fxml/modal/modal_confirm.fxml";
         }
     }, MODAL_REQUEST {
         @Override
@@ -132,7 +132,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "fxml/modal_request.fxml";
+            return "fxml/modal/modal_request.fxml";
         }
     };
 

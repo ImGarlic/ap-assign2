@@ -1,10 +1,12 @@
 package dylan.dahub.service;
 
 import dylan.dahub.exception.InvalidPostException;
+import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.Post;
 import dylan.dahub.model.Range;
 import dylan.dahub.model.User;
+import dylan.dahub.view.Logger;
 
 import java.sql.*;
 import java.time.Instant;
@@ -242,6 +244,31 @@ public class PostManager {
         }
     }
 
+    public static Post getRandomPost() throws InvalidPostException {
+        String query = String.format("SELECT * FROM %s ORDER BY RANDOM() LIMIT 1", TABLE_NAME);
+        Post post;
+
+        try (Connection con = DatabaseUtils.getConnection()){
+            Statement stmt = con.createStatement();
+
+            ResultSet resultSet = stmt.executeQuery(query);
+            if(resultSet.next()) {
+                LocalDateTime dateTime = createDateTime(resultSet.getLong("timestamp"));
+                post = new Post(resultSet.getInt("id"), resultSet.getString("author"),
+                        resultSet.getString("content"), resultSet.getInt("likes"),
+                        resultSet.getInt("shares"), dateTime);
+                con.close();
+            } else {
+                throw new InvalidPostException("Post ID does not exist");
+            }
+
+            return post;
+        } catch (SQLException e) {
+            String message = "Failed to get post from database: " + e.getMessage();
+            Logger.alertError(message);
+            throw new InvalidPostException(message);
+        }
+    }
 
     private static long createTimeStamp(LocalDateTime dateTime) {
         return dateTime.toEpochSecond(ZoneOffset.of("Z"));

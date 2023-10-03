@@ -1,4 +1,4 @@
-package dylan.dahub.controller;
+package dylan.dahub.controller.modal;
 
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
