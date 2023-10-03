@@ -1,5 +1,6 @@
 package dylan.dahub.controller.profile;
 
+import dylan.dahub.controller.ControllerUtils;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.ActiveUser;
@@ -12,9 +13,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class ChangePasswordController {
-    private final StageManager stageManager = StageManager.getInstance();
     @FXML
     private PasswordField oldPasswordField, newPasswordField, confirmNewPasswordField;
     @FXML
@@ -26,7 +29,7 @@ public class ChangePasswordController {
     }
     @FXML
     protected void onBackButtonClick() {
-        stageManager.setMainScreen(FxmlView.PROFILE);
+        StageManager.getInstance().setMainScreen(FxmlView.PROFILE);
     }
     @FXML
     protected void onUpdateButtonClick() {
@@ -44,7 +47,8 @@ public class ChangePasswordController {
                 Authentication.authenticateUser(ActiveUser.getInstance().getUserName(), oldPasswordField.getText());
                 ActiveUser.updateInstance(UserManager.update(updatedUser));
 
-                stageManager.displayConfirmModal("Password updated.");
+                StageManager.getInstance().displayConfirmModal("Password updated.");
+                ControllerUtils.clearTextFields(new ArrayList<>(Arrays.asList(oldPasswordField, newPasswordField, confirmNewPasswordField)));
             } catch (UserAuthenticationException | InvalidUserException e) {
                 oldPasswordError.setText(e.getMessage());
                 oldPasswordError.setVisible(true);

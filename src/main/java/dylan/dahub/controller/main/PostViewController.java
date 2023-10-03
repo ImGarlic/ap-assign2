@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class PostViewController {
-    private boolean showOnlyUserPosts = false;
+    private boolean showOnlyUserPosts = true;
     private String sortOrder = "DESC";
 
     @FXML
@@ -44,12 +44,13 @@ public class PostViewController {
 
     @FXML
     private void initialize() {
-        generatePostList();
         startListViewListener();
         startCheckBoxListener();
         startSearchBarListener();
         startChoiceBoxListener();
         startToggleListener();
+
+        generatePostList();
     }
 
     @FXML

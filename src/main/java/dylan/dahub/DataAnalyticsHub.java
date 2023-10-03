@@ -34,7 +34,7 @@ public class DataAnalyticsHub extends Application {
     // Use this to set the initial scene, very useful for functional testing.
     // This should be set to STARTUP for regular use.
     private void setInitialScene() throws InvalidUserException {
-        ActiveUser.createInstance(UserManager.getFromUsername("d"));
+        ActiveUser.createInstance(UserManager.getFromUsername("ru"));
         stageManager.setMainScreen(FxmlView.POST_VIEW);
     }
 

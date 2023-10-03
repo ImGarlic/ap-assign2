@@ -84,20 +84,10 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/profile/change_password.fxml";
         }
-    }, VIP_SET {
-        @Override
-        String getTitle() {
-            return "VIP membership";
-        }
-
-        @Override
-        String getFxmlFile() {
-            return "fxml/profile/VIP_set.fxml";
-        }
     }, POST_VIEW {
         @Override
         String getTitle() {
-            return "Add a post";
+            return "Post Database";
         }
 
         @Override
@@ -113,26 +103,6 @@ public enum FxmlView {
         @Override
         String getFxmlFile() {
             return "fxml/main/post_add.fxml";
-        }
-    }, POST_SEARCH {
-        @Override
-        String getTitle() {
-            return "Find a post";
-        }
-
-        @Override
-        String getFxmlFile() {
-            return "fxml/main/post_search.fxml";
-        }
-    },POST_DELETE {
-        @Override
-        String getTitle() {
-            return "Delete post";
-        }
-
-        @Override
-        String getFxmlFile() {
-            return "fxml/post/post_delete.fxml";
         }
     },GRAPH {
         @Override

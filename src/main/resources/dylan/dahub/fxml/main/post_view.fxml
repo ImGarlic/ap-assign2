@@ -21,7 +21,7 @@
                   <Label text="Nothing to show :(" />
                </placeholder>
             </ListView>
-            <CheckBox fx:id="onlyUserPostsCheck" layoutX="333.0" layoutY="7.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Show only my posts" />
+            <CheckBox fx:id="onlyUserPostsCheck" layoutX="333.0" layoutY="7.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" selected="true" text="Show only my posts" />
             <Button fx:id="loadMoreButton" layoutX="374.0" layoutY="348.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLoadMoreButtonClick" prefHeight="19.0" prefWidth="83.0" style="-fx-font-size: 12; -fx-padding: 0;" text="Load More" textFill="#575757">
                <font>
                   <Font name="Candara Bold Italic" size="1.0" />

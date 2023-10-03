@@ -1,5 +1,6 @@
 package dylan.dahub.controller.profile;
 
+import dylan.dahub.controller.ControllerUtils;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
@@ -10,10 +11,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class ProfileUpdateController {
-
-    private final StageManager stageManager = StageManager.getInstance();
 
     @FXML
     private TextField userNameInput, firstNameInput, lastNameInput;
@@ -22,11 +24,8 @@ public class ProfileUpdateController {
 
     @FXML
     protected void initialize() {
-        ActiveUser activeUser = ActiveUser.getInstance();
-        userNameInput.setPromptText(activeUser.getUserName());
-        firstNameInput.setPromptText(activeUser.getFirstName());
-        lastNameInput.setPromptText(activeUser.getLastName());
         userNameError.setVisible(false);
+        setPromptTexts();
     }
 
     @FXML
@@ -35,7 +34,7 @@ public class ProfileUpdateController {
     }
     @FXML
     protected void onBackButtonClick() {
-        stageManager.setMainScreen(FxmlView.PROFILE);
+        StageManager.getInstance().setMainScreen(FxmlView.PROFILE);
     }
     @FXML
     protected void onUpdateButtonClick() {
@@ -47,7 +46,9 @@ public class ProfileUpdateController {
 
         try {
             ActiveUser.updateInstance(UserManager.update(updatedUser));
-            stageManager.displayConfirmModal("Profile details updated.");
+            StageManager.getInstance().displayConfirmModal("Profile details updated.");
+            ControllerUtils.clearTextFields(new ArrayList<>(Arrays.asList(userNameInput, firstNameInput, lastNameInput)));
+            setPromptTexts();
         } catch (InvalidUserException e) {
             userNameError.setText(e.getMessage());
             userNameError.setVisible(true);
@@ -74,4 +75,12 @@ public class ProfileUpdateController {
                 newFirstName, newLastName,
                 activeUser.getPassword(), activeUser.getVIP());
     }
+
+    private void setPromptTexts() {
+        ActiveUser activeUser = ActiveUser.getInstance();
+        userNameInput.setPromptText(activeUser.getUserName());
+        firstNameInput.setPromptText(activeUser.getFirstName());
+        lastNameInput.setPromptText(activeUser.getLastName());
+    }
+
 }

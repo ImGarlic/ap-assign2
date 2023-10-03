@@ -7,10 +7,12 @@ import dylan.dahub.model.Post;
 import dylan.dahub.view.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ControllerUtils {
 
@@ -22,6 +24,12 @@ public class ControllerUtils {
     public static void hideErrorLabels(ArrayList<Label> labels) {
         for (Label label : labels) {
             label.setVisible(false);
+        }
+    }
+
+    public static void clearTextFields(ArrayList<TextField> textfields) {
+        for (TextField textfield : textfields) {
+            textfield.setText("");
         }
     }
 
