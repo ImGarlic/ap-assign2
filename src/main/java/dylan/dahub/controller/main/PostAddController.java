@@ -65,7 +65,7 @@ public class PostAddController {
             try {
                 Post post = PostManager.generatePostFromTextFields(author.getText(), content.getText(), dateTime.getText(), likes.getText(), shares.getText());
                 PostManager.put(ActiveUser.getInstance(), post);
-                stageManager.displayModal(FxmlView.MODAL_CONFIRM, false, "Post added to the collection.");
+                stageManager.displayConfirmModal("Post added to the collection.");
                 clearTextFields();
                 setDefaultPost();
             } catch (InvalidPostException e) {

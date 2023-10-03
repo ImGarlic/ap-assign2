@@ -16,21 +16,21 @@ public class PostDeleteController {
     private int postID;
 
     @FXML
-    protected void onOKButtonClick() {
+    private void onOKButtonClick() {
         try {
             PostManager.delete(postID, ActiveUser.getInstance());
             stageManager.closeModal();
-            stageManager.displayModal(FxmlView.MODAL_CONFIRM, false, "Post deleted successfully!");
+//            stageManager.displayModal(FxmlView.MODAL_CONFIRM, false, "Post deleted successfully!");
         } catch (InvalidPostException e) {
             Logger.alertError("Failed to delete post: " + e.getMessage());
         } catch (UserAuthenticationException e) {
             stageManager.closeModal();
-            stageManager.displayModal(FxmlView.MODAL_CONFIRM, false, "Failed to delete post: " + e.getMessage());
+//            stageManager.displayModal(FxmlView.MODAL_CONFIRM, false, "Failed to delete post: " + e.getMessage());
         }
     }
 
     @FXML
-    protected void onCloseButtonClick() {
+    private void onCloseButtonClick() {
         stageManager.closeModal();
     }
 

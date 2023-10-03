@@ -47,7 +47,7 @@ public class ProfileUpdateController {
 
         try {
             ActiveUser.updateInstance(UserManager.update(updatedUser));
-            stageManager.displayModal(FxmlView.MODAL_CONFIRM, true, "Profile details updated.");
+            stageManager.displayConfirmModal("Profile details updated.");
         } catch (InvalidUserException e) {
             userNameError.setText(e.getMessage());
             userNameError.setVisible(true);

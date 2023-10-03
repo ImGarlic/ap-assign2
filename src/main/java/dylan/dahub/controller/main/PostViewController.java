@@ -3,10 +3,13 @@ package dylan.dahub.controller.main;
 import dylan.dahub.DataAnalyticsHub;
 import dylan.dahub.controller.ControllerUtils;
 import dylan.dahub.exception.InvalidPostException;
+import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
 import dylan.dahub.service.PostManager;
+import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.Logger;
+import dylan.dahub.view.StageManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -51,7 +54,18 @@ public class PostViewController {
 
     @FXML
     private void onDeleteButtonClick() {
-
+        String message = "Are you sure you want to delete this post?";
+        if(StageManager.getInstance().displayRequestModal(message)) {
+            try {
+                PostManager.delete(Integer.parseInt(selectedID.getText().substring(13)), ActiveUser.getInstance());
+                StageManager.getInstance().displayConfirmModal("Post Successfully deleted.");
+                refreshMainPostList();
+            } catch (InvalidPostException | NumberFormatException e) {
+                Logger.alertError("Failed to delete post: " + e.getMessage());
+            } catch (UserAuthenticationException e) {
+                StageManager.getInstance().displayConfirmModal("You can only delete your own posts from the database.");
+            }
+        }
     }
 
     @FXML

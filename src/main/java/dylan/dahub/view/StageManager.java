@@ -1,7 +1,8 @@
 package dylan.dahub.view;
 
 import dylan.dahub.DataAnalyticsHub;
-import dylan.dahub.controller.ConfirmationModalController;
+import dylan.dahub.controller.ModalConfirmController;
+import dylan.dahub.controller.ModalRequestController;
 import dylan.dahub.controller.main.MainFrameController;
 import dylan.dahub.controller.post.PostDeleteController;
 import javafx.fxml.FXMLLoader;
@@ -85,35 +86,49 @@ public class StageManager {
 
    // Display a second stage to act as a custom modal. Only one modal may exist at a time, so if the previous modal
    // is not closed, it will simply be overridden.
-   public void displayModal(FxmlView view, boolean wait, String text) {
+   public void displayConfirmModal(String message) {
+       FxmlView view = FxmlView.MODAL_CONFIRM;
         try {
             modalStage = new Stage();
-            FXMLLoader fxmLloader = new FXMLLoader(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
-            Parent root = fxmLloader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
+            Parent root = fxmlLoader.load();
+            ModalConfirmController modalConfirmController = fxmlLoader.getController();
 
-            if(view == FxmlView.MODAL_CONFIRM) {
-                ConfirmationModalController confirmationModalController = fxmLloader.getController();
-                confirmationModalController.setText(text);
-            }
+            modalConfirmController.setMessage(message);
 
-            if(view == FxmlView.POST_DELETE) {
-                PostDeleteController postDeleteController = fxmLloader.getController();
-                postDeleteController.setPostID(text);
-            }
-
-            modalStage.setTitle(view.getTitle());
             modalStage.setScene(new Scene(root));
             modalStage.initModality(Modality.WINDOW_MODAL);
             modalStage.initOwner(rootStage);
-            if (wait) {
-                modalStage.showAndWait();
-            } else {
-                modalStage.show();
-            }
+            modalStage.showAndWait();
+
         } catch (NullPointerException | IOException e) {
             String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
             Logger.alertError(errMsg);
         }
+   }
+
+   public boolean displayRequestModal(String message) {
+        FxmlView view = FxmlView.MODAL_REQUEST;
+       try {
+           modalStage = new Stage();
+           FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
+           Parent root = fxmlLoader.load();
+           ModalRequestController modalRequestController = fxmlLoader.getController();
+
+           modalRequestController.setMessage(message);
+
+           modalStage.setScene(new Scene(root));
+           modalStage.initModality(Modality.WINDOW_MODAL);
+           modalStage.initOwner(rootStage);
+
+           modalStage.showAndWait();
+
+           return modalRequestController.getResponse();
+       } catch (NullPointerException | IOException e) {
+           String errMsg = String.format("Failed to navigate scene: %s\n", e.getMessage());
+           Logger.alertError(errMsg);
+       }
+       return false;
    }
 
    public void closeModal() {

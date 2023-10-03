@@ -2,6 +2,7 @@ package dylan.dahub.controller;
 
 import dylan.dahub.DataAnalyticsHub;
 import dylan.dahub.controller.post.PostController;
+import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
 import dylan.dahub.view.Logger;
 import javafx.fxml.FXMLLoader;

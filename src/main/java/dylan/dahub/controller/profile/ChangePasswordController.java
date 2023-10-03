@@ -44,7 +44,7 @@ public class ChangePasswordController {
                 Authentication.authenticateUser(ActiveUser.getInstance().getUserName(), oldPasswordField.getText());
                 ActiveUser.updateInstance(UserManager.update(updatedUser));
 
-                stageManager.displayModal(FxmlView.MODAL_CONFIRM, true, "Password updated.");
+                stageManager.displayConfirmModal("Password updated.");
             } catch (UserAuthenticationException | InvalidUserException e) {
                 oldPasswordError.setText(e.getMessage());
                 oldPasswordError.setVisible(true);

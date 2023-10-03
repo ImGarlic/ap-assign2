@@ -1,8 +1,13 @@
 package dylan.dahub.controller.profile;
 
 import dylan.dahub.DataAnalyticsHub;
+import dylan.dahub.exception.InvalidPostException;
+import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
+import dylan.dahub.model.User;
+import dylan.dahub.service.UserManager;
 import dylan.dahub.view.FxmlView;
+import dylan.dahub.view.Logger;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,8 +18,6 @@ import javafx.scene.image.ImageView;
 import java.util.Objects;
 
 public class ProfileController {
-
-    private final StageManager stageManager = StageManager.getInstance();
     @FXML
     private Label username, fullname;
     @FXML
@@ -33,19 +36,39 @@ public class ProfileController {
 
     @FXML
     protected void onVIPButtonClick() {
-        stageManager.displayModal(FxmlView.VIP_SET, true, "");
+        String requestMessage, confirmMessage;
+        User updatedUser = ActiveUser.getInstance();
+        if(ActiveUser.getInstance().isVIP()) {
+            requestMessage = "Would you like to cancel you VIP subscription?";
+            confirmMessage = "Successfully cancelled your subscription!";
+            updatedUser.setVIP(0);
+        } else {
+            requestMessage = "Would you like to upgrade your membership to VIP?";
+            confirmMessage = "Successfully upgraded to VIP!";
+            updatedUser.setVIP(1);
+        }
+
+        if(StageManager.getInstance().displayRequestModal(requestMessage)) {
+            try {
+                ActiveUser.updateInstance(UserManager.update(updatedUser));
+                StageManager.getInstance().displayConfirmModal(confirmMessage);
+            } catch (InvalidUserException e) {
+                Logger.alertError("Failed to update VIP status: " + e.getMessage());
+            }
+
+        }
         checkVIPStatus();
-        stageManager.updateMainFrameProfileDetails();
+        StageManager.getInstance().updateMainFrameProfileDetails();
     }
 
     @FXML
     protected void onUpdateProfileButtonClick() {
-        stageManager.setMainScreen(FxmlView.PROFILE_UPDATE);
+        StageManager.getInstance().setMainScreen(FxmlView.PROFILE_UPDATE);
     }
 
     @FXML
     protected void onChangePasswordButtonClick() {
-        stageManager.setMainScreen(FxmlView.CHANGE_PASSWORD);
+        StageManager.getInstance().setMainScreen(FxmlView.CHANGE_PASSWORD);
     }
 
     private void checkVIPStatus() {

@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.ConfirmationModalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.ModalConfirmController">
    <Button layoutX="121.0" layoutY="99.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close" />
-   <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="7.0" prefHeight="92.0" prefWidth="276.0" text="Profile details updated." textAlignment="CENTER" wrapText="true">
+   <Label fx:id="message" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="7.0" prefHeight="92.0" prefWidth="276.0" text="Profile details updated." textAlignment="CENTER" wrapText="true">
       <font>
          <Font size="20.0" />
       </font>

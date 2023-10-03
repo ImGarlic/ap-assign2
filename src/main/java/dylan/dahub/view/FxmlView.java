@@ -154,6 +154,16 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/modal_confirm.fxml";
         }
+    }, MODAL_REQUEST {
+        @Override
+        String getTitle() {
+            return "";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/modal_request.fxml";
+        }
     };
 
 
