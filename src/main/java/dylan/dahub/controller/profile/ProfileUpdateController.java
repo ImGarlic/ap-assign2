@@ -41,6 +41,8 @@ public class ProfileUpdateController {
         updateProfile();
     }
 
+    // Attempts to update the user's profile, also updates the prompt texts to match the new values.
+    // If a field is left blank, then it is not updated.
     private void updateProfile() {
         User updatedUser = getNewUserValues();
 
@@ -55,6 +57,7 @@ public class ProfileUpdateController {
         }
     }
 
+    // Grabs the new values from the text fields
     private User getNewUserValues() {
         ActiveUser activeUser = ActiveUser.getInstance();
         String newUserName = activeUser.getUserName();

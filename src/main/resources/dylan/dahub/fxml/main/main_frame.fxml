@@ -38,7 +38,7 @@
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainScreen" layoutY="60.0" prefHeight="440.0" prefWidth="800.0" style="-fx-background-color: white;" />
-      <AnchorPane id="sidebar" fx:id="sidebar" layoutY="60.0" prefHeight="440.0" prefWidth="200.0" style="-fx-background-color: white;">
+      <AnchorPane fx:id="sidebar" layoutY="60.0" prefHeight="440.0" prefWidth="200.0" styleClass="sidebar">
          <children>
             <Button layoutY="105.0" mnemonicParsing="false" onAction="#onDashboardButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Dashboard" textFill="#575757">
                <font>

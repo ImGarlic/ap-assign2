@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RegisterController {
-    private final StageManager stageManager = StageManager.getInstance();
     @FXML
     private TextField userNameInput, firstNameInput, lastNameInput;
     @FXML
@@ -25,24 +24,22 @@ public class RegisterController {
     private Label userNameError, firstNameError, lastNameError, passwordError;
 
     @FXML
-    private void initialize() {
-    }
-    @FXML
     protected void onBackButtonClick() {
-        stageManager.switchScene(FxmlView.STARTUP);
+        StageManager.getInstance().switchScene(FxmlView.STARTUP);
     }
 
     @FXML
     protected void onRegisterButtonClick() {
-        attemptRegister();
+        register();
     }
 
     @FXML
     protected void onEnter() {
-        attemptRegister();
+        register();
     }
 
-    private void attemptRegister() {
+    // Attempts to register the user. Usernames are unique so register will fail if such username already exists
+    private void register() {
         ControllerUtils.hideErrorLabels(new ArrayList<>(Arrays.asList(userNameError, firstNameError, lastNameError, passwordError)));
         User user = new User(0, userNameInput.getText(), firstNameInput.getText(),
                 lastNameInput.getText(), passwordInput.getText(), 0);
@@ -50,7 +47,7 @@ public class RegisterController {
         if(validateInput(user)) {
             try {
                 ActiveUser.createInstance(UserManager.put(user));
-                stageManager.switchScene(FxmlView.MAIN);
+                StageManager.getInstance().switchScene(FxmlView.MAIN);
             } catch (InvalidUserException e) {
                 ControllerUtils.showErrorLabel(e.getMessage(), userNameError);
             }

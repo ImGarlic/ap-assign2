@@ -2,29 +2,17 @@ package dylan.dahub.controller.modal;
 
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 
-public class ModalRequestController {
+// A modal that gives the user a choice. Use getResponse() after displaying the modal to
+// determine the user's response to the choice
+public class ModalRequestController extends ModalController {
 
     private boolean response;
-
-    @FXML
-    private Label message;
 
     @FXML
     private void onOKButtonClick() {
         response = true;
         StageManager.getInstance().closeModal();
-    }
-
-    @FXML
-    private void onCloseButtonClick() {
-        response = false;
-        StageManager.getInstance().closeModal();
-    }
-
-    public void setMessage(String text) {
-        message.setText(text);
     }
 
     public boolean getResponse() {

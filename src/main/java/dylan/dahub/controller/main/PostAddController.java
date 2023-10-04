@@ -7,7 +7,6 @@ import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
 import dylan.dahub.service.PostManager;
-import dylan.dahub.view.FxmlView;
 import dylan.dahub.view.Logger;
 import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PostAddController {
-    private final StageManager stageManager = StageManager.getInstance();
 
     @FXML
     private AnchorPane postDisplay;
@@ -41,7 +39,7 @@ public class PostAddController {
 
     @FXML
     private void initialize() {
-        addListeners();
+        startListeners();
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(DataAnalyticsHub.class.getResource("fxml/post/post.fxml"));
@@ -55,17 +53,24 @@ public class PostAddController {
     }
 
     @FXML
-    protected void onAddButtonClick() {
+    private void onAddButtonClick() {
+        addPost();
+    }
+    @FXML
+    private void onEnter() {
         addPost();
     }
 
+    // Attempts to add the post to the database, uses generatePostFromTextFields to ensure no bad data is put
     private void addPost() {
-        ControllerUtils.hideErrorLabels(new ArrayList<>(Arrays.asList(authorError, contentError, likesError, sharesError, dateTimeError)));
+        ControllerUtils.hideErrorLabels(
+                new ArrayList<>(Arrays.asList(authorError, contentError, likesError, sharesError, dateTimeError)));
         if (validateInput()) {
             try {
-                Post post = PostManager.generatePostFromTextFields(author.getText(), content.getText(), dateTime.getText(), likes.getText(), shares.getText());
-                PostManager.put(ActiveUser.getInstance(), post);
-                stageManager.displayConfirmModal("Post added to the collection.");
+                Post post = PostManager.generatePostFromTextFields(
+                        author.getText(), content.getText(), dateTime.getText(), likes.getText(), shares.getText());
+                PostManager.put(ActiveUser.getInstance().getID(), post);
+                StageManager.getInstance().displayConfirmModal("Post added to the collection.");
                 clearTextFields();
                 setDefaultPost();
             } catch (InvalidPostException e) {
@@ -74,6 +79,7 @@ public class PostAddController {
         }
     }
 
+    // Checks the text fields for empty values, invalid integers/dates etc.
     private boolean validateInput() {
         boolean valid = true;
         if (author.getText().equals("")) {
@@ -81,7 +87,7 @@ public class PostAddController {
             valid = false;
         }
         if (content.getLength() > 120) {
-            ControllerUtils.showErrorLabel("Content must be <100 characters", contentError);
+            ControllerUtils.showErrorLabel("Content must be <120 characters", contentError);
             return false;
         } else if (content.getText().equals("")) {
             ControllerUtils.showErrorLabel("Content cannot be empty", contentError);
@@ -102,22 +108,13 @@ public class PostAddController {
         return valid;
     }
 
-    private void addListeners() {
-        author.textProperty().addListener((observable, oldValue, newValue) -> {
-            postController.setAuthor(newValue);
-        });
-        content.textProperty().addListener((observable, oldValue, newValue) -> {
-            postController.setContent(newValue);
-        });
-        dateTime.textProperty().addListener((observable, oldValue, newValue) -> {
-            postController.setDateTime(newValue);
-        });
-        likes.textProperty().addListener((observable, oldValue, newValue) -> {
-            postController.setLikes(newValue);
-        });
-        shares.textProperty().addListener((observable, oldValue, newValue) -> {
-            postController.setShares(newValue);
-        });
+    // Start listeners to update the posts graphic in real-time with user input
+    private void startListeners() {
+        author.textProperty().addListener((observable, oldValue, newValue) -> postController.setAuthor(newValue));
+        content.textProperty().addListener((observable, oldValue, newValue) -> postController.setContent(newValue));
+        dateTime.textProperty().addListener((observable, oldValue, newValue) -> postController.setDateTime(newValue));
+        likes.textProperty().addListener((observable, oldValue, newValue) -> postController.setLikes(newValue));
+        shares.textProperty().addListener((observable, oldValue, newValue) -> postController.setShares(newValue));
     }
 
     private void clearTextFields() {

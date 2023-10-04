@@ -113,27 +113,8 @@ public class UserManager {
 
     public static User getRandomUser() throws InvalidUserException {
         String query = String.format("SELECT * FROM %s ORDER BY RANDOM() LIMIT 1", TABLE_NAME);
-        User user;
 
-        try (Connection con = DatabaseUtils.getConnection()){
-            Statement stmt = con.createStatement();
-
-            ResultSet resultSet = stmt.executeQuery(query);
-            if (resultSet.next()) {
-                user = new User(resultSet.getInt("id"), resultSet.getString("user_name"),
-                        resultSet.getString("first_name"), resultSet.getString("last_name"),
-                        resultSet.getString("password"), resultSet.getInt("VIP"));
-                con.close();
-            } else {
-                throw new InvalidUserException("Username does not exist");
-            }
-
-            return user;
-        } catch (SQLException e) {
-            String message = "Failed to get user from database: " + e.getMessage();
-            Logger.alertError(message);
-            throw new InvalidUserException(message);
-        }
+        return getUser(query);
     }
 
 }

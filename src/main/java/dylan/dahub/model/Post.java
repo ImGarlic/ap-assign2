@@ -3,24 +3,7 @@ package dylan.dahub.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Post {
-
-    private final int ID;
-    private final String author;
-    private final String content;
-    private final int likes;
-    private final int shares;
-    private final LocalDateTime dateTime;
-
-    public Post(int ID, String author, String content, int likes, int shares, LocalDateTime dateTime) {
-        this.ID = ID;
-        this.author = author;
-        this.content = content;
-        this.likes = likes;
-        this.shares = shares;
-        this.dateTime = dateTime;
-
-    }
+public record Post(int ID, String author, String content, int likes, int shares, LocalDateTime dateTime) {
 
     public String getDateTimeString() {
         return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"));
@@ -41,29 +24,6 @@ public class Post {
         } catch (NumberFormatException e) {
             return "1B+";
         }
-    }
-    public int getID() {
-        return ID;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public int getShares() {
-        return shares;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
     }
 
 }

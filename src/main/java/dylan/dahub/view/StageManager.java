@@ -1,7 +1,7 @@
 package dylan.dahub.view;
 
 import dylan.dahub.DataAnalyticsHub;
-import dylan.dahub.controller.modal.ModalConfirmController;
+import dylan.dahub.controller.modal.ModalController;
 import dylan.dahub.controller.modal.ModalRequestController;
 import dylan.dahub.controller.main.MainFrameController;
 import javafx.fxml.FXMLLoader;
@@ -91,9 +91,9 @@ public class StageManager {
             modalStage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(DataAnalyticsHub.class.getResource(view.getFxmlFile())));
             Parent root = fxmlLoader.load();
-            ModalConfirmController modalConfirmController = fxmlLoader.getController();
+            ModalController modalController = fxmlLoader.getController();
 
-            modalConfirmController.setMessage(message);
+            modalController.setMessage(message);
 
             modalStage.setScene(new Scene(root));
             modalStage.initModality(Modality.WINDOW_MODAL);

@@ -4,16 +4,16 @@ import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class ModalConfirmController {
+// Basic modal that displays a message with a close button
+public class ModalController {
     @FXML
     private Label message;
 
     @FXML
-    protected void onCloseButtonClick() {
+    private void onCloseButtonClick() {
         StageManager.getInstance().closeModal();
     }
 
-    @FXML
     public void setMessage(String text) {
         message.setText(text);
     }

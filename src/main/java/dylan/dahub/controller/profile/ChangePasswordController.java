@@ -36,7 +36,7 @@ public class ChangePasswordController {
         updatePassword();
     }
 
-    @FXML
+    // Attempts to update the user's password, authenticates the user and checks for blank inputs
     private void updatePassword() {
         User updatedUser = new User(ActiveUser.getInstance());
         hideErrors();

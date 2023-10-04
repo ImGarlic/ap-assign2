@@ -1,7 +1,6 @@
 package dylan.dahub.controller.profile;
 
-import dylan.dahub.DataAnalyticsHub;
-import dylan.dahub.exception.InvalidPostException;
+import dylan.dahub.controller.ControllerUtils;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.User;
@@ -12,10 +11,7 @@ import dylan.dahub.view.StageManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.util.Objects;
 
 public class ProfileController {
     @FXML
@@ -23,11 +19,11 @@ public class ProfileController {
     @FXML
     private Button VIPButton;
     @FXML
-    private ImageView profilePic;
+    private ImageView profileImage;
 
 
     @FXML
-    protected void initialize() {
+    private void initialize() {
         ActiveUser activeUser = ActiveUser.getInstance();
         username.setText(activeUser.getUserName());
         fullname.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
@@ -35,10 +31,26 @@ public class ProfileController {
     }
 
     @FXML
-    protected void onVIPButtonClick() {
+    private void onVIPButtonClick() {
+        updateVIPStatus();
+    }
+
+    @FXML
+    private void onUpdateProfileButtonClick() {
+        StageManager.getInstance().setMainScreen(FxmlView.PROFILE_UPDATE);
+    }
+
+    @FXML
+    private void onChangePasswordButtonClick() {
+        StageManager.getInstance().setMainScreen(FxmlView.CHANGE_PASSWORD);
+    }
+
+    // Asks the user if they wish to upgrade to / cancel vip
+    private void updateVIPStatus() {
         String requestMessage, confirmMessage;
         User updatedUser = new User(ActiveUser.getInstance());
-        if(ActiveUser.getInstance().isVIP()) {
+
+        if (ActiveUser.getInstance().isVIP()) {
             requestMessage = "Would you like to cancel you VIP subscription?";
             confirmMessage = "Successfully cancelled your subscription!";
             updatedUser.setVIP(0);
@@ -48,8 +60,7 @@ public class ProfileController {
             updatedUser.setVIP(1);
         }
 
-        if(StageManager.getInstance().displayRequestModal(requestMessage)) {
-            System.out.println("huh");
+        if (StageManager.getInstance().displayRequestModal(requestMessage)) {
             try {
                 ActiveUser.updateInstance(UserManager.update(updatedUser));
                 StageManager.getInstance().displayConfirmModal(confirmMessage);
@@ -62,36 +73,18 @@ public class ProfileController {
         StageManager.getInstance().updateMainFrameProfileDetails();
     }
 
-    @FXML
-    protected void onUpdateProfileButtonClick() {
-        StageManager.getInstance().setMainScreen(FxmlView.PROFILE_UPDATE);
-    }
-
-    @FXML
-    protected void onChangePasswordButtonClick() {
-        StageManager.getInstance().setMainScreen(FxmlView.CHANGE_PASSWORD);
-    }
-
+    // Checks if the user is a VIP, changes the VIP button text and the profile pic if they are.
     private void checkVIPStatus() {
         String VIP_PROFILE_IMAGE = "image/VIP_profile_upscaled.png";
         String DEFAULT_PROFILE_IMAGE = "image/default_profile_upscaled.png";
 
         if (ActiveUser.getInstance().isVIP()) {
             VIPButton.setText("Cancel VIP");
-            changeProfilePic(VIP_PROFILE_IMAGE);
+            ControllerUtils.updateProfileImage(VIP_PROFILE_IMAGE, profileImage);
         } else {
             VIPButton.setText("Upgrade to VIP");
-            changeProfilePic(DEFAULT_PROFILE_IMAGE);
-        }
-    }
-
-    private void changeProfilePic(String imageURL) {
-        try {
-            String VIPProfilePicURL = Objects.requireNonNull(DataAnalyticsHub.class.getResource(imageURL)).toString();
-            Image image = new Image(VIPProfilePicURL);
-            profilePic.setImage(image);
-        } catch (NullPointerException e) {
-            System.out.println("Failed to update profile image");
+            ControllerUtils.updateProfileImage(DEFAULT_PROFILE_IMAGE, profileImage);
         }
     }
 }
+

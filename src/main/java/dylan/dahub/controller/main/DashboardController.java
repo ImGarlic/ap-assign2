@@ -31,6 +31,7 @@ public class DashboardController {
         startPostDisplay();
     }
 
+    // Display the number of posts for each category on the home screen
     private void setPostCounts() {
         try {
             totalPostsCount.setText(String.valueOf(PostManager.getPostCount(ActiveUser.getInstance().getID(), false, "", new Range(0,0))));
@@ -40,20 +41,20 @@ public class DashboardController {
         }
     }
 
+    // Starts infinitely cycling through randomly-selected posts from the database
     private void startPostDisplay() {
         changePost();
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.seconds(5),
-                        event -> {
-                            changePost();
-                        }
+                        event -> changePost()
                 )
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
+    // Changes the post display to the next randomly-selected post with a cool fade effect.
     private void changePost() {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(1000), postDisplay);
         fadeIn.setFromValue(0);

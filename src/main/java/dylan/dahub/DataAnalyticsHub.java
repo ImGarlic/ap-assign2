@@ -4,7 +4,6 @@ import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
-import dylan.dahub.service.DatabaseUtils;
 import dylan.dahub.service.PostManager;
 import dylan.dahub.service.UserManager;
 import dylan.dahub.view.FxmlView;
@@ -12,9 +11,7 @@ import dylan.dahub.view.StageManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +21,7 @@ public class DataAnalyticsHub extends Application {
     private StageManager stageManager;
 
     @Override
-    public void start(Stage stage) throws InvalidUserException, InvalidPostException {
+    public void start(Stage stage) throws InvalidUserException {
 
         stageManager = StageManager.createInstance(stage);
         setInitialScene();
@@ -58,12 +55,12 @@ public class DataAnalyticsHub extends Application {
             int likes = rand.nextInt(0, 2000);
             int shares = rand.nextInt(0, 2000);
             Post post = new Post(1, author, content, likes, shares, LocalDateTime.now());
-            PostManager.put(UserManager.getRandomUser(), post);
+            PostManager.put(UserManager.getRandomUser().getID(), post);
             System.out.printf("Post %d: Likes: %d, Shares: %d%n", i, likes, shares);
         }
     }
     @Override
-    public void stop() throws SQLException {
+    public void stop() {
 //        String query = "DELETE FROM Post";
 //        Connection con = DatabaseUtils.getConnection();
 //        Statement stmt = con.createStatement();

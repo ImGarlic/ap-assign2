@@ -13,7 +13,7 @@
             <Font size="50.0" />
         </font>
     </Label>
-    <ImageView fx:id="profilePic" fitHeight="111.0" fitWidth="122.0" layoutX="167.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fx:id="profileImage" fitHeight="111.0" fitWidth="122.0" layoutX="167.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../../image/default_profile_upscaled.png" />
     </ImageView>
     <Label fx:id="username" alignment="CENTER" layoutX="107.0" layoutY="280.0" prefHeight="18.0" prefWidth="230.0" text="Username" />

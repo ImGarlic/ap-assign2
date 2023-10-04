@@ -5,17 +5,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+// Controller for the post graphic.
 public class PostController extends AnchorPane {
 
     @FXML
     private Label author, content, dateTime, likes, shares;
 
     public void setPost(Post post) {
-        author.setText(post.getAuthor());
-        content.setText(post.getContent());
+        author.setText(post.author());
+        content.setText(post.content());
         dateTime.setText(post.getDateTimeString());
-        likes.setText(Post.formatNumber(post.getLikes()));
-        shares.setText(Post.formatNumber(post.getShares()));
+        likes.setText(Post.formatNumber(post.likes()));
+        shares.setText(Post.formatNumber(post.shares()));
     }
 
     public void setAuthor(String text) {
@@ -38,6 +39,7 @@ public class PostController extends AnchorPane {
         setNum(text, shares);
     }
 
+    // Gets the formatted number, but also handles inputs over the integer max and non-integer inputs.
     private void setNum(String text, Label label) {
         try {
             label.setText(Post.formatNumber(Integer.parseInt(text)));

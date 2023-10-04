@@ -1,11 +1,9 @@
 package dylan.dahub.service;
 
 import dylan.dahub.exception.InvalidPostException;
-import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.Post;
 import dylan.dahub.model.Range;
-import dylan.dahub.model.User;
 import dylan.dahub.view.Logger;
 
 import java.sql.*;
@@ -21,6 +19,7 @@ public class PostManager {
     private static final String TABLE_NAME = "Post";
 
     // Generate a post from UI text fields, used to ensure the post has the correct parameters before entering the database.
+    // Post ID is auto-generated in the database, so the local ID doesn't matter until put.
     public static Post generatePostFromTextFields(String author, String content, String dateTimeString, String likeString, String shareString) throws InvalidPostException {
         try {
             LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"));
@@ -37,39 +36,12 @@ public class PostManager {
         }
     }
 
-    // Gets 1 single post from the database from it's ID.
-    public static Post getFromID(int ID) throws InvalidPostException {
-        Post post;
-        String query = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
-
-        try (Connection con = DatabaseUtils.getConnection()){
-
-            Statement stmt = con.createStatement();
-
-            ResultSet resultSet = stmt.executeQuery(query);
-            if(resultSet.next()) {
-                LocalDateTime dateTime = createDateTime(resultSet.getLong("timestamp"));
-                post = new Post(resultSet.getInt("id"), resultSet.getString("author"),
-                        resultSet.getString("content"), resultSet.getInt("likes"),
-                        resultSet.getInt("shares"), dateTime);
-                con.close();
-            } else {
-                throw new InvalidPostException("Post ID does not exist");
-            }
-
-            return post;
-        } catch (SQLException e) {
-            String message = "Failed to get post from database: " + e.getMessage();
-            throw new InvalidPostException(message);
-        }
-    }
-
-    // Puts 1 single post into the database. Post ID is auto-generated so the local ID makes no difference.
-    public static void put(User user, Post post) throws InvalidPostException {
-        long timeStamp = createTimeStamp(post.getDateTime());
+    // Puts 1 single post into the database. Post ID is auto-generated in the database so the local ID makes no difference.
+    public static void put(int userID, Post post) throws InvalidPostException {
+        long timeStamp = createTimeStamp(post.dateTime());
 
         String query = String.format("INSERT INTO %s VALUES (null, '%s', '%s', '%d', '%d', '%d', '%d')",
-                TABLE_NAME, post.getAuthor(), post.getContent(), post.getLikes(), post.getShares(), timeStamp, user.getID());
+                TABLE_NAME, post.author(), post.content(), post.likes(), post.shares(), timeStamp, userID);
 
         try (Connection con = DatabaseUtils.getConnection()){
 
@@ -78,10 +50,6 @@ public class PostManager {
             stmt.executeUpdate(query);
 
             System.out.println("Added post");
-            int generatedID = DatabaseUtils.getLastID(con);
-            con.close();
-
-            getFromID(generatedID);
         } catch (SQLException e) {
             String message = String.format("Failed to create post: %s", e.getMessage());
             throw new InvalidPostException(message);
@@ -90,39 +58,7 @@ public class PostManager {
 
     // Gets multiple posts from the database based on SQL select queries.
     // sortType refers to the column to sort on, sortOrder is ascending/descending.
-    public static ArrayList<Post> getMulti(int count, String sortType, String sortOrder, int userID, boolean onlyCurrentUser, int offset) throws InvalidPostException {
-        ArrayList<Post> collection = new ArrayList<>();
-        String query;
-        if(!onlyCurrentUser) {
-            query = String.format("SELECT * FROM %s ORDER BY %s %s LIMIT '%d' OFFSET '%d' COLLATE NOCASE ", TABLE_NAME, sortType, sortOrder, count, offset);
-        } else {
-            query = String.format("SELECT * FROM %s WHERE user='%d' ORDER BY %s %s LIMIT '%d' OFFSET '%d' COLLATE NOCASE", TABLE_NAME, userID, sortType, sortOrder, count, offset);
-        }
-
-
-        try (Connection con = DatabaseUtils.getConnection()){
-            Statement stmt = con.createStatement();
-
-            ResultSet resultSet = stmt.executeQuery(query);
-            while(resultSet.next()) {
-                LocalDateTime dateTime = createDateTime(resultSet.getLong("timestamp"));
-                Post post = new Post(resultSet.getInt("id"), resultSet.getString("author"),
-                        resultSet.getString("content"), resultSet.getInt("likes"),
-                        resultSet.getInt("shares"), dateTime);
-                collection.add(post);
-            }
-
-            con.close();
-
-            return collection;
-        } catch (SQLException e) {
-            String message = "Failed to get post from database: " + e.getMessage();
-            throw new InvalidPostException(message);
-        }
-
-    }
-
-    public static ArrayList<Post> getMultiWithSearch(int count, String searchClause, String sortType, String sortOrder, int userID, boolean onlyCurrentUser, int offset) throws InvalidPostException {
+    public static ArrayList<Post> getMulti(int userID, int count, String searchClause, String sortType, String sortOrder, boolean onlyCurrentUser, int offset) throws InvalidPostException {
         ArrayList<Post> collection = new ArrayList<>();
         String query;
         if(!onlyCurrentUser) {
@@ -157,13 +93,13 @@ public class PostManager {
     }
 
 
-    public static void putMulti(User user, ArrayList<Post> postList) throws InvalidPostException {
+    public static void putMulti(int userID, ArrayList<Post> postList) throws InvalidPostException {
 
         StringBuilder query = new StringBuilder(String.format("INSERT INTO %s VALUES ", TABLE_NAME));
         for (Post post : postList) {
-            long timeStamp = createTimeStamp(post.getDateTime());
+            long timeStamp = createTimeStamp(post.dateTime());
             query.append(String.format("(null, '%s', '%s', '%d', '%d', '%d', '%d'),",
-                    post.getAuthor(), post.getContent(), post.getLikes(), post.getShares(), timeStamp, user.getID()));
+                    post.author(), post.content(), post.likes(), post.shares(), timeStamp, userID));
         }
         query.deleteCharAt(query.lastIndexOf(","));
         System.out.println(query);
@@ -173,7 +109,7 @@ public class PostManager {
             Statement stmt = con.createStatement();
             stmt.executeUpdate(query.toString());
 
-            System.out.println("Added post");
+            System.out.println("Added posts");
             con.close();
         } catch (SQLException e) {
             String message = String.format("Failed to create post: %s", e.getMessage());
@@ -217,7 +153,7 @@ public class PostManager {
         }
     }
 
-    public static void delete(int ID, User user) throws InvalidPostException, UserAuthenticationException {
+    public static void delete(int userID, int ID) throws InvalidPostException, UserAuthenticationException {
         String selQuery = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
         String delQuery = String.format("DELETE FROM %s WHERE id='%d'", TABLE_NAME, ID);
 
@@ -227,7 +163,7 @@ public class PostManager {
 
             if(resultSet.next()) {
                 int userIDFromPost = resultSet.getInt("user");
-                if (userIDFromPost != user.getID()) {
+                if (userIDFromPost != userID) {
                     throw new UserAuthenticationException("You can only delete your own posts");
                 }
             } else {
@@ -246,8 +182,12 @@ public class PostManager {
 
     public static Post getRandomPost() throws InvalidPostException {
         String query = String.format("SELECT * FROM %s ORDER BY RANDOM() LIMIT 1", TABLE_NAME);
-        Post post;
 
+        return getPost(query);
+    }
+
+    private static Post getPost(String query) throws InvalidPostException {
+        Post post;
         try (Connection con = DatabaseUtils.getConnection()){
             Statement stmt = con.createStatement();
 

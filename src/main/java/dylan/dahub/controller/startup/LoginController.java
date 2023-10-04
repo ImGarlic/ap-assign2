@@ -16,7 +16,6 @@ import java.util.Arrays;
 
 
 public class LoginController {
-    private final StageManager stageManager = StageManager.getInstance();
 
     @FXML
     private TextField userNameInput;
@@ -25,37 +24,35 @@ public class LoginController {
     @FXML
     private Label userNameError, passwordError;
 
-    @FXML
-    private void initialize() {
-    }
 
     @FXML
     protected void onBackButtonClick() {
-        stageManager.switchScene(FxmlView.STARTUP);
+        StageManager.getInstance().switchScene(FxmlView.STARTUP);
     }
 
     @FXML
     protected void onLoginButtonClick() {
-        attemptLogin();
+        login();
     }
 
     @FXML
     protected void onEnter() {
-        attemptLogin();
+        login();
     }
 
     @FXML
     private void onRegisterClick() {
-        stageManager.switchScene(FxmlView.REGISTER);
+        StageManager.getInstance().switchScene(FxmlView.REGISTER);
     }
 
-    private void attemptLogin() {
+    // Attempts to login. Validates the input for blanks and also authenticates username/password
+    private void login() {
         ControllerUtils.hideErrorLabels(new ArrayList<>(Arrays.asList(userNameError, passwordError)));
 
         if(validateInput()) {
             try {
                 ActiveUser.createInstance(Authentication.authenticateUser(userNameInput.getText(), passwordInput.getText()));
-                stageManager.switchScene(FxmlView.MAIN);
+                StageManager.getInstance().switchScene(FxmlView.MAIN);
             } catch (UserAuthenticationException e) {
                 ControllerUtils.showErrorLabel(e.getMessage(), userNameError);
             }

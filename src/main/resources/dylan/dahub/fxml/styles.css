@@ -13,6 +13,12 @@
     -fx-background-color: linear-gradient(to right, #efefef, transparent);
 }
 
+.sidebar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, black, 10, 0, 1, 5);
+
+}
+
 .deletButton {
     -fx-background-radius: 2;
     -fx-background-color: #ef5959;
@@ -81,6 +87,7 @@
     -fx-background-radius: 8;
     -fx-border-color: lightgray;
     -fx-border-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, gray, 10, 0, 0, 0);
 }
 
 .list-view {
@@ -231,6 +238,10 @@
 
 .combo-box-popup .list-view .list-cell:selected {
     -fx-border-color: transparent;
+}
+
+.progress-indicator {
+    -fx-progress-color: #78bbe5;
 }
 
 
