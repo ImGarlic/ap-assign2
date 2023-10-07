@@ -28,7 +28,7 @@ public class MainFrameController {
     @FXML
     private ImageView profileImage;
     @FXML
-    private Button graphDataButton, bulkImportButton;
+    private Button graphDataButton, importButton;
 
     @FXML
     private void initialize() {
@@ -81,6 +81,11 @@ public class MainFrameController {
     }
 
     @FXML
+    private void onImportButtonClick() {
+        StageManager.getInstance().setMainScreen(FxmlView.POST_IMPORT);
+    }
+
+    @FXML
     private void onLogoutButtonClick() {
         ActiveUser.clearInstance();
         StageManager.getInstance().switchScene(FxmlView.STARTUP);
@@ -112,7 +117,7 @@ public class MainFrameController {
 
     private void setVIPButtons(boolean enabled) {
         graphDataButton.setDisable(!enabled);
-        bulkImportButton.setDisable(!enabled);
+        importButton.setDisable(!enabled);
         tooltip1.setDisable(enabled);
         tooltip2.setDisable(enabled);
     }

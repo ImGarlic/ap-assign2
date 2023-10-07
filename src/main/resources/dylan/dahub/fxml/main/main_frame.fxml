@@ -65,7 +65,7 @@
                   <Tooltip fx:id="tt1" text="Upgrade to VIP to use" />
                </tooltip>
             </Label>
-            <Button fx:id="bulkImportButton" disable="true" layoutY="241.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Bulk Import" textFill="#575757">
+            <Button fx:id="importButton" disable="true" layoutY="241.0" mnemonicParsing="false" onAction="#onImportButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="sidebarButton" text="Import Posts" textFill="#575757">
                <font>
                   <Font name="Candara" size="16.0" />
                </font>

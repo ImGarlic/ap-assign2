@@ -38,6 +38,11 @@
     -fx-background-color: transparent;
 }
 
+#fileSelectButton {
+    -fx-background-color: lightgray;
+    -fx-font-size: 12;
+}
+
 .headerButton {
     -fx-background-size: 100% 100%;
     -fx-background-color: transparent;

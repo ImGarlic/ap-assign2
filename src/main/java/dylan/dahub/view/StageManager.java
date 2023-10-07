@@ -42,6 +42,10 @@ public class StageManager {
         return INSTANCE;
     }
 
+    public Stage getRootStage() {
+        return rootStage;
+    }
+
     // Switches the whole scene for the stage
    public void switchScene(FxmlView view) {
         try {

@@ -13,7 +13,6 @@ public enum FxmlView {
         String getFxmlFile() {
             return "fxml/startup/startup.fxml";
         }
-
     }, LOGIN {
         @Override
         String getTitle() {
@@ -37,7 +36,7 @@ public enum FxmlView {
     }, MAIN {
         @Override
         String getTitle() {
-            return "Add a post";
+            return "Data Analytics Hub";
         }
 
         @Override
@@ -47,7 +46,7 @@ public enum FxmlView {
     },DASHBOARD {
         @Override
         String getTitle() {
-            return "Menu";
+            return "Data Analytics Hub";
         }
 
         @Override
@@ -97,12 +96,23 @@ public enum FxmlView {
     }, POST_ADD {
         @Override
         String getTitle() {
-            return "Add a post";
+            return "Add a Post";
         }
 
         @Override
         String getFxmlFile() {
             return "fxml/main/post_add.fxml";
+        }
+
+    }, POST_IMPORT {
+        @Override
+        String getTitle() {
+            return "Import Posts";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "fxml/main/post_import.fxml";
         }
     },GRAPH {
         @Override

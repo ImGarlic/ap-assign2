@@ -88,7 +88,7 @@ public class PostAddController {
         }
         if (content.getLength() > 120) {
             ControllerUtils.showErrorLabel("Content must be <120 characters", contentError);
-            return false;
+            valid = false;
         } else if (content.getText().equals("")) {
             ControllerUtils.showErrorLabel("Content cannot be empty", contentError);
             valid = false;

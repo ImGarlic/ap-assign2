@@ -7,7 +7,6 @@ import dylan.dahub.model.User;
 public class Authentication {
 
     // Authenticate the user base on username/password combo
-    // TODO: Add encryption?
     public static User authenticateUser(String username, String password) throws UserAuthenticationException {
         try {
             User user = UserManager.getFromUsername(username);

@@ -1,11 +1,15 @@
 package dylan.dahub.service;
 
+import dylan.dahub.exception.InvalidDateException;
+import dylan.dahub.exception.InvalidFileException;
 import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.exception.UserAuthenticationException;
 import dylan.dahub.model.Post;
 import dylan.dahub.model.Range;
 import dylan.dahub.view.Logger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -13,7 +17,11 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
 public class PostManager {
     private static final String TABLE_NAME = "Post";
@@ -22,7 +30,7 @@ public class PostManager {
     // Post ID is auto-generated in the database, so the local ID doesn't matter until put.
     public static Post generatePostFromTextFields(String author, String content, String dateTimeString, String likeString, String shareString) throws InvalidPostException {
         try {
-            LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm"));
+            LocalDateTime dateTime = convertDateTime(dateTimeString);
             int likes = Integer.parseInt(likeString);
             int shares = Integer.parseInt(shareString);
 
@@ -31,7 +39,7 @@ public class PostManager {
             }
 
             return new Post(1, author, content, likes, shares, dateTime);
-        } catch (NumberFormatException | DateTimeParseException e) {
+        } catch (NumberFormatException | InvalidDateException e) {
             throw new InvalidPostException("Invalid post: " + e.getMessage());
         }
     }
@@ -69,7 +77,6 @@ public class PostManager {
                     TABLE_NAME, searchClause, searchClause, userID, sortType, sortOrder, count, offset);
         }
 
-
         try (Connection con = DatabaseUtils.getConnection()){
             Statement stmt = con.createStatement();
 
@@ -83,7 +90,6 @@ public class PostManager {
             }
 
             con.close();
-
             return collection;
         } catch (SQLException e) {
             String message = "Failed to get post from database: " + e.getMessage();
@@ -94,7 +100,6 @@ public class PostManager {
 
 
     public static void putMulti(int userID, ArrayList<Post> postList) throws InvalidPostException {
-
         StringBuilder query = new StringBuilder(String.format("INSERT INTO %s VALUES ", TABLE_NAME));
         for (Post post : postList) {
             long timeStamp = createTimeStamp(post.dateTime());
@@ -110,9 +115,8 @@ public class PostManager {
             stmt.executeUpdate(query.toString());
 
             System.out.println("Added posts");
-            con.close();
         } catch (SQLException e) {
-            String message = String.format("Failed to create post: %s", e.getMessage());
+            String message = String.format("Failed to add post: %s", e.getMessage());
             throw new InvalidPostException(message);
         }
     }
@@ -144,8 +148,8 @@ public class PostManager {
             } else {
                 return 0;
             }
-            con.close();
 
+            con.close();
             return count;
         } catch (SQLException e) {
             String message = "Failed to get post from database: " + e.getMessage();
@@ -173,7 +177,6 @@ public class PostManager {
             stmt.executeUpdate(delQuery);
 
             System.out.println("Deleted post");
-            con.close();
         } catch (SQLException e) {
             String message = String.format("Failed to delete post: %s", e.getMessage());
             throw new InvalidPostException(message);
@@ -197,16 +200,67 @@ public class PostManager {
                 post = new Post(resultSet.getInt("id"), resultSet.getString("author"),
                         resultSet.getString("content"), resultSet.getInt("likes"),
                         resultSet.getInt("shares"), dateTime);
-                con.close();
             } else {
                 throw new InvalidPostException("Post ID does not exist");
             }
 
+            con.close();
             return post;
         } catch (SQLException e) {
             String message = "Failed to get post from database: " + e.getMessage();
             Logger.alertError(message);
             throw new InvalidPostException(message);
+        }
+    }
+
+    public static ArrayList<Post> readCSV(File csv) throws InvalidFileException, NullPointerException {
+        ArrayList<Post> postList = new ArrayList<>();
+        int line = 1;
+        try {
+            if(!getExtension(csv.getName()).equals("csv")) {
+                throw new InvalidFileException("File must be a CSV");
+            }
+            Scanner scanner = new Scanner(csv);
+            scanner.nextLine(); // skip headers
+            while (scanner.hasNextLine()) {
+                line++;
+                Post nextPost = convertFromCSV(scanner.nextLine());
+                postList.add(nextPost);
+            }
+            scanner.close();
+        } catch (InvalidPostException e) {
+            String message = String.format("File has incorrect data on line %d: %s", line, e.getMessage());
+            throw new InvalidFileException(message);
+        } catch (FileNotFoundException e) {
+            throw new InvalidFileException(e.getMessage());
+        }
+        return postList;
+    }
+
+
+    // Converts a single comma-separated string to a post. Expects all post values to be present
+    // and of the correct type, otherwise throws an InvalidPostException.
+    public static Post convertFromCSV(String importedPost) throws InvalidPostException {
+        List<String> postValues = new ArrayList<>();
+        int likes, shares;
+        String content, author, dateTime;
+
+        try (Scanner rowScanner = new Scanner(importedPost)) {
+            String COMMA_DELIMITER = ",";
+            rowScanner.useDelimiter(COMMA_DELIMITER);
+
+            while(rowScanner.hasNext()) {
+                postValues.add(rowScanner.next());
+            }
+            author = postValues.get(0);
+            content = postValues.get(1);
+            likes = Integer.parseInt(postValues.get(2));
+            shares = Integer.parseInt(postValues.get(3));
+            dateTime = postValues.get(4);
+
+            return new Post(0, author, content, likes, shares, convertDateTime(dateTime));
+        } catch (IndexOutOfBoundsException | NumberFormatException | InvalidDateException e) {
+            throw new InvalidPostException(e.getMessage());
         }
     }
 
@@ -216,5 +270,28 @@ public class PostManager {
 
     private static LocalDateTime createDateTime(long timeStamp) {
         return LocalDateTime.ofInstant(Instant.ofEpochSecond(timeStamp), ZoneId.of("Z"));
+    }
+
+    // Converts the date-time string into a LocalDateTime to ensure it is of the correct format.
+    public static LocalDateTime convertDateTime(String dateString) throws InvalidDateException {
+        LocalDateTime dateTime;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm").withResolverStyle(ResolverStyle.STRICT);
+
+        try {
+            dateTime = LocalDateTime.parse(dateString, formatter);
+            return dateTime;
+        } catch (DateTimeParseException e) {
+            throw new InvalidDateException(e.getMessage());
+        }
+    }
+
+    private static String getExtension(String fileName) {
+        String extension = "";
+
+        int i = fileName.lastIndexOf('.');
+        if (i >= 0) {
+            extension = fileName.substring(i+1);
+        }
+        return extension;
     }
 }

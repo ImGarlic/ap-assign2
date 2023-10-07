@@ -10,6 +10,7 @@ import dylan.dahub.service.PostManager;
 import dylan.dahub.view.Logger;
 import dylan.dahub.view.StageManager;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -64,14 +65,20 @@ public class PostViewController {
 
     // Attempts to delete the currently selected post on the list
     private void deletePost() {
-        String message = "Are you sure you want to delete this post?";
+        ObservableList<Post> selectedItems = mainPostView.getSelectionModel().getSelectedItems();
 
-        if(StageManager.getInstance().displayRequestModal(message)) {
+        if(StageManager.getInstance().displayRequestModal("Are you sure you want to delete this post?")) {
             try {
-                PostManager.delete(
-                        ActiveUser.getInstance().getID(), Integer.parseInt(selectedID.getText().substring(13)));
+                for (Post post : selectedItems) {
+                    PostManager.delete(
+                            ActiveUser.getInstance().getID(), post.ID());
+                }
+                if (selectedItems.size() > 1) {
+                    StageManager.getInstance().displayConfirmModal(selectedItems.size() + " posts successfully deleted.");
+                } else {
+                    StageManager.getInstance().displayConfirmModal("Post successfully deleted.");
+                }
 
-                StageManager.getInstance().displayConfirmModal("Post Successfully deleted.");
                 refreshMainPostList();
             } catch (InvalidPostException | NumberFormatException e) {
                 Logger.alertError("Failed to delete post: " + e.getMessage());
@@ -199,13 +206,18 @@ public class PostViewController {
 
     // Starts a listener for the selected post on the list.
     private void startListViewListener() {
-        mainPostView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(newValue != null) {
-                selectedID.setText("Selected ID: " + newValue.ID());
+        mainPostView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Post>) observable -> {
+            ObservableList<Post> selectedItems = mainPostView.getSelectionModel().getSelectedItems();
+
+            if(selectedItems.size() == 1) {
+                selectedID.setText("Selected ID: " + selectedItems.get(0).ID());
                 deleteButton.setDisable(false);
-            } else {
+            } else if(selectedItems.size() == 0) {
                 selectedID.setText("Selected ID: ");
                 deleteButton.setDisable(true);
+            } else {
+                selectedID.setText("Multiple selected");
+                deleteButton.setDisable(false);
             }
         });
     }

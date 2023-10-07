@@ -32,7 +32,7 @@ public class DataAnalyticsHub extends Application {
     // This should be set to STARTUP for regular use.
     private void setInitialScene() throws InvalidUserException {
         ActiveUser.createInstance(UserManager.getFromUsername("ru"));
-        stageManager.setMainScreen(FxmlView.POST_VIEW);
+        stageManager.setMainScreen(FxmlView.POST_IMPORT);
     }
 
     private void overflowDatabase() throws InvalidPostException, InvalidUserException {
