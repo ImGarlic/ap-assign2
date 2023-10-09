@@ -45,11 +45,11 @@ public class UserManager {
                 user = new User(resultSet.getInt("id"), resultSet.getString("user_name"),
                         resultSet.getString("first_name"), resultSet.getString("last_name"),
                         resultSet.getString("password"), resultSet.getInt("VIP"));
-                con.close();
             } else {
                 throw new InvalidUserException("Username does not exist");
             }
 
+            con.close();
             return user;
         } catch (SQLException e) {
             Logger.alertError("Failed to get user from database: " + e.getMessage());
@@ -75,8 +75,8 @@ public class UserManager {
             stmt.executeUpdate();
             System.out.println("Added user");
             int generatedID = DatabaseUtils.getLastID(con);
-            con.close();
 
+            con.close();
             return getFromID(generatedID);
         } catch (SQLException e) {
             Logger.alertError(String.format("Failed to create user: %s", e.getMessage()));
@@ -109,6 +109,22 @@ public class UserManager {
         } catch (SQLException e) {
             Logger.alertError(String.format("Failed to update user: %s", e.getMessage()));
             throw new InvalidUserException("");
+        }
+    }
+
+    public static void delete(User user) throws InvalidUserException {
+        String pragme = "PRAGMA foreign_keys = ON";
+        String query = String.format("DELETE FROM %s WHERE id= '%s' ", TABLE_NAME, user.getID());
+
+        try {
+            Connection con = DatabaseUtils.getConnection();
+            Statement stmt = con.createStatement();
+            stmt.execute(pragme);
+            stmt.execute(query);
+            con.close();
+        } catch (SQLException e) {
+            String message = String.format("Failed to delete user: %s", e.getMessage());
+            throw new InvalidUserException(message);
         }
     }
 

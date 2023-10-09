@@ -249,4 +249,9 @@
     -fx-progress-color: #78bbe5;
 }
 
+.hyperlink:focused {
+    -fx-border-color: transparent;
+    -fx-padding: 4 0 4 0;
+}
+
 

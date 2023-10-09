@@ -45,6 +45,12 @@ public class ProfileController {
         StageManager.getInstance().setMainScreen(FxmlView.CHANGE_PASSWORD);
     }
 
+    @FXML
+    private void onDeleteAccountClick() {
+        deleteAccount();
+    }
+
+
     // Asks the user if they wish to upgrade to / cancel vip
     private void updateVIPStatus() {
         String requestMessage, confirmMessage;
@@ -84,6 +90,19 @@ public class ProfileController {
         } else {
             VIPButton.setText("Upgrade to VIP");
             ControllerUtils.updateProfileImage(DEFAULT_PROFILE_IMAGE, profileImage);
+        }
+    }
+
+    private void deleteAccount() {
+        if (StageManager.getInstance().displayRequestModal("Deleting your account will also delete all your posts.\nAre you sure?")) {
+            try {
+                UserManager.delete(ActiveUser.getInstance());
+                StageManager.getInstance().displayConfirmModal("Account deleted.");
+                ActiveUser.clearInstance();
+                StageManager.getInstance().switchScene(FxmlView.STARTUP);
+            } catch (InvalidUserException e) {
+                Logger.alertError(e.getMessage());
+            }
         }
     }
 }
