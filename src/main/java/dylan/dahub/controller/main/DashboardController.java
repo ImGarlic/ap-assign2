@@ -16,6 +16,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.time.LocalDateTime;
+
 public class DashboardController {
     @FXML
     private Label welcomeText, totalPostsCount, myPostsCount;
@@ -34,8 +36,16 @@ public class DashboardController {
     // Display the number of posts for each category on the home screen
     private void setPostCounts() {
         try {
-            totalPostsCount.setText(String.valueOf(PostManager.getPostCount(ActiveUser.getInstance().getID(), false, "", new Range(0,0))));
-            myPostsCount.setText(String.valueOf(PostManager.getPostCount(ActiveUser.getInstance().getID(), true, "", new Range(0,0))));
+            totalPostsCount.setText(String.valueOf(
+                    PostManager.getPostCount(
+                            ActiveUser.getInstance().getID(), false, "likes", new Range(0,Integer.MAX_VALUE))
+                    )
+            );
+            myPostsCount.setText(String.valueOf(
+                    PostManager.getPostCount(
+                            ActiveUser.getInstance().getID(), true, "likes", new Range(0,Integer.MAX_VALUE))
+                    )
+            );
         } catch (InvalidPostException e) {
             Logger.alertError("Couldn't get post count: " + e.getMessage());
         }
@@ -70,6 +80,10 @@ public class DashboardController {
                 postDisplay.getChildren().add(ControllerUtils.createPostGraphic(post));
             } catch (InvalidPostException e) {
                 Logger.alertError("Failed to create post graphic: " + e.getMessage());
+            } catch (NullPointerException e) {
+                Post defaultPost = new Post(0, "Missing", "Database seems to be empty!", 0, 0, LocalDateTime.now());
+                postDisplay.getChildren().clear();
+                postDisplay.getChildren().add(ControllerUtils.createPostGraphic(defaultPost));
             }
             fadeIn.play();
         });

@@ -1,7 +1,16 @@
 package dylan.dahub.model;
 
+import dylan.dahub.exception.InvalidDateException;
+import dylan.dahub.exception.InvalidPostException;
+import dylan.dahub.service.PostManager;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public record Post(int ID, String author, String content, int likes, int shares, LocalDateTime dateTime) {
 
@@ -26,4 +35,46 @@ public record Post(int ID, String author, String content, int likes, int shares,
         }
     }
 
+    public String toString() {
+        return String.format("%d,%s,%s,%d,%d,%s", this.ID(), this.author(), this.content(), this.likes(), this.shares(), this.getDateTimeString());
+    }
+
+    // Converts a single comma-separated string to a post. Expects all post values to be present
+    // and of the correct type, otherwise throws an InvalidPostException.
+    public static Post convertFromCSV(String importedPost) throws InvalidPostException {
+        List<String> postValues = new ArrayList<>();
+        int likes, shares;
+        String content, author, dateTime;
+
+        try (Scanner rowScanner = new Scanner(importedPost)) {
+            String COMMA_DELIMITER = ",";
+            rowScanner.useDelimiter(COMMA_DELIMITER);
+
+            while(rowScanner.hasNext()) {
+                postValues.add(rowScanner.next());
+            }
+            author = postValues.get(0);
+            content = postValues.get(1);
+            likes = Integer.parseInt(postValues.get(2));
+            shares = Integer.parseInt(postValues.get(3));
+            dateTime = postValues.get(4);
+
+            return new Post(0, author, content, likes, shares, convertDateTime(dateTime));
+        } catch (IndexOutOfBoundsException | NumberFormatException | InvalidDateException e) {
+            throw new InvalidPostException(e.getMessage());
+        }
+    }
+
+    // Converts the date-time string into a LocalDateTime to ensure it is of the correct format.
+    public static LocalDateTime convertDateTime(String dateString) throws InvalidDateException {
+        LocalDateTime dateTime;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm").withResolverStyle(ResolverStyle.STRICT);
+
+        try {
+            dateTime = LocalDateTime.parse(dateString, formatter);
+            return dateTime;
+        } catch (DateTimeParseException e) {
+            throw new InvalidDateException(e.getMessage());
+        }
+    }
 }

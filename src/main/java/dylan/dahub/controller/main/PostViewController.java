@@ -17,8 +17,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -28,7 +32,7 @@ public class PostViewController {
     @FXML
     private Label selectedID;
     @FXML
-    private Button loadMoreButton, deleteButton;
+    private Button loadMoreButton, deleteButton, exportButton;
     @FXML
     private ListView<Post> mainPostView;
     @FXML
@@ -55,7 +59,12 @@ public class PostViewController {
 
     @FXML
     private void onDeleteButtonClick() {
-        deletePost();
+        deletePosts(mainPostView.getSelectionModel().getSelectedItems());
+    }
+
+    @FXML
+    private void onExportButtonClick() {
+        exportPosts(mainPostView.getSelectionModel().getSelectedItems());
     }
 
     @FXML
@@ -63,18 +72,17 @@ public class PostViewController {
         loadMoreIntoPostList();
     }
 
-    // Attempts to delete the currently selected post on the list
-    private void deletePost() {
-        ObservableList<Post> selectedItems = mainPostView.getSelectionModel().getSelectedItems();
 
+    // Attempts to delete the currently selected post on the list
+    private void deletePosts(ObservableList<Post> selectedPosts) {
         if(StageManager.getInstance().displayRequestModal("Are you sure you want to delete this post?")) {
             try {
-                for (Post post : selectedItems) {
+                for (Post post : selectedPosts) {
                     PostManager.delete(
                             ActiveUser.getInstance().getID(), post.ID());
                 }
-                if (selectedItems.size() > 1) {
-                    StageManager.getInstance().displayConfirmModal(selectedItems.size() + " posts successfully deleted.");
+                if (selectedPosts.size() > 1) {
+                    StageManager.getInstance().displayConfirmModal(selectedPosts.size() + " posts successfully deleted.");
                 } else {
                     StageManager.getInstance().displayConfirmModal("Post successfully deleted.");
                 }
@@ -86,6 +94,26 @@ public class PostViewController {
                 StageManager.getInstance().displayConfirmModal("You can only delete your own posts from the database.");
             }
         }
+    }
+
+    private void exportPosts(ObservableList<Post> selectedPosts) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".csv",".csv"));
+
+        File file = fileChooser.showSaveDialog(StageManager.getInstance().getRootStage());
+
+        try (FileWriter fileWriter = new FileWriter(file)){
+            fileWriter.write("ID,content,author,likes,shares,date-time\n");
+            for (Post post : selectedPosts) {
+                fileWriter.write(post.toString() + "\n");
+            }
+            StageManager.getInstance().displayConfirmModal(selectedPosts.size() + " posts successfully exported to " + file.getName());
+        } catch (NullPointerException e) {
+            // Do nothing if no file
+        } catch (IOException e) {
+            Logger.alertError("Failed to export posts: " + e.getMessage());
+        }
+
     }
 
     // Generate the initial list of posts to view. Set to 10 posts.
@@ -186,7 +214,7 @@ public class PostViewController {
                     (String)sortOptions.getUserData(),
                     (String)sortOrderToggle.getUserData(),
                     (boolean)onlyUserPostsCheck.getUserData(),
-                    0);
+                    offset);
 
             if (collection.size() == 0) {
                 showAllLoadedText();
@@ -212,12 +240,15 @@ public class PostViewController {
             if(selectedItems.size() == 1) {
                 selectedID.setText("Selected ID: " + selectedItems.get(0).ID());
                 deleteButton.setDisable(false);
+                exportButton.setDisable(false);
             } else if(selectedItems.size() == 0) {
                 selectedID.setText("Selected ID: ");
                 deleteButton.setDisable(true);
+                exportButton.setDisable(true);
             } else {
                 selectedID.setText("Multiple selected");
                 deleteButton.setDisable(false);
+                exportButton.setDisable(false);
             }
         });
     }

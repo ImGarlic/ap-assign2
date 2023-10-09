@@ -47,6 +47,7 @@ public class RegisterController {
         if(validateInput(user)) {
             try {
                 ActiveUser.createInstance(UserManager.put(user));
+                StageManager.getInstance().displayConfirmModal("Account created!");
                 StageManager.getInstance().switchScene(FxmlView.MAIN);
             } catch (InvalidUserException e) {
                 ControllerUtils.showErrorLabel(e.getMessage(), userNameError);

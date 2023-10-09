@@ -1,12 +1,8 @@
 package dylan.dahub.model;
 
 public class User {
-    private int ID;
-    private String userName;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private int VIP;
+    private int ID, VIP;
+    private String userName, firstName, lastName, password;
 
     public User(int ID, String userName, String firstName, String lastName, String password, int VIP) {
         this.ID = ID;
