@@ -49,6 +49,8 @@ public class ProfileUpdateController {
         try {
             ActiveUser.updateInstance(UserManager.update(updatedUser));
             StageManager.getInstance().displayConfirmModal("Profile details updated.");
+            StageManager.getInstance().updateMainFrameProfileDetails();
+
             ControllerUtils.clearTextFields(new ArrayList<>(Arrays.asList(userNameInput, firstNameInput, lastNameInput)));
             setPromptTexts();
         } catch (InvalidUserException e) {

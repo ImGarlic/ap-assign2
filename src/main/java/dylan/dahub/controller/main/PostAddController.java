@@ -80,6 +80,8 @@ public class PostAddController {
     }
 
     // Checks the text fields for empty values, invalid integers/dates etc.
+    // This is technically redundant since the PostManager checks this on put, but
+    // it's here to allow for the different error messages for the user.
     private boolean validateInput() {
         boolean valid = true;
         if (author.getText().equals("")) {

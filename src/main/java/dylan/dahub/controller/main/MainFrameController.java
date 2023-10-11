@@ -131,9 +131,7 @@ public class MainFrameController {
 
         mainScreen.setDisable(true);
 
-        outsideSpace.setOnMouseClicked(event -> {
-            hideSideBar();
-        });
+        outsideSpace.setOnMouseClicked(event -> hideSideBar());
     }
 
     private void hideSideBar() {
@@ -145,8 +143,7 @@ public class MainFrameController {
 
         mainScreen.setDisable(false);
 
-        outsideSpace.setOnMouseClicked(event -> {
-        });
+        outsideSpace.setOnMouseClicked(event -> {});
     }
 
     // Should only be called by the StageManager, where the controller is persisted.

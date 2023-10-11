@@ -35,11 +35,10 @@ public class StageManager {
         return INSTANCE;
     }
 
-    public static StageManager createInstance(Stage stage) {
+    public static void createInstance(Stage stage) {
         if (INSTANCE == null) {
             INSTANCE = new StageManager(stage);
         }
-        return INSTANCE;
     }
 
     public Stage getRootStage() {
@@ -58,6 +57,7 @@ public class StageManager {
             // When first switching to the main frame (on login/register), we need to intitalize the controller instance
             // and set the main screen to the dashboard.
             if (view == FxmlView.MAIN) {
+                System.out.println("huh");
                 mainFrameController = loader.getController();
                 setMainScreen(FxmlView.DASHBOARD);
             }
@@ -89,6 +89,7 @@ public class StageManager {
 
    // Display a second stage to act as a custom modal. Only one modal may exist at a time, so if the previous modal
    // is not closed, it will simply be overridden.
+    // The confirmation modal is simply a message with an OK button
    public void displayConfirmModal(String message) {
        FxmlView view = FxmlView.MODAL_CONFIRM;
         try {
@@ -110,6 +111,7 @@ public class StageManager {
         }
    }
 
+   // The request modal dispays a message with a yes/no option. Returns the users choice
    public boolean displayRequestModal(String message) {
         FxmlView view = FxmlView.MODAL_REQUEST;
        try {

@@ -96,6 +96,7 @@ public class PostViewController {
         }
     }
 
+    // Attempts to export the currently selected posts to a csv of specified location
     private void exportPosts(ObservableList<Post> selectedPosts) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".csv",".csv"));
@@ -154,14 +155,12 @@ public class PostViewController {
 
         Task<ObservableList<Post>> listLoader = new Task<>() {
             {
-                setOnRunning( workerStateEvent ->  {
-                    mainPostView.setPlaceholder(new ProgressIndicator());
-                });
-                setOnSucceeded(workerStateEvent -> {
+                setOnRunning( workerStateEvent -> mainPostView.setPlaceholder(new ProgressIndicator()));
+                setOnSucceeded( workerStateEvent -> {
                     mainPostView.setItems(getValue());
                     mainPostView.setPlaceholder(new Label("Nothing to show :("));
                 });
-                setOnFailed(workerStateEvent -> {
+                setOnFailed( workerStateEvent -> {
                     Logger.alertError("Failed to load list: " + getException().getMessage());
                     mainPostView.setPlaceholder(new Label("Something went wrong :("));
                 });
@@ -255,13 +254,11 @@ public class PostViewController {
 
     // Starts a listener to refresh the list as user is typing
     private void startSearchBarListener() {
-        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            refreshMainPostList();
-        });
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> refreshMainPostList());
     }
 
     // Starts a listner to refresh the list on a selection of the sort options
-    // Uses user data rather than the display text for database the interactions
+    // Uses user data rather than the display text for the database interactions
     private void startChoiceBoxListener() {
         sortOptions.getItems().addAll("Date", "Likes", "Shares");
         // Sets default

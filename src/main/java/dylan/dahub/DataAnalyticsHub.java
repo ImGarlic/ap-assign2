@@ -2,9 +2,7 @@ package dylan.dahub;
 
 import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.exception.InvalidUserException;
-import dylan.dahub.model.ActiveUser;
 import dylan.dahub.model.Post;
-import dylan.dahub.service.DatabaseUtils;
 import dylan.dahub.service.PostManager;
 import dylan.dahub.service.UserManager;
 import dylan.dahub.view.FxmlView;
@@ -12,9 +10,6 @@ import dylan.dahub.view.StageManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,19 +18,18 @@ import java.util.Random;
 public class DataAnalyticsHub extends Application {
 
     @Override
-    public void start(Stage stage) throws InvalidUserException {
+    public void start(Stage stage) {
         StageManager.createInstance(stage);
         setInitialScene();
-        overflowDatabase();
     }
 
     // Use this to set the initial scene, very useful for functional testing.
     // This should be set to STARTUP for regular use.
-    private void setInitialScene() throws InvalidUserException {
-        ActiveUser.createInstance(UserManager.getFromUsername("ru"));
-        StageManager.getInstance().setMainScreen(FxmlView.POST_VIEW);
+    private void setInitialScene() {
+        StageManager.getInstance().switchScene(FxmlView.STARTUP);
     }
 
+    // Overflow the database with 1000 random posts. Mostly a debug/load test thing.
     private void overflowDatabase() {
         try {
             Random rand = new Random();
@@ -63,14 +57,6 @@ public class DataAnalyticsHub extends Application {
         } catch (InvalidPostException | InvalidUserException e) {
             //
         }
-    }
-    @Override
-    public void stop() {
-//        String query = "DELETE FROM Post";
-//        Connection con = DatabaseUtils.getConnection();
-//        Statement stmt = con.createStatement();
-//        stmt.executeUpdate(query);
-        System.out.println("Quitting");
     }
 
     public static void main(String[] args) {

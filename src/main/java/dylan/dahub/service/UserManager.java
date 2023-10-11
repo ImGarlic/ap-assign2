@@ -1,6 +1,5 @@
 package dylan.dahub.service;
 
-import dylan.dahub.exception.InvalidPostException;
 import dylan.dahub.exception.InvalidUserException;
 import dylan.dahub.model.User;
 import dylan.dahub.view.Logger;
@@ -84,24 +83,31 @@ public class UserManager {
         }
     }
 
+    // Updates all parameters of the user.
     public static User update(User user) throws InvalidUserException {
-        String query = String.format("UPDATE %s SET user_name = '%s', " +
-                        "first_name = '%s', " +
-                        "last_name = '%s', " +
-                        "password = '%s', " +
-                        "VIP = %d " +
-                        "WHERE id = '%d'",
-                TABLE_NAME, user.getUserName(), user.getFirstName(), user.getLastName(),
-                user.getPassword(), user.getVIP(), user.getID());
+        String query = String.format("UPDATE %s SET user_name = ?, " +
+                        "first_name = ?, " +
+                        "last_name = ?, " +
+                        "password = ?, " +
+                        "VIP = ? " +
+                        "WHERE id = ?",
+                TABLE_NAME);
 
-        try (Connection con = DatabaseUtils.getConnection()){
+        try (Connection con = DatabaseUtils.getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
 
             if (userExists(user.getUserName()) &&
                     getFromUsername(user.getUserName()).getID() != user.getID()) {
                 throw new InvalidUserException("Username already exists");
             }
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate(query);
+
+            stmt.setString(1, user.getUserName());
+            stmt.setString(2, user.getFirstName());
+            stmt.setString(3, user.getLastName());
+            stmt.setString(4, user.getPassword());
+            stmt.setInt(5,user.getVIP());
+            stmt.setInt(6, user.getID());
+            stmt.executeUpdate();
 
             System.out.println("Updated user");
             con.close();
@@ -112,14 +118,16 @@ public class UserManager {
         }
     }
 
+    // Delete the user. Since SQLite doesn't like foreign keys we need to set the pragma every time
+    // to allow cascade delete of posts
     public static void delete(User user) throws InvalidUserException {
-        String pragme = "PRAGMA foreign_keys = ON";
+        String pragma = "PRAGMA foreign_keys = ON";
         String query = String.format("DELETE FROM %s WHERE id= '%s' ", TABLE_NAME, user.getID());
 
         try {
             Connection con = DatabaseUtils.getConnection();
             Statement stmt = con.createStatement();
-            stmt.execute(pragme);
+            stmt.execute(pragma);
             stmt.execute(query);
             con.close();
         } catch (SQLException e) {
@@ -128,6 +136,7 @@ public class UserManager {
         }
     }
 
+    // Return a random user from the database.
     public static User getRandomUser() throws InvalidUserException {
         String query = String.format("SELECT * FROM %s ORDER BY RANDOM() LIMIT 1", TABLE_NAME);
 

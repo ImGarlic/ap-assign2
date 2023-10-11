@@ -93,6 +93,7 @@ public class ProfileController {
         }
     }
 
+    // Delete's the user's account. All the posts owned by said user will also be cascade deleted
     private void deleteAccount() {
         if (StageManager.getInstance().displayRequestModal("Deleting your account will also delete all your posts.\nAre you sure?")) {
             try {

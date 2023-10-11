@@ -34,6 +34,7 @@ public class PostImportController {
         importPosts();
     }
 
+    // Opens the OS file selector
     private void selectFile() {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(StageManager.getInstance().getRootStage());
