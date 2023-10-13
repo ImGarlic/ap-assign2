@@ -104,7 +104,7 @@ public class PostViewController {
         File file = fileChooser.showSaveDialog(StageManager.getInstance().getRootStage());
 
         try (FileWriter fileWriter = new FileWriter(file)){
-            fileWriter.write("ID,content,author,likes,shares,date-time\n");
+            fileWriter.write("ID,author,content,likes,shares,date-time\n");
             for (Post post : selectedPosts) {
                 fileWriter.write(post.toString() + "\n");
             }

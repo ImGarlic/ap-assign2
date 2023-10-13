@@ -50,7 +50,7 @@ public class PostTest {
     @Test
     public void convertFromCSV_Success() throws InvalidPostException {
         Post convertedPost = Post.convertFromCSV(
-                "author1,content1,0,0,01/01/-999999999 00:00"
+                "1,author1,content1,0,0,01/01/-999999999 00:00"
         );
         Assertions.assertEquals(
                 "author1",

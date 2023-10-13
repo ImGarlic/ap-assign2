@@ -21,6 +21,7 @@ public class DataAnalyticsHub extends Application {
     public void start(Stage stage) {
         StageManager.createInstance(stage);
         setInitialScene();
+//        overflowDatabase();
     }
 
     // Use this to set the initial scene, very useful for functional testing.

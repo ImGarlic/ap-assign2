@@ -94,6 +94,9 @@ public class PostAddController {
         } else if (content.getText().equals("")) {
             ControllerUtils.showErrorLabel("Content cannot be empty", contentError);
             valid = false;
+        } else if (content.getText().contains(",")) {
+            ControllerUtils.showErrorLabel("Content cannot have commas", contentError);
+            valid = false;
         }
         if (isNotNumeric(likes.getText())) {
             ControllerUtils.showErrorLabel("Please enter a valid number", likesError);

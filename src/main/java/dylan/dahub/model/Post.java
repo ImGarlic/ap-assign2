@@ -53,11 +53,11 @@ public record Post(int ID, String author, String content, int likes, int shares,
             while(rowScanner.hasNext()) {
                 postValues.add(rowScanner.next());
             }
-            author = postValues.get(0);
-            content = postValues.get(1);
-            likes = Integer.parseInt(postValues.get(2));
-            shares = Integer.parseInt(postValues.get(3));
-            dateTime = postValues.get(4);
+            author = postValues.get(1);
+            content = postValues.get(2);
+            likes = Integer.parseInt(postValues.get(3));
+            shares = Integer.parseInt(postValues.get(4));
+            dateTime = postValues.get(5);
 
             return new Post(0, author, content, likes, shares, convertDateTime(dateTime));
         } catch (IndexOutOfBoundsException | NumberFormatException | InvalidDateException e) {

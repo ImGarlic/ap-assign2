@@ -146,6 +146,9 @@ public class PostManager {
 
     // Puts 1 single post into the database. Post ID is auto-generated in the database so the local ID makes no difference.
     public void put(int userID, Post post) throws InvalidPostException {
+        if(post.content().contains(",")) {
+            throw new InvalidPostException("Post content cannot contain commas");
+        }
         String query = String.format("INSERT INTO %s VALUES (null, ?, ?, ?, ?, ?, ?)", TABLE_NAME);
 
         try (Connection con = new Database(DB_URL).getConnection();
