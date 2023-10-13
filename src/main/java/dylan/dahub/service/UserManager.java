@@ -8,9 +8,16 @@ import java.sql.*;
 
 public class UserManager {
     private static final String TABLE_NAME = "User";
+    private static String DB_URL = Database.getDatabaseURL();
+
+    // Allows a different database connection, used for testing
+    public UserManager withConnection(String url) {
+        DB_URL = url;
+        return this;
+    }
 
     // Checks to see if a user exists with the given username
-    public static boolean userExists(String username) {
+    public boolean userExists(String username) {
         try {
             getFromUsername(username);
         } catch (InvalidUserException e) {
@@ -20,24 +27,25 @@ public class UserManager {
     }
 
     // Gets a single user from the database from the given username
-    public static User getFromUsername(String username) throws InvalidUserException {
+    public User getFromUsername(String username) throws InvalidUserException {
         String query = String.format("SELECT * FROM %s WHERE user_name='%s' COLLATE NOCASE LIMIT 1", TABLE_NAME, username);
 
         return get(query);
     }
 
     // Gets a single user from the database from the given ID
-    public static User getFromID(int ID) throws InvalidUserException {
+    public User getFromID(int ID) throws InvalidUserException {
         String query = String.format("SELECT * FROM %s WHERE id='%d' COLLATE NOCASE LIMIT 1", TABLE_NAME, ID);
 
         return get(query);
     }
 
-    private static User get(String query) throws InvalidUserException {
+    private User get(String query) throws InvalidUserException {
         User user;
 
-        try (Connection con = DatabaseUtils.getConnection()){
-            Statement stmt = con.createStatement();
+        try (Connection con = new Database(DB_URL).getConnection();
+             Statement stmt = con.createStatement()){
+
 
             ResultSet resultSet = stmt.executeQuery(query);
             if (resultSet.next()) {
@@ -57,10 +65,10 @@ public class UserManager {
     }
 
     // Puts 1 single user into the database. User ID is auto-generated so the local ID makes no difference.
-    public static User put(User user) throws InvalidUserException {
+    public User put(User user) throws InvalidUserException {
         String query = String.format("INSERT INTO %s VALUES (null, ?, ?, ?, ?, 0)", TABLE_NAME);
 
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
 
             if (userExists(user.getUserName())) {
@@ -73,7 +81,7 @@ public class UserManager {
 
             stmt.executeUpdate();
             System.out.println("Added user");
-            int generatedID = DatabaseUtils.getLastID(con);
+            int generatedID = Database.getLastID(con);
 
             con.close();
             return getFromID(generatedID);
@@ -84,7 +92,7 @@ public class UserManager {
     }
 
     // Updates all parameters of the user.
-    public static User update(User user) throws InvalidUserException {
+    public User update(User user) throws InvalidUserException {
         String query = String.format("UPDATE %s SET user_name = ?, " +
                         "first_name = ?, " +
                         "last_name = ?, " +
@@ -93,7 +101,7 @@ public class UserManager {
                         "WHERE id = ?",
                 TABLE_NAME);
 
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
 
             if (userExists(user.getUserName()) &&
@@ -120,16 +128,15 @@ public class UserManager {
 
     // Delete the user. Since SQLite doesn't like foreign keys we need to set the pragma every time
     // to allow cascade delete of posts
-    public static void delete(User user) throws InvalidUserException {
+    public void delete(User user) throws InvalidUserException {
         String pragma = "PRAGMA foreign_keys = ON";
         String query = String.format("DELETE FROM %s WHERE id= '%s' ", TABLE_NAME, user.getID());
 
-        try {
-            Connection con = DatabaseUtils.getConnection();
-            Statement stmt = con.createStatement();
+        try (Connection con = new Database(DB_URL).getConnection();
+             Statement stmt = con.createStatement()) {
+
             stmt.execute(pragma);
             stmt.execute(query);
-            con.close();
         } catch (SQLException e) {
             String message = String.format("Failed to delete user: %s", e.getMessage());
             throw new InvalidUserException(message);
@@ -137,7 +144,7 @@ public class UserManager {
     }
 
     // Return a random user from the database.
-    public static User getRandomUser() throws InvalidUserException {
+    public User getRandomUser() throws InvalidUserException {
         String query = String.format("SELECT * FROM %s ORDER BY RANDOM() LIMIT 1", TABLE_NAME);
 
         return get(query);

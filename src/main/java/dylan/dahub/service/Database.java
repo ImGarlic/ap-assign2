@@ -2,12 +2,15 @@ package dylan.dahub.service;
 
 import java.sql.*;
 
-public class DatabaseUtils {
+public class Database {
+    private final String DB_URL;
 
-    private static final String DB_URL = "jdbc:sqlite:D:/Programs/IntelliJ IDEA 2022.2.1/Projects/dahub/src/main/resources/dylan/dahub/database/dataAnalytics";
+    public Database(String URL) {
+        this.DB_URL = URL;
+    }
 
     // Connect to the database specified in DB_URL
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL);
     }
 
@@ -16,6 +19,10 @@ public class DatabaseUtils {
         PreparedStatement stmt = con.prepareStatement("SELECT last_insert_rowid();");
         ResultSet generatedKeys = stmt.executeQuery();
         return generatedKeys.getInt(1);
+    }
+
+    public static String getDatabaseURL() {
+        return "jdbc:sqlite:D:/Programs/IntelliJ IDEA 2022.2.1/Projects/dahub/src/main/resources/dylan/dahub/database/dataAnalytics";
     }
 }
 

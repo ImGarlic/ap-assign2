@@ -51,7 +51,7 @@ public class DataAnalyticsHub extends Application {
                 int likes = rand.nextInt(0, 2000);
                 int shares = rand.nextInt(0, 2000);
                 Post post = new Post(1, author, content, likes, shares, LocalDateTime.now());
-                PostManager.put(UserManager.getRandomUser().getID(), post);
+                new PostManager().put(new UserManager().getRandomUser().getID(), post);
                 System.out.printf("Post %d: Likes: %d, Shares: %d%n", i, likes, shares);
             }
         } catch (InvalidPostException | InvalidUserException e) {

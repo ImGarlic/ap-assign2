@@ -69,7 +69,7 @@ public class PostAddController {
             try {
                 Post post = PostManager.generatePostFromTextFields(
                         author.getText(), content.getText(), dateTime.getText(), likes.getText(), shares.getText());
-                PostManager.put(ActiveUser.getInstance().getID(), post);
+                new PostManager().put(ActiveUser.getInstance().getID(), post);
                 StageManager.getInstance().displayConfirmModal("Post added to the collection.");
                 clearTextFields();
                 setDefaultPost();

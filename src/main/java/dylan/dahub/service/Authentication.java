@@ -9,7 +9,7 @@ public class Authentication {
     // Authenticate the user base on username/password combo
     public static User authenticateUser(String username, String password) throws UserAuthenticationException {
         try {
-            User user = UserManager.getFromUsername(username);
+            User user = new UserManager().getFromUsername(username);
             if (!user.getPassword().equals(password)) {
                 throw new UserAuthenticationException("Incorrect password");
             }

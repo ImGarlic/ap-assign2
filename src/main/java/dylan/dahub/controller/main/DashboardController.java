@@ -37,12 +37,12 @@ public class DashboardController {
     private void setPostCounts() {
         try {
             totalPostsCount.setText(String.valueOf(
-                    PostManager.getPostCount(
+                    new PostManager().getPostCount(
                             ActiveUser.getInstance().getID(), false, "likes", new Range(0,Integer.MAX_VALUE))
                     )
             );
             myPostsCount.setText(String.valueOf(
-                    PostManager.getPostCount(
+                    new PostManager().getPostCount(
                             ActiveUser.getInstance().getID(), true, "likes", new Range(0,Integer.MAX_VALUE))
                     )
             );
@@ -75,7 +75,7 @@ public class DashboardController {
         fadeOut.setToValue(0);
         fadeOut.setOnFinished(event -> {
             try {
-                Post post = PostManager.getRandomPost();
+                Post post = new PostManager().getRandomPost();
                 postDisplay.getChildren().clear();
                 postDisplay.getChildren().add(ControllerUtils.createPostGraphic(post));
             } catch (InvalidPostException e) {

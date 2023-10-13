@@ -54,7 +54,7 @@ public class PostImportController {
 
     private void importPosts() {
         try {
-            PostManager.putMulti(ActiveUser.getInstance().getID(), postList);
+            new PostManager().putMulti(ActiveUser.getInstance().getID(), postList);
             StageManager.getInstance().displayConfirmModal("Posts added successfully!");
 
             importButton.setDisable(true);

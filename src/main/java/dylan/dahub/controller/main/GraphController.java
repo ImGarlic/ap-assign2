@@ -23,20 +23,20 @@ public class GraphController {
             ActiveUser activeUser = ActiveUser.getInstance();
             ObservableList<PieChart.Data> allPostsData =
                     FXCollections.observableArrayList(
-                            new PieChart.Data("0 - 99", PostManager.getPostCount(
+                            new PieChart.Data("0 - 99", new PostManager().getPostCount(
                                     activeUser.getID(), false, "shares", new Range(0, 99))),
-                            new PieChart.Data("100 - 999", PostManager.getPostCount(
+                            new PieChart.Data("100 - 999", new PostManager().getPostCount(
                                     activeUser.getID(), false, "shares", new Range(100, 999))),
-                            new PieChart.Data("1000+", PostManager.getPostCount(
+                            new PieChart.Data("1000+", new PostManager().getPostCount(
                                     activeUser.getID(), false, "shares", new Range(1000, Integer.MAX_VALUE))));
 
             ObservableList<PieChart.Data> myPostsData =
                     FXCollections.observableArrayList(
-                            new PieChart.Data("0 - 99", PostManager.getPostCount(
+                            new PieChart.Data("0 - 99", new PostManager().getPostCount(
                                     activeUser.getID(), true, "shares", new Range(0, 99))),
-                            new PieChart.Data("100 - 999", PostManager.getPostCount(
+                            new PieChart.Data("100 - 999", new PostManager().getPostCount(
                                     activeUser.getID(), true, "shares", new Range(100, 999))),
-                            new PieChart.Data("1000+", PostManager.getPostCount(
+                            new PieChart.Data("1000+", new PostManager().getPostCount(
                                     activeUser.getID(), true, "shares", new Range(1000, Integer.MAX_VALUE))));
 
 

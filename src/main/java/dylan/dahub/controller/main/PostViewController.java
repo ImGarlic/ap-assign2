@@ -78,7 +78,7 @@ public class PostViewController {
         if(StageManager.getInstance().displayRequestModal("Are you sure you want to delete this post?")) {
             try {
                 for (Post post : selectedPosts) {
-                    PostManager.delete(
+                    new PostManager().delete(
                             ActiveUser.getInstance().getID(), post.ID());
                 }
                 if (selectedPosts.size() > 1) {
@@ -172,7 +172,7 @@ public class PostViewController {
                     // Since the database call is actaully rather quick, this simulates some sense of loading.
                     Thread.sleep(500);
 
-                    ArrayList<Post> collection = PostManager.getMulti(
+                    ArrayList<Post> collection = new PostManager().getMulti(
                             ActiveUser.getInstance().getID(),
                             10,
                             searchBar.getText(),
@@ -206,7 +206,7 @@ public class PostViewController {
         int offset = currentList.size();
 
         try {
-            ArrayList<Post> collection = PostManager.getMulti(
+            ArrayList<Post> collection = new PostManager().getMulti(
                     ActiveUser.getInstance().getID(),
                     10,
                     searchBar.getText(),

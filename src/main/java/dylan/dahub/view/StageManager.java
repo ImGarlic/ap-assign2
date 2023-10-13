@@ -57,7 +57,6 @@ public class StageManager {
             // When first switching to the main frame (on login/register), we need to intitalize the controller instance
             // and set the main screen to the dashboard.
             if (view == FxmlView.MAIN) {
-                System.out.println("huh");
                 mainFrameController = loader.getController();
                 setMainScreen(FxmlView.DASHBOARD);
             }

@@ -47,7 +47,7 @@ public class ProfileUpdateController {
         User updatedUser = getNewUserValues();
 
         try {
-            ActiveUser.updateInstance(UserManager.update(updatedUser));
+            ActiveUser.updateInstance(new UserManager().update(updatedUser));
             StageManager.getInstance().displayConfirmModal("Profile details updated.");
             StageManager.getInstance().updateMainFrameProfileDetails();
 

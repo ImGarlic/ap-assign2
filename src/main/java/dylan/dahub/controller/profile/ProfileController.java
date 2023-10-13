@@ -68,7 +68,7 @@ public class ProfileController {
 
         if (StageManager.getInstance().displayRequestModal(requestMessage)) {
             try {
-                ActiveUser.updateInstance(UserManager.update(updatedUser));
+                ActiveUser.updateInstance(new UserManager().update(updatedUser));
                 StageManager.getInstance().displayConfirmModal(confirmMessage);
             } catch (InvalidUserException e) {
                 Logger.alertError("Failed to update VIP status: " + e.getMessage());
@@ -97,7 +97,7 @@ public class ProfileController {
     private void deleteAccount() {
         if (StageManager.getInstance().displayRequestModal("Deleting your account will also delete all your posts.\nAre you sure?")) {
             try {
-                UserManager.delete(ActiveUser.getInstance());
+                new UserManager().delete(ActiveUser.getInstance());
                 StageManager.getInstance().displayConfirmModal("Account deleted.");
                 ActiveUser.clearInstance();
                 StageManager.getInstance().switchScene(FxmlView.STARTUP);

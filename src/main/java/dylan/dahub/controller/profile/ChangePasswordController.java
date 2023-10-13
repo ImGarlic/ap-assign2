@@ -45,7 +45,7 @@ public class ChangePasswordController {
                 updatedUser.setPassword(newPasswordField.getText());
 
                 Authentication.authenticateUser(ActiveUser.getInstance().getUserName(), oldPasswordField.getText());
-                ActiveUser.updateInstance(UserManager.update(updatedUser));
+                ActiveUser.updateInstance(new UserManager().update(updatedUser));
 
                 StageManager.getInstance().displayConfirmModal("Password updated.");
                 ControllerUtils.clearTextFields(new ArrayList<>(Arrays.asList(oldPasswordField, newPasswordField, confirmNewPasswordField)));

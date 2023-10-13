@@ -20,6 +20,13 @@ import java.util.Scanner;
 
 public class PostManager {
     private static final String TABLE_NAME = "Post";
+    private static String DB_URL = Database.getDatabaseURL();
+
+    // Allows a different database connection, used for testing
+    public PostManager withConnection(String url) {
+        DB_URL = url;
+        return this;
+    }
 
     // Generate a post from UI text fields, used to ensure the post has the correct parameters before entering the database.
     // Post ID is auto-generated in the database, so the local ID doesn't matter until put.
@@ -41,14 +48,14 @@ public class PostManager {
 
     // Gets multiple posts from the database based on SQL select queries.
     // sortType refers to the column to sort on, sortOrder is ASC/DESC.
-    public static ArrayList<Post> getMulti(int userID, int count, String searchClause, String sortType, String sortOrder,
+    public ArrayList<Post> getMulti(int userID, int count, String searchClause, String sortType, String sortOrder,
                                            boolean onlyCurrentUser, int offset) throws InvalidPostException {
         ArrayList<Post> collection = new ArrayList<>();
         String query = String.format("SELECT * FROM %s WHERE (author LIKE ? OR id LIKE ?) AND user LIKE ? " +
-                                     "ORDER BY %s %s LIMIT ? OFFSET ? COLLATE NOCASE ",
-                                     TABLE_NAME, sortType, sortOrder);
+                        "ORDER BY %s %s LIMIT ? OFFSET ? COLLATE NOCASE ",
+                TABLE_NAME, sortType, sortOrder);
 
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
 
             stmt.setString(1,"%" + searchClause + "%");
@@ -82,11 +89,11 @@ public class PostManager {
 
     // Gets the number of posts within a certain likes/shares range
     // sortType refers to the column to sort on
-    public static int getPostCount(int userID, boolean onlyCurrentUser, String sortType, Range range) throws InvalidPostException {
+    public int getPostCount(int userID, boolean onlyCurrentUser, String sortType, Range range) throws InvalidPostException {
         String query = String.format("SELECT COUNT(*) FROM %s WHERE user LIKE ? AND %s >= ? AND %s <= ?", TABLE_NAME, sortType, sortType);
         int count = 0;
 
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
 
             if(onlyCurrentUser) {
@@ -112,11 +119,11 @@ public class PostManager {
     }
 
     // Gets a random post from the database
-    public static Post getRandomPost() throws InvalidPostException, NullPointerException {
+    public Post getRandomPost() throws InvalidPostException, NullPointerException {
         String query = String.format("SELECT * FROM %s ORDER BY RANDOM() LIMIT 1", TABLE_NAME);
 
         Post post;
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              Statement stmt = con.createStatement()) {
 
             ResultSet resultSet = stmt.executeQuery(query);
@@ -138,10 +145,10 @@ public class PostManager {
     }
 
     // Puts 1 single post into the database. Post ID is auto-generated in the database so the local ID makes no difference.
-    public static void put(int userID, Post post) throws InvalidPostException {
+    public void put(int userID, Post post) throws InvalidPostException {
         String query = String.format("INSERT INTO %s VALUES (null, ?, ?, ?, ?, ?, ?)", TABLE_NAME);
 
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
 
             setPostToStatement(stmt, post, userID);
@@ -156,10 +163,10 @@ public class PostManager {
     }
 
     // Puts the given list into the database, capped to 1000
-    public static void putMulti(int userID, ArrayList<Post> postList) throws InvalidPostException {
+    public void putMulti(int userID, ArrayList<Post> postList) throws InvalidPostException {
         String query = String.format("INSERT INTO %s VALUES (null, ?, ?, ?, ?, ?, ?)", TABLE_NAME);
 
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
             con.setAutoCommit(false);
 
@@ -180,11 +187,11 @@ public class PostManager {
 
     // Delete 1 post from the database. The reason we dont have a deleteMulti is since we have to check if the user
     // owns the post first, which could cause issues in a batch delete.
-    public static void delete(int userID, int postID) throws InvalidPostException, UserAuthenticationException {
+    public void delete(int userID, int postID) throws InvalidPostException, UserAuthenticationException {
         String selectQuery = String.format("SELECT * FROM %s WHERE id = ? LIMIT 1", TABLE_NAME);
         String deleteQuery = String.format("DELETE FROM %s WHERE id= ? ", TABLE_NAME);
 
-        try (Connection con = DatabaseUtils.getConnection();
+        try (Connection con = new Database(DB_URL).getConnection();
              PreparedStatement selectStmt = con.prepareStatement(selectQuery);
              PreparedStatement deleteStmt = con.prepareStatement(deleteQuery)) {
 
