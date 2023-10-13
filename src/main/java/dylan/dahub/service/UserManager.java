@@ -128,9 +128,9 @@ public class UserManager {
 
     // Delete the user. Since SQLite doesn't like foreign keys we need to set the pragma every time
     // to allow cascade delete of posts
-    public void delete(User user) throws InvalidUserException {
+    public void delete(int userID) throws InvalidUserException {
         String pragma = "PRAGMA foreign_keys = ON";
-        String query = String.format("DELETE FROM %s WHERE id= '%s' ", TABLE_NAME, user.getID());
+        String query = String.format("DELETE FROM %s WHERE id= '%s' ", TABLE_NAME, userID);
 
         try (Connection con = new Database(DB_URL).getConnection();
              Statement stmt = con.createStatement()) {

@@ -88,7 +88,7 @@ public class PostManager {
     }
 
     // Gets the number of posts within a certain likes/shares range
-    // sortType refers to the column to sort on
+    // sortType refers to the column to sort on (likes/shares)
     public int getPostCount(int userID, boolean onlyCurrentUser, String sortType, Range range) throws InvalidPostException {
         String query = String.format("SELECT COUNT(*) FROM %s WHERE user LIKE ? AND %s >= ? AND %s <= ?", TABLE_NAME, sortType, sortType);
         int count = 0;

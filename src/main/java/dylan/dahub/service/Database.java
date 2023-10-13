@@ -1,5 +1,7 @@
 package dylan.dahub.service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 
 public class Database {
@@ -21,8 +23,13 @@ public class Database {
         return generatedKeys.getInt(1);
     }
 
+    // Gets the db in relative resource folder. If you wish to use a different path, use the second return statement
+    // with FILEPATH as your own filepath
     public static String getDatabaseURL() {
-        return "jdbc:sqlite:D:/Programs/IntelliJ IDEA 2022.2.1/Projects/dahub/src/main/resources/dylan/dahub/database/dataAnalytics";
+        Path currentFilePath = Paths.get("");
+
+        return "jdbc:sqlite:" + currentFilePath.toAbsolutePath() + "/src/main/resources/dylan/dahub/database/dataAnalytics";
+        // return FILEPATH
     }
 }
 

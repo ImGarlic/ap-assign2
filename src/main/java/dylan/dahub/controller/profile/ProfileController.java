@@ -97,7 +97,7 @@ public class ProfileController {
     private void deleteAccount() {
         if (StageManager.getInstance().displayRequestModal("Deleting your account will also delete all your posts.\nAre you sure?")) {
             try {
-                new UserManager().delete(ActiveUser.getInstance());
+                new UserManager().delete(ActiveUser.getInstance().getID());
                 StageManager.getInstance().displayConfirmModal("Account deleted.");
                 ActiveUser.clearInstance();
                 StageManager.getInstance().switchScene(FxmlView.STARTUP);
