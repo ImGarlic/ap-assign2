@@ -2,7 +2,6 @@ package dylan.dahub.model;
 
 import dylan.dahub.exception.InvalidDateException;
 import dylan.dahub.exception.InvalidPostException;
-import dylan.dahub.service.PostManager;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

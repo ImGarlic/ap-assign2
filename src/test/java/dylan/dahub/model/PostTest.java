@@ -2,14 +2,13 @@ package dylan.dahub.model;
 
 import dylan.dahub.exception.InvalidDateException;
 import dylan.dahub.exception.InvalidPostException;
-import javafx.geometry.Pos;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 public class PostTest {
-    Post post = new Post(1, "author1", "content1", 0, 0, LocalDateTime.MIN);
+    final Post post = new Post(1, "author1", "content1", 0, 0, LocalDateTime.MIN);
 
     @Test
     public void getDateTimeString_Success() {

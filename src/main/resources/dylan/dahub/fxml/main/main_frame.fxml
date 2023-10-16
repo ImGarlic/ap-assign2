@@ -11,7 +11,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" styleClass="mainBackground" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dylan.dahub.controller.main.MainFrameController">
    <children>
       <AnchorPane fx:id="outsideSpace" layoutX="200.0" layoutY="60.0" prefHeight="440.0" prefWidth="600.0" />
-      <AnchorPane fx:id="header" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: lightblue;">
+      <AnchorPane prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: lightblue;">
          <children>
             <Button layoutX="8.0" layoutY="8.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSidebarClick" prefHeight="42.0" prefWidth="46.0" styleClass="headerButton">
                <graphic>
@@ -80,7 +80,7 @@
                   <Font name="Candara Bold Italic" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="profileButton" layoutX="77.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="48.0" prefWidth="46.0">
+            <Button layoutX="77.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="48.0" prefWidth="46.0">
                <graphic>
                   <ImageView fx:id="profileImage" fitHeight="69.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                      <image>
